@@ -2,7 +2,6 @@ package com.ssdi.Dao;
 import com.ssdi.Entity.User;
 import java.util.Collection;
 
-import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,7 +14,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Created by praya on 3/20/2017.
+ * Created by prayas on 3/20/2017.
  */
 
 @Repository("user")
@@ -52,7 +51,15 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public void updateStudent(User user) {
+    public void updateUser(User user) {
 
     }
+
+    @Override
+    public void addUser(User user) {
+        final String sql = "INSERT INTO user (email, firstname, lastname, password) VALUES ('"+ user.getEmail()+" ', '"+user.getFirstName()+"', '"+ user.getLastName() + "', '"+user.getPassword()+"')";
+
+        jdbcTemplate.update(sql);
+    }
+
 }

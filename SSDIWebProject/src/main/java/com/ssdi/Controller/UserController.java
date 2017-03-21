@@ -24,4 +24,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addUser(@RequestBody User user){
+        System.out.println("user.getEmail()" + user.getEmail());
+        userService.addUser(user);
+    }
+
 }

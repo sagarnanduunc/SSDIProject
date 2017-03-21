@@ -10,5 +10,6 @@ public interface IUserDao {
     Collection<User> getAllUsers();
     User getUserByEmail(String email);
     void removeUserByEmail(String email);
-    void updateStudent(User user);
+    void updateUser(User user);
+    void addUser(User user);
 }

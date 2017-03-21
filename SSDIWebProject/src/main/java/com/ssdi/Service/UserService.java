@@ -17,7 +17,7 @@ import java.util.Collection;
 public class UserService {
     @Autowired
     @Qualifier("user")
-    private UserDao userDao;
+    private IUserDao userDao;
 
     public Collection<User> getAllUsers() {
         return userDao.getAllUsers();
@@ -25,6 +25,10 @@ public class UserService {
 
     public User getUserByEmail(String email){
         return this.userDao.getUserByEmail(email);
+    }
+
+    public void addUser(User user){
+        this.userDao.addUser(user);
     }
 
 }
