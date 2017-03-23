@@ -12,4 +12,5 @@ public interface IUserDao {
     void removeUserByEmail(String email);
     void updateUser(User user);
     void addUser(User user);
+    boolean checkLogin(User user);
 }

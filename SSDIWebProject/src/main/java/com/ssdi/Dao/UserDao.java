@@ -62,4 +62,10 @@ public class UserDao implements IUserDao {
         jdbcTemplate.update(sql);
     }
 
+    @Override
+    public boolean checkLogin(User user){
+        final String sql = "SELECT count(*) FROM user WHERE email='"+user.getEmail()+"' AND password='"+user.getPassword()+"'";
+        Integer count = jdbcTemplate.queryForObject(sql,Integer.class);
+        return count != null && count > 0;
+    }
 }

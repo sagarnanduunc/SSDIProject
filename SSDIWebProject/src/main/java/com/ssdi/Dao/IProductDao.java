@@ -9,7 +9,8 @@ import java.util.Collection;
 
 public interface IProductDao {
     Collection<Product> getAllProducts();
-    Product getProductByName(String name);
-    void getProductByCategory(String category);
+    Collection<Product> getProductByName(String name);
+    Collection<Product> getProductByCategory(String category);
     void updateProduct(Product product);
+    void addProduct(Product product, User user);
 }

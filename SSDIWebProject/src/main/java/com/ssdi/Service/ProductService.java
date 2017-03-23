@@ -18,7 +18,7 @@ public class ProductService {
 
     @Autowired
     @Qualifier("product")
-    private ProductDao productDao;
+    private IProductDao productDao;
 
     public Collection<Product> getAllProducts() {
         return productDao.getAllProducts();

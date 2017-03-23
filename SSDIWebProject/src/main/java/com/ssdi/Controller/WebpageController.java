@@ -12,4 +12,9 @@ public class WebpageController {
     public String index() {
         return "index.html";
     }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "login.html";
+    }
 }
