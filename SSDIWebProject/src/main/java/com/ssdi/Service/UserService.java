@@ -31,4 +31,7 @@ public class UserService {
         this.userDao.addUser(user);
     }
 
+    public boolean checkLogin(User user) {
+        return this.userDao.checkLogin(user);
+    }
 }
