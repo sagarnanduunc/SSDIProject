@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="en" ng-app="login">
 <head>
 
@@ -55,26 +54,25 @@
     <div class="text-vertical-center">
         <h1>Sign into your account</h1>
         <br>
-        <form name="loginForm" ng-controller="loginController" id="loginForm" novalidate>
+        <form name="loginForm" ng-controller="loginController" id="loginForm" ng-submit="login()" novalidate>
+
+            <!-- Email field -->
             <p class="centered">
                 <label>Email:
-                    <input type="email" name="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }" required>
-                    <span class="error" ng-show="loginForm.email.$dirty">
-                <!--<span ng-show="loginForm.email.$error.required">This field is required.</span>-->
-                        <!--<span ng-show="loginForm.email.$error.email">Please enter a valid email address.</span>-->
-            </span>
+                    <input type="email" name="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }"
+                           required>
                 </label>
             <p class="centered error" ng-show="loginForm.email.$dirty">
                 <span ng-show="loginForm.email.$error.required">Your email address is required.</span>
                 <span ng-show="loginForm.email.$error.email">Please enter a valid email address.</span>
             </p>
+
+            <!-- Password field -->
             <p class="centered">
                 <label>Password:
-                    <input type="password" name="password" ng-model="user.password" ng-model-options="{ updateOn: 'blur' }"
+                    <input type="password" name="password" ng-model="user.password"
+                           ng-model-options="{ updateOn: 'blur' }"
                            required>
-                    <!--<span class="error" ng-show="loginForm.password.$dirty">-->
-                    <!--<span ng-show="loginForm.password.$invalid">This field is required.</span>-->
-                    <!--</span>-->
                 </label>
             </p>
             <p class="centered error" ng-show="loginForm.password.$dirty">
@@ -86,6 +84,7 @@
                 ng-disabled="loginForm.$invalid">
             Submit
         </button>
+        <p class="centered error" ng-show="loginError">Your login credentials did not match.</p>
     </div>
 
 </header>

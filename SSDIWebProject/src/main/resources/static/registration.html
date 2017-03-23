@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="en" ng-app="registration">
 <head>
 
@@ -56,47 +55,57 @@
         <h1>Create a new account</h1>
         <br>
         <form name="registrationForm" ng-controller="registrationController" id="registrationForm" novalidate>
+
+            <!-- First name field -->
             <p class="centered">
                 <label>First Name:
                     <input type="text" name="firstName" ng-model="user.firstName"
                            ng-model-options="{ updateOn: 'blur' }" required>
-                    <span class="error" ng-show="registrationForm.firstName.$dirty">
-                <span ng-show="registrationForm.firstName.$invalid">This field is required.</span>
-            </span>
                 </label>
             </p>
+            <p class="centered error" ng-show="registrationForm.firstName.$dirty">
+                <span ng-show="registrationForm.firstName.$invalid">This field is required.</span>
+            </p>
+
+            <!-- Last name field -->
             <p class="centered">
                 <label>Last Name:
                     <input type="text" name="lastName" ng-model="user.lastName" ng-model-options="{ updateOn: 'blur' }">
                 </label>
             </p>
+
+            <!-- Email field -->
             <p class="centered">
                 <label>Email:
                     <input type="email" name="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }"
                            required>
-                    <span class="error" ng-show="registrationForm.email.$dirty">
-                <span ng-show="registrationForm.email.$error.required">This field is required.</span>
-                <span ng-show="registrationForm.email.$error.email">Please enter a valid email address.</span>
-            </span>
                 </label>
             </p>
+            <p class="centered error" ng-show="registrationForm.email.$dirty">
+                <span ng-show="registrationForm.email.$error.required">This field is required.</span>
+                <span ng-show="registrationForm.email.$error.email">Please enter a valid email address.</span>
+            </p>
+
+            <!-- Password field -->
             <p class="centered">
                 <label>Password:
                     <input type="password" name="password" ng-model="user.password"
                            ng-model-options="{ updateOn: 'blur' }" required>
-                    <span class="error" ng-show="registrationForm.password.$dirty">
-                <span ng-show="registrationForm.password.$invalid">This field is required.</span>
-            </span>
                 </label>
             </p>
+            <p class="centered error" ng-show="registrationForm.password.$dirty">
+                <span ng-show="registrationForm.password.$invalid">This field is required.</span>
+            </p>
+
+            <!-- Confirm password field -->
             <p class="centered">
                 <label>Confirm Password:
                     <input type="password" name="confirm" ng-model="user.confirmPassword"
                            ng-model-options="{ updateOn: 'blur' }" required>
-                    <span class="error" ng-show="registrationForm.confirm.$dirty">
-                <span ng-show="registrationForm.confirm.$invalid">This field is required.</span>
-            </span>
                 </label>
+            </p>
+            <p class="centered error" ng-show="registrationForm.confirm.$dirty">
+                <span ng-show="registrationForm.confirm.$invalid">This field is required.</span>
             </p>
             <p class="centered error"
                ng-show="registrationForm.password.$valid && registrationForm.confirm.$valid && user.password !== user.confirmPassword">
