@@ -27,9 +27,9 @@ public class ProductDao implements IProductDao {
 
     @Override
     public Collection<Product> getAllProducts() {
-
-        final String sql = "SELECT name, description, price FROM product";
+        final String sql = "SELECT product_id, name, description, price FROM product";
         return getProductsByQuery(sql);
+
     }
 
 

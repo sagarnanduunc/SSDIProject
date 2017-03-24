@@ -2,6 +2,7 @@ package com.ssdi.Service;
 
 import com.ssdi.Dao.IProductDao;
 import com.ssdi.Dao.ProductDao;
+import com.ssdi.Entity.Category;
 import com.ssdi.Entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +23,10 @@ public class ProductService {
 
     public Collection<Product> getAllProducts() {
         return productDao.getAllProducts();
+    }
+
+    public Collection<Product> getProductsByCategory(Collection<Category> category) {
+        return productDao.getProductsByCategory(category);
     }
 
 }
