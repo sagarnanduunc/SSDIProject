@@ -1,5 +1,6 @@
 package com.ssdi.Dao;
 import com.ssdi.Entity.Category;
+import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
 import java.util.Collection;
@@ -16,4 +17,5 @@ public interface IProductDao {
     void updateProduct(Product product);
     void addProduct(Product product, User user);
     Collection<Product> searchProductsByString(String searchString);
+    Collection<Product> getProductsByPrice(PriceRange priceRange);
 }

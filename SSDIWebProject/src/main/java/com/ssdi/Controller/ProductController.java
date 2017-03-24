@@ -1,6 +1,7 @@
 package com.ssdi.Controller;
 
 import com.ssdi.Entity.Category;
+import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
 import com.ssdi.Service.ProductService;
 import org.json.JSONArray;
@@ -38,6 +39,11 @@ public class ProductController {
         JSONObject obj = new JSONObject(s);
         String searchString = obj.getString("searchString");
         return productService.searchProducts(searchString);
+    }
+
+    @RequestMapping(value = "/filterbyprice", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Product> getProductsByPrice(@RequestBody PriceRange priceRange) {
+        return productService.getProductsByPrice(priceRange);
     }
 
 }

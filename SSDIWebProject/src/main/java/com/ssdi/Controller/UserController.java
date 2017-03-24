@@ -26,44 +26,36 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Collection<User> getAllUsers(){
+    public Collection<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addUser(@RequestBody User user){
+    public void addUser(@RequestBody User user) {
         System.out.println("user.getEmail()" + user.getEmail());
         userService.addUser(user);
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String logout(@RequestBody User user, HttpSession httpSession) {
+        httpSession.invalidate();
+        return "{\"response\":\"Logout Successful\"}";
+
+    }
+
     @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String login(@RequestBody User user, HttpSession httpSession){
+    public String login(@RequestBody User user, HttpSession httpSession) {
         System.out.println("user.getEmail()" + user.getEmail());
         System.out.println("user.getPassword()" + user.getPassword());
         boolean login = userService.checkLogin(user);
-        if (login){
+        if (login) {
             System.out.println("Login Successful");
             httpSession.setAttribute("user", user);
-        }
-        else {
+        } else {
             return "{\"response\":\"Login Unsuccessful\"}";
         }
         System.out.println(httpSession.getAttribute("user"));
         return "{\"response\":\"Login Unsuccessful\"}";
 
-        /*
-        if (login){
-            System.out.println("Login Successful");
-            //Cookie loginCookie = new Cookie("user", user.getEmail());
-            UUID uid = (UUID) httpSession.getAttribute("user");
-            if (uid == null) {
-                uid = UUID.randomUUID();
-            }
-            httpSession.setAttribute("user", uid);
-            System.out.println(uid.toString());
-        }
-        */
-
     }
-
 }

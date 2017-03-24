@@ -3,6 +3,7 @@ package com.ssdi.Service;
 import com.ssdi.Dao.IProductDao;
 import com.ssdi.Dao.ProductDao;
 import com.ssdi.Entity.Category;
+import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,4 +33,9 @@ public class ProductService {
     public Collection<Product> searchProducts(String searchString) {
         return productDao.searchProductsByString(searchString);
     }
+
+    public Collection<Product> getProductsByPrice(PriceRange priceRange) {
+        return productDao.getProductsByPrice(priceRange);
+    }
+
 }

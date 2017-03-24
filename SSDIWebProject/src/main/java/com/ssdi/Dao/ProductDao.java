@@ -1,6 +1,7 @@
 package com.ssdi.Dao;
 
 import com.ssdi.Entity.Category;
+import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,11 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by praya on 3/20/2017.
+ * Created by prayas on 3/20/2017.
  */
 
 @Repository("product")
@@ -63,9 +65,14 @@ public class ProductDao implements IProductDao {
         return null;
     }
 
-    @Override
     public Collection<Product> getProductsByCategory(Collection<Category> category) {
-        final String sql = "SELECT name, description, price FROM product";
+        String categoryIds = "";
+
+        for (Iterator<Category> iterator = category.iterator(); iterator.hasNext();) {
+            categoryIds = categoryIds + Integer.toString(getCategoryIdFromName(iterator.next().getCategory())) + ",";
+        }
+        categoryIds = categoryIds.substring(0, categoryIds.length() - 1);
+        final String sql = "SELECT name, description, price FROM product where category_id in (" + categoryIds + ")";
         return getProductsByQuery(sql);
     }
 
@@ -78,11 +85,12 @@ public class ProductDao implements IProductDao {
     public void addProduct(Product product, User user) {
         String category = product.getCategory();
         category = category.toLowerCase();
-        int categoryId = getCategoryId(category);
+        int categoryId = getCategoryIdFromName(category);
         final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('"+ user.getEmail()+" ', '"+categoryId+"', '"+ product.getName() + "', '"+product.getDescription()+ "', '"+product.getPrice()+"',1)";
     }
 
-    public int getCategoryId(String categotyName){
+    public int getCategoryIdFromName(String categotyName){
+        categotyName = categotyName.toLowerCase();
         int categoryId = 0;
         switch(categotyName){
             case "clothing":
@@ -134,4 +142,10 @@ public class ProductDao implements IProductDao {
         final String sql = "SELECT name, description, price FROM product where (description like '%" + searchString + "%') or (name like '%" + searchString + "%')";
         return getProductsByQuery(sql);
     }
+
+    public Collection<Product> getProductsByPrice(PriceRange priceRange) {
+        final String sql = "SELECT name, description, price FROM product where price between " + Float.toString(priceRange.getMinPrice()) + "and " + Float.toString(priceRange.getMaxPrice());
+        return getProductsByQuery(sql);
+    }
+
 }

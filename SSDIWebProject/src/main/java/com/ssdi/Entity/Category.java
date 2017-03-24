@@ -1,7 +1,7 @@
 package com.ssdi.Entity;
 
 /**
- * Created by praya on 3/23/2017.
+ * Created by prayas on 3/23/2017.
  */
 public class Category implements ICategory{
 
