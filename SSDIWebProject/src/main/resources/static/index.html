@@ -1,27 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="demo">
+<html lang="en" ng-app="renting">
 <head>
     <meta charset="UTF-8">
-    <title>Demo application</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Renting</title>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular-route.js"></script>
     <script src="script.js"></script>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/shop-homepage.css" rel="stylesheet">
+    <!-- Temporary fix for navbar responsiveness -->
+    <style>
+        .navbar-toggler {
+            z-index: 1;
+        }
+
+        .blockSizeLanding {
+            padding-top: 10%;
+            padding-bottom: 12%;
+        }
+
+        .blockSizeLogin {
+            padding-top: 5%;
+            padding-bottom: 7%;
+        }
+
+        .blockSizeRegistration {
+            padding-top: 5%;
+            padding-bottom: 7%;
+        }
+
+        @media (max-width: 576px) {
+            nav > .container {
+                width: 100%;
+            }
+        }
+
+        /* Temporary fix for img-fluid sizing within the carousel */
+
+        .carousel-item.active,
+        .carousel-item-next,
+        .carousel-item-prev {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<div ng-controller="Hello">
-    <table>
-        <tr>
-            <th>Student ID</th>
-            <th>Student Name</th>
-            <th>Course Name</th>
-        </tr>
-        <tr ng-repeat="student in students">
-            <td>{{student.id}}</td>
-            <td>{{student.name}}</td>
-            <td>{{student.course}}</td>
-        </tr>
-    </table>
-<!--    <p>Student {{students[0].name}} has ID {{students[0].id}} and is taking {{students[0].course}}.</p>
-    <p>Student {{students[1].name}} has ID {{students[1].id}} and is taking {{students[1].course}}.</p>-->
-</div>
+<div ng-view></div>
+<footer class="py-5 bg-inverse">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; www.keeprenting.com 2017</p>
+    </div>
+    <!-- /.container -->
+</footer>
+
+<!-- jQuery Version 3.1.1 -->
+<script src="js/jquery.js"></script>
+
+<!-- Tether -->
+<script src="js/tether.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
+<!--<html lang="en" ng-app="demo">-->
+<!--<head>-->
+<!--<meta charset="UTF-8">-->
+<!--<title>Demo application</title>-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>-->
+<!--<script src="script.js"></script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div ng-controller="Hello">-->
+<!--<table>-->
+<!--<tr>-->
+<!--<th>Student ID</th>-->
+<!--<th>Student Name</th>-->
+<!--<th>Course Name</th>-->
+<!--</tr>-->
+<!--<tr ng-repeat="student in students">-->
+<!--<td>{{student.id}}</td>-->
+<!--<td>{{student.name}}</td>-->
+<!--<td>{{student.course}}</td>-->
+<!--</tr>-->
+<!--</table>-->
+<!--&lt;!&ndash;    <p>Student {{students[0].name}} has ID {{students[0].id}} and is taking {{students[0].course}}.</p>-->
+<!--<p>Student {{students[1].name}} has ID {{students[1].id}} and is taking {{students[1].course}}.</p>&ndash;&gt;-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
