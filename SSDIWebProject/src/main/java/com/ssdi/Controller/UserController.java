@@ -2,6 +2,7 @@ package com.ssdi.Controller;
 
 import com.ssdi.Entity.User;
 import com.ssdi.Service.UserService;
+import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,8 @@ public class UserController {
         userService.addUser(user);
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void login(@RequestBody User user, HttpSession httpSession){
+    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String login(@RequestBody User user, HttpSession httpSession){
         System.out.println("user.getEmail()" + user.getEmail());
         System.out.println("user.getPassword()" + user.getPassword());
         boolean login = userService.checkLogin(user);
@@ -45,9 +46,10 @@ public class UserController {
             httpSession.setAttribute("user", user);
         }
         else {
-            System.out.println("!!!!!!!!!!! Login Unsuccessful !!!!!!!!!!");
+            return "{\"response\":\"Login Unsuccessful\"}";
         }
         System.out.println(httpSession.getAttribute("user"));
+        return "{\"response\":\"Login Unsuccessful\"}";
 
         /*
         if (login){

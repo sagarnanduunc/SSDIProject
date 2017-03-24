@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import org.json.*;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -33,10 +34,10 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Product> searchProduct(@RequestBody JSONArray jsonArray) {
-        System.out.println("@RequestBody String s: "+ jsonArray);
-        //return productService.searchProducts();
-        return null;
+    public Collection<Product> searchProduct(@RequestBody String s) throws org.json.JSONException{
+        JSONObject obj = new JSONObject(s);
+        String searchString = obj.getString("searchString");
+        return productService.searchProducts(searchString);
     }
 
 }

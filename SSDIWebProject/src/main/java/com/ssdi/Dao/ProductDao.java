@@ -1,5 +1,6 @@
 package com.ssdi.Dao;
 
+import com.ssdi.Entity.Category;
 import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,19 +64,9 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
-    public Collection<Product> getProductByCategory(String category) {
+    public Collection<Product> getProductsByCategory(Collection<Category> category) {
         final String sql = "SELECT name, description, price FROM product";
-        List<Product> products = jdbcTemplate.query(sql, new RowMapper<Product>() {
-            @Override
-            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                Product product = new Product();
-                product.setName(resultSet.getString("name"));
-                product.setDescription(resultSet.getString("description"));
-                product.setPrice(resultSet.getFloat("price"));
-                return product;
-            }
-        });
-        return products;
+        return getProductsByQuery(sql);
     }
 
     @Override
@@ -122,5 +113,25 @@ public class ProductDao implements IProductDao {
                 categoryId = 8;
         }
         return categoryId;
+    }
+
+    public List<Product> getProductsByQuery(String query){
+        List<Product> products = jdbcTemplate.query(query, new RowMapper<Product>() {
+            @Override
+            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+                Product product = new Product();
+                product.setName(resultSet.getString("name"));
+                product.setDescription(resultSet.getString("description"));
+                product.setPrice(resultSet.getFloat("price"));
+                return product;
+            }
+        });
+        return products;
+    }
+
+    //Search a product with string which completely or partially matches product name or description
+    public Collection<Product> searchProductsByString(String searchString) {
+        final String sql = "SELECT name, description, price FROM product where (description like '%" + searchString + "%') or (name like '%" + searchString + "%')";
+        return getProductsByQuery(sql);
     }
 }

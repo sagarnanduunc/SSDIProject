@@ -29,4 +29,7 @@ public class ProductService {
         return productDao.getProductsByCategory(category);
     }
 
+    public Collection<Product> searchProducts(String searchString) {
+        return productDao.searchProductsByString(searchString);
+    }
 }
