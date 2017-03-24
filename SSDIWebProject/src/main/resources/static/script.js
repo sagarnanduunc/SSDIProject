@@ -5,7 +5,10 @@
     'use strict';
     var app = angular.module('renting', ['ngRoute']);
     // Set up routing
-    app.config(function ($routeProvider) {
+    app.config(['$locationProvider', function ($locationProvider) {
+        $locationProvider.hashPrefix('');
+    }]);
+    app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when("/", {
                 templateUrl: "landingPage.html"
@@ -19,7 +22,7 @@
                 controller: "loginController"
             })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
-    });
+    }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
         $scope.title = 'Sign In';
