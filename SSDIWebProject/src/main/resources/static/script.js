@@ -3,7 +3,7 @@
  */
 (function () {
     'use strict';
-    var app = angular.module('renting', ['ngCookies', 'ngRoute']);
+    var app = angular.module('renting', ['ngRoute']);
     // Set up routing
     app.config(function ($routeProvider) {
         $routeProvider
@@ -21,7 +21,8 @@
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     });
     // Set up the login controller
-    app.controller('loginController', ['$scope', '$cookies', '$http', function ($scope, $cookies, $http) {
+    app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
+        $scope.title = 'Sign In';
         $scope.user = {
             email: '',
             password: ''
@@ -42,6 +43,7 @@
     }]);
     // Set up the registration controller
     app.controller('registrationController', ['$scope', function ($scope) {
+        $scope.title = 'Create Your Account';
         $scope.user = {
             firstName: "",
             lastName: "",
