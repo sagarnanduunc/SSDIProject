@@ -1,4 +1,7 @@
 package com.ssdi.Dao;
+import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Bank;
+import com.ssdi.Entity.IBank;
 import com.ssdi.Entity.User;
 import java.util.Collection;
 
@@ -13,4 +16,6 @@ public interface IUserDao {
     void updateUser(User user);
     void addUser(User user);
     boolean checkLogin(User user);
+    void addAddress(Address address);
+    void addBankInfo(Bank bank);
 }

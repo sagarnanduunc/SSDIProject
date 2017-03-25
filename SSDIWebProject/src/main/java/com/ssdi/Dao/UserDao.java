@@ -1,4 +1,7 @@
 package com.ssdi.Dao;
+import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Bank;
+import com.ssdi.Entity.IBank;
 import com.ssdi.Entity.User;
 import java.util.Collection;
 
@@ -68,4 +71,17 @@ public class UserDao implements IUserDao {
         Integer count = jdbcTemplate.queryForObject(sql,Integer.class);
         return count != null && count > 0;
     }
+
+    @Override
+    public void addAddress(Address address) {
+        final String sql = "INSERT INTO address (email, street_address, apartment, city, state, zip) VALUES ('"+ address.getEmail() + " ', '"+ address.getStreetAddress()+" ', '"+address.getApartment()+"', '"+ address.getCity() + "', '"+address.getState()+ "', '"+address.getZip()+"')";
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public void addBankInfo(Bank bank) {
+        final String sql = "INSERT INTO bank_info (email, bank_name, account_number, account_holder_name, routing_number) VALUES ('"+ bank.getEmail() + " ', '"+ bank.getBankName()+" ', '"+bank.getAccountNumber()+"', '"+ bank.getAccountHolderName() + "', '" + bank.getRoutingNumber() +"')";
+        jdbcTemplate.update(sql);
+    }
+
 }

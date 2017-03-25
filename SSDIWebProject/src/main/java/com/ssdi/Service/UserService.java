@@ -2,6 +2,9 @@ package com.ssdi.Service;
 
 import com.ssdi.Dao.IUserDao;
 import com.ssdi.Dao.UserDao;
+import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Bank;
+import com.ssdi.Entity.IBank;
 import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,4 +37,8 @@ public class UserService {
     public boolean checkLogin(User user) {
         return this.userDao.checkLogin(user);
     }
+
+    public void addAddress(Address address){ this.userDao.addAddress(address);}
+
+    public void addBankInfo(Bank bank) { this.userDao.addBankInfo(bank); }
 }

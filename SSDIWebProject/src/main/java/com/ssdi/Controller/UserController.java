@@ -1,5 +1,8 @@
 package com.ssdi.Controller;
 
+import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Bank;
+import com.ssdi.Entity.IBank;
 import com.ssdi.Entity.User;
 import com.ssdi.Service.UserService;
 import com.sun.deploy.net.HttpResponse;
@@ -13,6 +16,7 @@ import java.awt.*;
 import java.util.Collection;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.plaf.basic.BasicMenuBarUI;
 import java.util.UUID;
 
 /**
@@ -55,7 +59,21 @@ public class UserController {
             return "{\"response\":\"Login Unsuccessful\"}";
         }
         System.out.println(httpSession.getAttribute("user"));
-        return "{\"response\":\"Login Unsuccessful\"}";
+        return "{\"response\":\"Login Successful\"}";
 
+    }
+
+    @RequestMapping(value = "/addaddress", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addUser(@RequestBody Address address, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        address.setEmail(user.getEmail());
+        userService.addAddress(address);
+    }
+
+    @RequestMapping(value = "/addbankinfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addBankInfo(@RequestBody Bank bank, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        bank.setEmail(user.getEmail());
+        userService.addBankInfo(bank);
     }
 }
