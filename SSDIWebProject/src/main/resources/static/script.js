@@ -7,6 +7,7 @@
     // Set up routing
     app.config(['$locationProvider', function ($locationProvider) {
         $locationProvider.hashPrefix('');
+        $locationProvider.html5Mode(true);
     }]);
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
@@ -21,27 +22,44 @@
                 templateUrl: "login.html",
                 controller: "loginController"
             })
+            .when("/userHome", {
+                templateUrl: "userHomepage.html",
+                controller: "getProductAllController"
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
     // Set up the login controller
-    app.controller('loginController', ['$scope', '$http', function ($scope, $http) {
+    app.controller('loginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.title = 'Sign In';
         $scope.user = {
             email: '',
-            password: ''
+            password: '',
+            firstName: '',
+            lastName: ''
         };
         $scope.loginError = false;
         $scope.results = [];
         $scope.login = function () {
-            $http.post('http://localhost:8080/users/login', {params: $scope.user})
-                .success(function () {
-                    $window.location.href = '/userHomepage.html';
-                    $cookies.put('login', true);
-                    $cookies.put('user', $scope.user.email);
-                })
-                .error(function () {
-                    $scope.loginError = true;
+            $http.post('/users/login', $scope.user)
+                .then(function (data, status, headers, config) {
+                    console.log(data);
+                    if (data.data.response === "Login Unsuccessful") {
+                        $scope.loginError = true;
+                    } else {
+                        $location.path('/userHome');
+                        //$window.location.href = '/userHomepage.html';
+                    }
                 });
+            // .success(function (data, status, headers, config) {
+            //     if (data.response === "Login Unsuccessful") {
+            //         $scope.loginError = true;
+            //     } else {
+            //         $window.location.href = '/userHomepage.html';
+            //     }
+            // })
+            // .error(function () {
+            //     $scope.loginError = true;
+            // });
         };
     }]);
     // Set up the registration controller
@@ -55,6 +73,13 @@
             confirmPassword: ""
         };
     }]);
+    // Set up the user homepage controller
+    app.controller('getProductAllController', function ($scope, $http) {
+        $http.get('/products')
+            .then(function (response) {
+                $scope.allProducts = response.data;
+            });
+    });
 })();
 
 // angular.module('demo', [])
