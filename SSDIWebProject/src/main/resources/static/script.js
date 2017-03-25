@@ -97,10 +97,21 @@
         if ($cookies.get('loggedIn') !== 'true') {
             $scope.hidePage = true;
         }
+        $scope.searchTerm = '';
         $http.get('/products')
             .then(function (response) {
                 $scope.allProducts = response.data;
             });
+        $http.get('/products/getallcategories')
+            .then(function (response) {
+                $scope.categories = response.data;
+            });
+        $scope.search = function () {
+            $http.post('/products/search', $scope.searchTerm)
+                .then(function (response) {
+                    $scope.allProducts = response.data;
+                });
+        };
     }]);
     app.controller('logoutController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         $http.post('/users/logout', $cookies.getObject('userInfo'))
@@ -110,7 +121,7 @@
                 $cookies.put('loggedIn', 'false');
                 $location.path('/');
             });
-    }])
+    }]);
 })();
 
 // angular.module('demo', [])

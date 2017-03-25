@@ -51,9 +51,9 @@
 
             <h1 class="my-4">Shop Name</h1>
             <div class="list-group">
-                <a href="#" class="list-group-item">Category 1</a>
-                <a href="#" class="list-group-item">Category 2</a>
-                <a href="#" class="list-group-item">Category 3</a>
+                <div ng-repeat="category in categories">
+                    <a href="#" class="list-group-item">{{category}}</a>
+                </div>
             </div>
 
         </div>
@@ -61,6 +61,13 @@
 
         <div class="col-lg-9">
 
+            <form name="searchForm" id="searchForm" ng-submit="search()" novalidate>
+                <p class="centered">
+                    <input type="search" ng-model="searchTerm">
+                    <button class="btn btn-dark btn-sm" type="submit" value="Submit">Search</button>
+                </p>
+            </form>
+            <br>
             <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
                 <ol class="carousel-indicators">
                     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
