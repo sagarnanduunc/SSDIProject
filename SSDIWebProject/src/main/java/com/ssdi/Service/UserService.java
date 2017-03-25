@@ -30,8 +30,9 @@ public class UserService {
         return this.userDao.getUserByEmail(email);
     }
 
-    public void addUser(User user){
-        this.userDao.addUser(user);
+    public String addUser(User user){
+
+        return this.userDao.addUser(user);
     }
 
     public boolean checkLogin(User user) {
