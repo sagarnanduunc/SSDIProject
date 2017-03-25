@@ -6,11 +6,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="container">
-        <a class="navbar-brand" href="#">Rental App</a>
+        <a class="navbar-brand" href="/">Rental App</a>
         <div class="collapse navbar-collapse" id="navbarExample">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -26,7 +26,7 @@
                         <li><a href="#" class="nav-link">My Profile</a></li>
                         <li><a href="#" class="nav-link">Edit Account</a></li>
                         <li class="dropdown-divider"></li>
-                        <li><a href="#" class="nav-link">Separated link</a></li>
+                        <li><a href="/logout" class="nav-link">Log Out</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a href="#" class="nav-link">My cart (0) items</a></li>
@@ -39,8 +39,11 @@
     </div>
 </nav>
 
+<div class="container" ng-show="hidePage">
+    <p>You must be logged in to view this content.</p>
+</div>
 <!-- Page Content -->
-<div class="container">
+<div class="container" ng-hide="hidePage">
 
     <div class="row">
 

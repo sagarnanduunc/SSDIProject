@@ -2,13 +2,13 @@
     <div class="text-vertical-center">
         <h1>Create a new account</h1>
         <br>
-        <form name="registrationForm" id="registrationForm" novalidate>
+        <form name="registrationForm" id="registrationForm" ng-submit="register()" novalidate>
 
             <!-- First name field -->
             <p class="centered">
                 <label>First Name:
                     <input type="text" name="firstName" ng-model="user.firstName"
-                           ng-model-options="{ updateOn: 'blur' }" required>
+                           ng-model-options="{ debounce: 500 }" required>
                 </label>
             </p>
             <p class="centered error" ng-show="registrationForm.firstName.$dirty">
@@ -18,14 +18,14 @@
             <!-- Last name field -->
             <p class="centered">
                 <label>Last Name:
-                    <input type="text" name="lastName" ng-model="user.lastName" ng-model-options="{ updateOn: 'blur' }">
+                    <input type="text" name="lastName" ng-model="user.lastName" ng-model-options="{ debounce: 500 }">
                 </label>
             </p>
 
             <!-- Email field -->
             <p class="centered">
                 <label>Email:
-                    <input type="email" name="email" ng-model="user.email" ng-model-options="{ updateOn: 'blur' }"
+                    <input type="email" name="email" ng-model="user.email" ng-model-options="{ debounce: 500 }"
                            required>
                 </label>
             </p>
@@ -38,7 +38,7 @@
             <p class="centered">
                 <label>Password:
                     <input type="password" name="password" ng-model="user.password"
-                           ng-model-options="{ updateOn: 'blur' }" required>
+                           ng-model-options="{ debounce: 500 }" required>
                 </label>
             </p>
             <p class="centered error" ng-show="registrationForm.password.$dirty">
@@ -49,7 +49,7 @@
             <p class="centered">
                 <label>Confirm Password:
                     <input type="password" name="confirm" ng-model="user.confirmPassword"
-                           ng-model-options="{ updateOn: 'blur' }" required>
+                           ng-model-options="{ debounce: 500 }" required>
                 </label>
             </p>
             <p class="centered error" ng-show="registrationForm.confirm.$dirty">
@@ -65,6 +65,11 @@
                 ng-disabled="registrationForm.$invalid || user.password !== user.confirmPassword">
             Submit
         </button>
+        <p class="centered error" ng-show="duplicateEmail">That email address is already associated with an account.
+            Please try a different
+            email.</p>
+        <p class="centered error" ng-show="registrationError">We're sorry, something seems to have gone wrong. Please
+            try again.</p>
     </div>
 
 </header>
