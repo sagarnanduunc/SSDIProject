@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import org.json.*;
 
@@ -46,4 +47,8 @@ public class ProductController {
         return productService.getProductsByPrice(priceRange);
     }
 
+    @RequestMapping(value = "/getallcategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ArrayList<String> getAllCategories() {
+        return productService.getAllCategories();
+    }
 }

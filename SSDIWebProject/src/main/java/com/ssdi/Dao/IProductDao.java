@@ -18,4 +18,5 @@ public interface IProductDao {
     void addProduct(Product product, User user);
     Collection<Product> searchProductsByString(String searchString);
     Collection<Product> getProductsByPrice(PriceRange priceRange);
+    ArrayList<String> getAllCategories();
 }

@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -36,6 +38,10 @@ public class ProductService {
 
     public Collection<Product> getProductsByPrice(PriceRange priceRange) {
         return productDao.getProductsByPrice(priceRange);
+    }
+
+    public ArrayList<String> getAllCategories() {
+        return productDao.getAllCategories();
     }
 
 }

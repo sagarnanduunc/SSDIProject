@@ -11,9 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -148,4 +146,15 @@ public class ProductDao implements IProductDao {
         return getProductsByQuery(sql);
     }
 
+    public ArrayList<String> getAllCategories() {
+
+        ArrayList<String> categories = new ArrayList<String>();
+        final String sql = "SELECT category from categories";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> row : list) {
+            System.out.println(row.get("category"));
+            categories.add((String) row.get("category"));
+        }
+        return categories;
+    }
 }
