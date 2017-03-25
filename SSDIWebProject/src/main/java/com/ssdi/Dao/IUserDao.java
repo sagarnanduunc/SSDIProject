@@ -14,7 +14,7 @@ public interface IUserDao {
     User getUserByEmail(String email);
     void removeUserByEmail(String email);
     void updateUser(User user);
-    void addUser(User user);
+    String addUser(User user);
     boolean checkLogin(User user);
     void addAddress(Address address);
     void addBankInfo(Bank bank);

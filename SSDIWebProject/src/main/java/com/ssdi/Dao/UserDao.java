@@ -1,4 +1,5 @@
 package com.ssdi.Dao;
+import java.lang.Exception;
 import com.ssdi.Entity.Address;
 import com.ssdi.Entity.Bank;
 import com.ssdi.Entity.IBank;
@@ -59,10 +60,20 @@ public class UserDao implements IUserDao {
     }
 
     @Override
-    public void addUser(User user) {
-        final String sql = "INSERT INTO user (email, firstname, lastname, password) VALUES ('"+ user.getEmail()+" ', '"+user.getFirstName()+"', '"+ user.getLastName() + "', '"+user.getPassword()+"')";
+    public String addUser(User user) throws org.springframework.dao.DuplicateKeyException {
+        try {
+            final String sql = "INSERT INTO user (email, firstname, lastname, password) VALUES ('" + user.getEmail() + " ', '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getPassword() + "')";
+            jdbcTemplate.update(sql);
+        }
+        catch (org.springframework.dao.DuplicateKeyException s){
+            return "Email id already exists";
+        }
 
-        jdbcTemplate.update(sql);
+        catch (Exception e){
+            return "There is some problem while adding a user";
+        }
+
+        return "User successfully added";
     }
 
     @Override

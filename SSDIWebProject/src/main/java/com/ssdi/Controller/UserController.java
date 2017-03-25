@@ -34,10 +34,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addUser(@RequestBody User user) {
+    @RequestMapping(value = "/adduser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addUser(@RequestBody User user) {
         System.out.println("user.getEmail()" + user.getEmail());
-        userService.addUser(user);
+        String message = userService.addUser(user);
+        return "{\"response\":\"" + message +"\"}";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
