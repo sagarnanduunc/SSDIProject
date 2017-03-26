@@ -43,8 +43,8 @@
         }
     }]);
 
-    app.controller('productController',['$scope','$cookies',function ($scope,$cookies) {
-        $scope.product=$cookies.getObject("currentProduct");
+    app.controller('productController', ['$scope', '$cookies', function ($scope, $cookies) {
+        $scope.product = $cookies.getObject("currentProduct");
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
@@ -101,11 +101,14 @@
         };
     }]);
     // Set up the user homepage controller
-    app.controller('getProductAllController', ['$scope', '$http', '$cookies','$location', function ($scope, $http, $cookies,$location) {
+    app.controller('getProductAllController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         if ($cookies.get('loggedIn') !== 'true') {
             $scope.hidePage = true;
         }
         $scope.searchTerm = '';
+        $scope.useCategories = {};
+        $scope.priceFloor = '';
+        $scope.priceCeiling = '';
         $http.get('/products')
             .then(function (response) {
                 $scope.allProducts = response.data;
@@ -120,8 +123,8 @@
                     $scope.allProducts = response.data;
                 });
         };
-        $scope.ProductPass = function(arg){
-            $cookies.putObject("currentProduct",arg);
+        $scope.ProductPass = function (arg) {
+            $cookies.putObject("currentProduct", arg);
             //$location.path = "/productHome";
             console.log(arg);
 
@@ -137,6 +140,56 @@
                 $location.path('/');
             });
     }]);
+    app.filter('filterByCategory', function () {
+        return function (input, categories) {
+            var output = [];
+            angular.forEach(input, function (product) {
+                if (categories[product.category] === true) {
+                    output.push(product);
+                }
+            });
+            return output;
+        }
+    });
+    app.filter('filterByPrice', function () {
+        return function (input, priceFloor, priceCeiling) {
+            var output = [];
+            if (angular.isNumber(priceFloor) && priceFloor >= 0) {
+                if (angular.isNumber(priceCeiling) && priceCeiling >= 0) {
+                    if (priceFloor > priceCeiling) {
+                        angular.forEach(input, function (product) {
+                            output.push(product);
+                        });
+                    } else {
+                        angular.forEach(input, function (product) {
+                            if (product.price >= priceFloor && product.price <= priceCeiling) {
+                                output.push(product);
+                            }
+                        });
+                    }
+                } else {
+                    angular.forEach(input, function (product) {
+                        if (product.price >= priceFloor) {
+                            output.push(product);
+                        }
+                    });
+                }
+            } else {
+                if (angular.isNumber(priceCeiling) && priceCeiling >= 0) {
+                    angular.forEach(input, function (product) {
+                        if (product.price <= priceCeiling) {
+                            output.push(product);
+                        }
+                    });
+                } else {
+                    angular.forEach(input, function (product) {
+                        output.push(product);
+                    });
+                }
+            }
+            return output;
+        }
+    });
 })();
 
 // angular.module('demo', [])
