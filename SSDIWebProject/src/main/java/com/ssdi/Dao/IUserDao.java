@@ -18,4 +18,6 @@ public interface IUserDao {
     boolean checkLogin(User user);
     void addAddress(Address address);
     void addBankInfo(Bank bank);
+    Collection<Address> getAllAddresses(String email);
+    Collection<Bank> getAllBankInfo(String email);
 }

@@ -11,7 +11,7 @@ public class Bank implements IBank {
     long routingNumber;
     String email;
 
-    Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber){
+    public Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber){
         this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
@@ -19,7 +19,7 @@ public class Bank implements IBank {
         this.email = getEmail();
     }
 
-    Bank(){}
+    public Bank(){}
 
     @Override
     public String getBankName() {

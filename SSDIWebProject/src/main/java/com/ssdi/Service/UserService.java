@@ -42,4 +42,12 @@ public class UserService {
     public void addAddress(Address address){ this.userDao.addAddress(address);}
 
     public void addBankInfo(Bank bank) { this.userDao.addBankInfo(bank); }
+
+    public Collection<Address> getAllAddresses(String email) {
+        return userDao.getAllAddresses(email);
+    }
+
+    public Collection<Bank> getAllBankInfo(String email) {
+        return userDao.getAllBankInfo(email);
+    }
 }

@@ -12,7 +12,7 @@ public class Address implements IAddress {
     String zip;
     String email;
 
-    Address(String streetAddress, String apartment, String city, String state, String zip, String email){
+    public Address(String streetAddress, String apartment, String city, String state, String zip, String email){
         this.streetAddress = streetAddress;
         this.apartment = apartment;
         this.city =city;
@@ -21,7 +21,7 @@ public class Address implements IAddress {
         this.email = email;
     }
 
-    Address(){}
+    public Address(){}
 
     @Override
     public String getStreetAddress() {

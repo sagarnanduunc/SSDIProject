@@ -77,4 +77,17 @@ public class UserController {
         bank.setEmail(user.getEmail());
         userService.addBankInfo(bank);
     }
+
+    @RequestMapping(value = "/address", method = RequestMethod.GET)
+    public Collection<Address> getAllAddresses(HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        return userService.getAllAddresses(user.getEmail());
+    }
+
+    @RequestMapping(value = "/bankinfo", method = RequestMethod.GET)
+    public Collection<Bank> getAllBankInfo(HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        return userService.getAllBankInfo(user.getEmail());
+    }
+
 }
