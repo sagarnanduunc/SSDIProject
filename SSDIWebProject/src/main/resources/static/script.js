@@ -31,12 +31,20 @@
                 templateUrl: 'logout.html',
                 controller: 'logoutController'
             })
+            .when('/productHome', {
+                templateUrl: 'productPage.html',
+                controller: 'productController'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
     app.controller('landingController', ['$cookies', '$location', function ($cookies, $location) {
         if ($cookies.get("loggedIn") === 'true') {
             $location.path('/userHome');
         }
+    }]);
+
+    app.controller('productController',['$scope','$cookies',function ($scope,$cookies) {
+        $scope.product=$cookies.getObject("currentProduct");
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
@@ -93,7 +101,7 @@
         };
     }]);
     // Set up the user homepage controller
-    app.controller('getProductAllController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+    app.controller('getProductAllController', ['$scope', '$http', '$cookies','$location', function ($scope, $http, $cookies,$location) {
         if ($cookies.get('loggedIn') !== 'true') {
             $scope.hidePage = true;
         }
@@ -112,6 +120,13 @@
                     $scope.allProducts = response.data;
                 });
         };
+        $scope.ProductPass = function(arg){
+            $cookies.putObject("currentProduct",arg);
+            //$location.path = "/productHome";
+            console.log(arg);
+
+        }
+
     }]);
     app.controller('logoutController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         $http.post('/users/logout', $cookies.getObject('userInfo'))

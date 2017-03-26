@@ -1,48 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="userHome">
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>User Home</title>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.3/angular.min.js"></script>
-    <script src="js/userHomepage.js"></script>
-    <script src="js/navigation.js"></script>
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="css/shop-homepage.css" rel="stylesheet">
-
-    <!-- Temporary fix for navbar responsiveness -->
-    <style>
-        .navbar-toggler {
-            z-index: 1;
-        }
-
-
-        @media (max-width: 576px) {
-            nav > .container {
-                width: 100%;
-            }
-        }
-        /* Temporary fix for img-fluid sizing within the carousel */
-
-        .carousel-item.active,
-        .carousel-item-next,
-        .carousel-item-prev {
-            display: block;
-        }
-    </style>
-
-</head>
-
-<body>
 
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
@@ -69,7 +24,7 @@
                         <li><a href="#" class="nav-link">My Profile</a></li>
                         <li><a href="#" class="nav-link">Edit Account</a></li>
                         <li class="dropdown-divider"></li>
-                        <li><a href="#" class="nav-link">Separated link</a></li>
+                        <li><a href="/logout" class="nav-link">Logout</a></li>
                     </ul>
                 </li>
                 <li class="nav-item"><a href="#" class="nav-link">My cart (0) items</a></li>
@@ -99,16 +54,12 @@
         <div class="col-md-9">
 
             <div class="thumbnail">
-                <img class="img-responsive" src="http://placehold.it/800x300" alt="">
+                <img class="img-responsive" ng-src={{product.photoLink[0]}} alt="">
                 <div class="caption-full">
-                    <h4 class="pull-right">$24.99</h4>
-                    <h4><a href="#">Product Name</a>
+                    <h4 class="pull-right">{{product.price}}</h4>
+                    <h4><a href="#">{{product.name}}</a>
                     </h4>
-                    <p>See more snippets like these online store reviews at <a target="_blank" href="http://bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-                    <p>Want to make these reviews work? Check out
-                        <strong><a href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this building a review system tutorial</a>
-                        </strong>over at maxoffsky.com!</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
+                    <p>{{product.description}}</p>>
                 </div>
                 <div class="ratings">
                     <p class="pull-right">3 reviews</p>
@@ -183,25 +134,3 @@
 </div>
 <!-- /.container -->
 
-<!-- Footer -->
-<footer class="py-5 bg-inverse">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
-    </div>
-    <!-- /.container -->
-</footer>
-
-<!-- jQuery Version 3.1.1 -->
-<script src="js/jquery.js"></script>
-
-<!-- Tether -->
-<script src="js/tether.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
-
-
-
-</body>
-
-</html>

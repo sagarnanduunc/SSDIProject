@@ -61,10 +61,9 @@
 
         <div class="col-lg-9">
 
-            <form name="searchForm" id="searchForm" ng-submit="search()" novalidate>
+            <form name="searchForm" id="searchForm" novalidate>
                 <p class="centered">
                     <input type="search" ng-model="searchTerm">
-                    <button class="btn btn-dark btn-sm" type="submit" value="Submit">Search</button>
                 </p>
             </form>
             <br>
@@ -95,11 +94,11 @@
                 </a>
             </div>
 
-            <div class="row" ng-controller="getProductAllController">
+            <div class="row">
 
-                <div class="col-lg-4 col-md-6 mb-4" ng-repeat="product in allProducts">
+                <div class="col-lg-4 col-md-6 mb-4" ng-repeat="product in allProducts | filter:searchTerm">
                     <div class="card h-100">
-                        <a href="#"><img class="card-img-top img-fluid" ng-src={{product.photoLink[0]}} alt=""></a>
+                        <a href="/productHome" ng-click="ProductPass(product)"><img class="card-img-top img-fluid" ng-src={{product.photoLink[0]}} alt=""></a>
                         <div class="card-block">
                             <h4 class="card-title"><a href="#">{{product.name}}</a></h4>
                             <h5>${{product.price}}</h5>
