@@ -26,7 +26,7 @@ public class ProductDao implements IProductDao {
     @Override
     public Collection<Product> getAllProducts() {
 
-        final String sql = "SELECT product_id, name, description, price FROM product";
+        final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id";
         List<Product> products = jdbcTemplate.query(sql, new RowMapper<Product>() {
             @Override
             public Product mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -35,17 +35,17 @@ public class ProductDao implements IProductDao {
                 product.setName(resultSet.getString("name"));
                 product.setDescription(resultSet.getString("description"));
                 product.setPrice(resultSet.getFloat("price"));
+                product.setCategory(resultSet.getString("category"));
                 return product;
             }
         });
         final String sql1 = "SELECT product_id, photo_link FROM photo";
-        List<Product> a=jdbcTemplate.query(sql1, new RowMapper<Product>() {
+        List<Product> a = jdbcTemplate.query(sql1, new RowMapper<Product>() {
             @Override
             public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                int id=resultSet.getInt("product_id");
-                for(int j=0;j<products.size();j++)
-                {
-                    if(id == products.get(j).getId()){
+                int id = resultSet.getInt("product_id");
+                for (int j = 0; j < products.size(); j++) {
+                    if (id == products.get(j).getId()) {
                         products.get(j).setPhotoLink(resultSet.getString("photo_link"));
                     }
                 }
@@ -66,7 +66,7 @@ public class ProductDao implements IProductDao {
     public Collection<Product> getProductsByCategory(Collection<Category> category) {
         String categoryIds = "";
 
-        for (Iterator<Category> iterator = category.iterator(); iterator.hasNext();) {
+        for (Iterator<Category> iterator = category.iterator(); iterator.hasNext(); ) {
             categoryIds = categoryIds + Integer.toString(getCategoryIdFromName(iterator.next().getCategory())) + ",";
         }
         categoryIds = categoryIds.substring(0, categoryIds.length() - 1);
@@ -84,13 +84,13 @@ public class ProductDao implements IProductDao {
         String category = product.getCategory();
         category = category.toLowerCase();
         int categoryId = getCategoryIdFromName(category);
-        final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('"+ user.getEmail()+" ', '"+categoryId+"', '"+ product.getName() + "', '"+product.getDescription()+ "', '"+product.getPrice()+"',1)";
+        final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + user.getEmail() + " ', '" + categoryId + "', '" + product.getName() + "', '" + product.getDescription() + "', '" + product.getPrice() + "',1)";
     }
 
-    public int getCategoryIdFromName(String categotyName){
+    public int getCategoryIdFromName(String categotyName) {
         categotyName = categotyName.toLowerCase();
         int categoryId = 0;
-        switch(categotyName){
+        switch (categotyName) {
             case "clothing":
                 categoryId = 1;
                 break;
@@ -121,7 +121,7 @@ public class ProductDao implements IProductDao {
         return categoryId;
     }
 
-    public List<Product> getProductsByQuery(String query){
+    public List<Product> getProductsByQuery(String query) {
         List<Product> products = jdbcTemplate.query(query, new RowMapper<Product>() {
             @Override
             public Product mapRow(ResultSet resultSet, int i) throws SQLException {
