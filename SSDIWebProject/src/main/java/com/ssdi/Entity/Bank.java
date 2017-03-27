@@ -11,12 +11,12 @@ public class Bank implements IBank {
     long routingNumber;
     String email;
 
-    public Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber){
+    public Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber, String email){
         this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
         this.routingNumber = routingNumber;
-        this.email = getEmail();
+        this.email = email;
     }
 
     public Bank(){}
