@@ -35,11 +35,11 @@
                 templateUrl: 'productPage.html',
                 controller: 'productController'
             })
-            .when('/addProduct1', {
+            .when('/addProduct', {
                 templateUrl: 'addProduct.html',
                 controller: 'addProductController'
             })
-            .when('/addProduct', {
+            .when('/selectAddress', {
                 templateUrl: 'selectAddress.html',
                 controller: 'selectAddressController'
             })
@@ -51,8 +51,30 @@
                 templateUrl: 'addBankDetails.html',
                 controller: 'addBankInfoController'
             })
+            .when('/selectBankInfo', {
+                templateUrl: 'selectBank.html',
+                controller: 'selectBankController'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
+
+    app.controller('selectBankController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+
+        $scope.buttonChoice;
+
+        $scope.newId;
+        $http.get('/users/bankinfo')
+            .then(function (response) {
+                $scope.banks = response.data;
+            });
+        console.log($scope.banks)
+        $scope.register = function () {
+
+            console.log("Done")
+
+        };
+    }]);
+
     app.controller('selectAddressController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
 
         $scope.buttonChoice;
@@ -65,7 +87,7 @@
 
         $scope.register = function () {
 
-            $location.path('/addBankInfo');
+            $location.path('/selectBankInfo');
 
         };
     }]);
@@ -80,9 +102,9 @@
 
 
         $scope.register = function () {
-            console.log("In function")
-            console.log($scope.bank)
-            $http.post('/users/addbankinfo', $scope.address)
+            console.log("In function");
+            console.log($scope.bank);
+            $http.post('/users/addbankinfo', $scope.bank)
                 .then(function (response) {
 
                     console.log(response);
@@ -115,25 +137,40 @@
         $scope.product = {
             name: '',
             description: '',
-            price: '',
+            price:'',
             category: ''
+
 
         };
         $http.get('/products/getallcategories')
             .then(function (response) {
                 $scope.categories = response.data;
             });
-        $scope.addPhoto = function () {
-            console.log("function reached");
-            var photo = document.getElementById("photo").files[0];
-            var reader = new FileReader();
-            reader.onloadend = function (e) {
-                var data = e.target.result;
+        $scope.addProduct = function() {
 
-                console.log(data);
-            }
-            reader.readAsArrayBuffer(photo);
+            var file = $scope.myFile;
+            console.log('file is ' );
+            console.dir(file);
+            var uploadUrl = "/products/addproduct";
+            var fd = new FormData();
+            fd.append('file', file);
+            fd.append('name',angular.toJson($scope.product.name,true));
+            fd.append('description',angular.toJson($scope.product.description,true));
+            fd.append('price',angular.toJson($scope.product.price,true));
+            fd.append('category',angular.toJson($scope.product.category,true));
+            //fd.append('user',angular.toJson($scope.user,true));
+            //onsole.log('Socpe of user'+$scope.user);
+            $http.post(uploadUrl, fd, {
+                transformRequest : angular.identity,
+                headers : {
+                    'Content-Type' : undefined
+                }
+            }).then(function(success) {
+                console.log('success');
+                $location.path('/selectAddress');
+            })
         }
+
     }]);
     app.controller('landingController', ['$cookies', '$location', function ($cookies, $location) {
         if ($cookies.get("loggedIn") === 'true') {
@@ -309,7 +346,7 @@
             var fd = new FormData();
             fd.append('file', file);
 
-            $http.post("/products/addImage", fd, {
+            $http.post("/products/uploadimage", fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function () {
@@ -317,17 +354,6 @@
         }
     }]);
 
-    app.controller('myCtrl', ['$scope', 'fileUpload', function ($scope, fileUpload) {
-        $scope.uploadFile = function () {
-            var file = $scope.myFile;
-
-            console.log('file is ');
-            console.dir(file);
-
-            //var uploadUrl = "/img";
-            fileUpload.uploadFileToUrl(file);
-        };
-    }]);
 
 })();
 

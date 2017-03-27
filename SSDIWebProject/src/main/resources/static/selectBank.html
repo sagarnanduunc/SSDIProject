@@ -1,0 +1,103 @@
+<header class="header blockSizeRegistration">
+
+
+    <table style="width:100%; height:100% ">
+        <tr>
+            <th style="width:35%"></th>
+            <th>
+
+
+                <div class="text-vertical-center">
+                    <div>
+
+
+                    </div>
+
+                    <form name="selectBankForm" id="selectBankForm" ng-submit="register()" novalidate>
+                        <table cellpadding="5" >
+                            <tr>
+                                <th colspan="3">
+                                    <h1>Please Enter Bank Information</h1>
+                                </th>
+                            </tr>
+                            <tr ng-repeat="b in banks">
+                                <th colspan="3">
+
+                                    <input type="radio" ng-model="$parent.buttonChoice" name="useBank" ng-value="b"/>
+                                    {{b.bankName}} {{b.accountNumber}}
+                                </th>
+                            </tr>
+
+                            <tr >
+                                <th></th>
+                                <th>
+                                    <a href="/addBankInfo" class="btn btn-dark btn-sm">New Bank</a>
+
+                                </th>
+                                <th></th>
+                            </tr>
+
+                            <tr >
+                                <th></th>
+                                <th>
+                                    <button class="btn btn-dark btn-lg" type="submit" form="selectBankForm" value="Submit"
+                                            ng-disabled="selectBankForm.$invalid">
+                                        Submit
+                                    </button>
+
+                                </th>
+                                <th></th>
+                            </tr>
+                        </table>
+
+
+                    </form>
+
+                </div>
+            </th>
+            <th></th>
+        </tr>
+    </table>
+</header>
+
+
+<!-- Navigation -->
+<nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarExample" aria-controls="navbarExample" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="container">
+        <a class="navbar-brand" href="/">Rental App</a>
+        <div class="collapse navbar-collapse" id="navbarExample">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+
+                <li class="dropdown nav-item">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
+                       aria-expanded="false">My account <span class="caret"></span></a>
+                    <ul class="dropdown-menu bg-inverse" role="menu">
+                        <li><a href="#" class="nav-link">My Profile</a></li>
+                        <li><a href="/addProduct" class="nav-link">Add Product</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="/logout" class="nav-link">Log Out</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="#" class="nav-link">My cart (0) items</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+
+
+            </ul>
+        </div>
+    </div>
+</nav>

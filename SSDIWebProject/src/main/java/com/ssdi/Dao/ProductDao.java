@@ -86,12 +86,29 @@ public class ProductDao implements IProductDao {
             String category = product.getCategory();
             category = category.toLowerCase();
             int categoryId = getCategoryIdFromName(category);
-            File f = new File("C:\\photo\\"+product.getName()+product.getDescription()+".jpg");
-            //byte[] bytes = product.getPhoto().getBytes();
-            //File photo =
-            f = product.getPhoto();
+
             final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + product.getEmail() + " ', '" + categoryId + "', '" + product.getName() + "', '" + product.getDescription() + "', '" + product.getPrice() + "',1)";
             jdbcTemplate.update(sql);
+
+            final String sql2 = "SELECT product_id, name, description, price FROM product";
+            System.out.println("before");
+            List<Product> products = jdbcTemplate.query(sql2, new RowMapper<Product>() {
+                @Override
+                public Product mapRow(ResultSet resultSet, int i) throws SQLException {
+                    System.out.println("during");
+                    Product product1 = new Product();
+                    product1.setId(resultSet.getInt("product_id"));
+                    return product1;
+                }
+
+            });
+            System.out.println("after");
+            product.setId(products.get(products.size() - 1).getId());
+            System.out.println(product.getId());
+            final String sql1 = "INSERT INTO Photo(product_id,photo_link) values (" + product.getId() + " , '" + product.getPhotoLink().get(0) + "')";
+            System.out.println(sql1);
+            jdbcTemplate.update(sql1);
+
             return "Product successfully added";
         }
         catch (Exception e){

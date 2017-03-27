@@ -9,9 +9,14 @@ import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
+
+
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -69,21 +74,45 @@ public class ProductController {
         return "{\"response\":\"" + message + "\"}";
     }
 
-    @RequestMapping(value = "/uploadimage", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String uploadImage(@RequestBody MultipartFile file, HttpSession httpSession) {
-        if (!file.isEmpty()) {
-            try {
-                String name = file.getOriginalFilename();
-                byte[] bytes = file.getBytes();
-                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name)));
-                stream.write(bytes);
-                stream.close();
-                return "Successful upload";
-            } catch (Exception e) {
-                return "Error";
-            }
-        } else {
-            return "Empty file";
+
+
+    @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveUserDataAndFile(@RequestParam(value = "description") String description,@RequestParam(value = "price") float price,@RequestParam(value = "name") String name,@RequestParam(value = "category") String category,@RequestParam(value = "file") MultipartFile file,HttpSession request) {
+        User user = (User) request.getAttribute("user");
+        Product product=new Product();
+        System.out.println("product.getEmail()" + user.getEmail());
+        product.setEmail(user.getEmail());
+        System.out.println("product.getEmail()" + product.getEmail());
+        product.setName(name);
+        System.out.println(product.getName());
+        product.setCategory(category);
+        System.out.println(product.getCategory());
+        product.setDescription(description);
+        System.out.println(product.getDescription());
+        product.setPrice(price);
+        System.out.println(product.getPrice());
+        System.out.println("product.getEmail()" + product.getEmail());
+        System.out.println("Inside File upload");
+        //String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+        String rootDirectory = "C:\\Users\\Admin\\Desktop\\Study\\SSDI\\ProjectWork\\SSDIProject\\SSDIWebProject\\src\\main\\resources\\static\\img\\";
+        System.out.println("Root Directory "+rootDirectory);
+        String directory="img/logan.jpg";
+        try {
+            file.transferTo(new File(rootDirectory  + file.getOriginalFilename()));
+            directory= "img/" +file.getOriginalFilename();
+            System.out.println("Hey check");
+        } catch (Exception e) {
+            
+            System.out.println(e);
+            e.printStackTrace();
         }
+        product.setPhotoLink(directory);
+        System.out.println(product.getPhotoLink());
+
+        String message = productService.addProduct(product);
+        return "{\"response\":\"" + message + "\"}";
+
+
     }
 }
