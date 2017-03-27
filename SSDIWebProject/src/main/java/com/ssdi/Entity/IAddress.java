@@ -17,5 +17,7 @@ public interface IAddress {
     void setState(String state);
     void setZip(String zip);
     void setEmail(String email);
+    void setAddressId(int addressId);
+    int getAddressId();
 
 }

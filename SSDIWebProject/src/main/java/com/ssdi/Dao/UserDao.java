@@ -97,11 +97,12 @@ public class UserDao implements IUserDao {
 
     @Override
     public Collection<Address> getAllAddresses(String email) {
-        final String sql = "SELECT street_address, apartment, city, state, zip FROM address where email='" +email+"'";
+        final String sql = "SELECT address_id, street_address, apartment, city, state, zip FROM address where email='" +email+"'";
         List<Address> addresses = jdbcTemplate.query(sql, new RowMapper<Address>() {
             @Override
             public Address mapRow(ResultSet resultSet, int i) throws SQLException {
                 Address address = new Address();
+                address.setAddressId(resultSet.getInt("address_id"));
                 address.setStreetAddress(resultSet.getString("street_address"));
                 address.setApartment(resultSet.getString("apartment"));
                 address.setCity(resultSet.getString("city"));
