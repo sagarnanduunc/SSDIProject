@@ -10,13 +10,15 @@ public class Bank implements IBank {
     String accountHolderName;
     long routingNumber;
     String email;
+    int bankId;
 
-    public Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber, String email){
+    public Bank(String bankName, long accountNumber, String accountHolderName, long routingNumber, String email, int bankId){
         this.bankName = bankName;
         this.accountNumber = accountNumber;
         this.accountHolderName = accountHolderName;
         this.routingNumber = routingNumber;
         this.email = email;
+        this.bankId =bankId;
     }
 
     public Bank(){}
@@ -69,5 +71,15 @@ public class Bank implements IBank {
     @Override
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public int getBankId() {
+        return this.bankId;
+    }
+
+    @Override
+    public void setBankId(int bankId) {
+        this.bankId = bankId;
     }
 }

@@ -116,11 +116,12 @@ public class UserDao implements IUserDao {
 
     @Override
     public Collection<Bank> getAllBankInfo(String email) {
-        final String sql = "SELECT bank_name, account_number, account_holder_name, routing_number FROM bank_info where email='" +email+"'";
+        final String sql = "SELECT bank_info_id, bank_name, account_number, account_holder_name, routing_number FROM bank_info where email='" +email+"'";
         List<Bank> banks = jdbcTemplate.query(sql, new RowMapper<Bank>() {
             @Override
             public Bank mapRow(ResultSet resultSet, int i) throws SQLException {
                 Bank bank = new Bank();
+                bank.setBankId(resultSet.getInt("bank_info_id"));
                 bank.setBankName(resultSet.getString("bank_name"));
                 bank.setAccountNumber(resultSet.getLong("account_number"));
                 bank.setAccountHolderName(resultSet.getString("account_holder_name"));

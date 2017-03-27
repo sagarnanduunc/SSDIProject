@@ -15,5 +15,7 @@ public interface IBank {
     void setAccountHolderName(String accountHolderName);
     void setRoutingNumber(long routingNumber);
     void setEmail(String email);
+    int getBankId();
+    void setBankId(int bankId);
 
 }
