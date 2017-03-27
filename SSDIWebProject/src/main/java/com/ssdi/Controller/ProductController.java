@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.json.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 
@@ -34,12 +39,12 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/filterbycategory", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Product> getProductsyCategory(@RequestBody Collection<Category> category) {
+    public Collection<Product> getProductsByCategory(@RequestBody Collection<Category> category) {
         return productService.getProductsByCategory(category);
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Collection<Product> searchProduct(@RequestBody String s) throws org.json.JSONException{
+    public Collection<Product> searchProduct(@RequestBody String s) throws org.json.JSONException {
         JSONObject obj = new JSONObject(s);
         String searchString = obj.getString("searchString");
         return productService.searchProducts(searchString);
@@ -61,6 +66,24 @@ public class ProductController {
         product.setEmail(user.getEmail());
         System.out.println("product.getEmail()" + product.getEmail());
         String message = productService.addProduct(product);
-        return "{\"response\":\"" + message +"\"}";
+        return "{\"response\":\"" + message + "\"}";
+    }
+
+    @RequestMapping(value = "/uploadimage", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String uploadImage(@RequestBody MultipartFile file, HttpSession httpSession) {
+        if (!file.isEmpty()) {
+            try {
+                String name = file.getOriginalFilename();
+                byte[] bytes = file.getBytes();
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name)));
+                stream.write(bytes);
+                stream.close();
+                return "Successful upload";
+            } catch (Exception e) {
+                return "Error";
+            }
+        } else {
+            return "Empty file";
+        }
     }
 }
