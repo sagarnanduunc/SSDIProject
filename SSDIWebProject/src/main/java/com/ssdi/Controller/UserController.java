@@ -55,6 +55,7 @@ public class UserController {
         boolean login = userService.checkLogin(user);
         if (login) {
             System.out.println("Login Successful");
+            httpSession.setMaxInactiveInterval(20*60);
             httpSession.setAttribute("user", user);
         } else {
             return "{\"response\":\"Login Unsuccessful\"}";
@@ -65,7 +66,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/addaddress", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addUser(@RequestBody Address address, HttpSession httpSession) {
+    public void addAddress(@RequestBody Address address, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         address.setEmail(user.getEmail());
         userService.addAddress(address);

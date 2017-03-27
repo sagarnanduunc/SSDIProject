@@ -12,4 +12,6 @@ public interface IProduct {
     void setPrice(float price);
     String getCategory();
     void setCategory(String category);
+    String getEmail();
+    void setEmail(String email);
 }

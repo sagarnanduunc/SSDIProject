@@ -44,4 +44,8 @@ public class ProductService {
         return productDao.getAllCategories();
     }
 
+    public String addProduct(Product product) {
+        return productDao.addProduct(product);
+    }
+
 }

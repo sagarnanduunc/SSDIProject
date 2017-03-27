@@ -15,7 +15,7 @@ public interface IProductDao {
     Collection<Product> getProductByName(String name);
     Collection<Product> getProductsByCategory(Collection<Category> category);
     void updateProduct(Product product);
-    void addProduct(Product product, User user);
+    String addProduct(Product product);
     Collection<Product> searchProductsByString(String searchString);
     Collection<Product> getProductsByPrice(PriceRange priceRange);
     ArrayList<String> getAllCategories();

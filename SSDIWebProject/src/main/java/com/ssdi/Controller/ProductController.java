@@ -3,6 +3,7 @@ package com.ssdi.Controller;
 import com.ssdi.Entity.Category;
 import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
+import com.ssdi.Entity.User;
 import com.ssdi.Service.ProductService;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.json.*;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -50,5 +53,14 @@ public class ProductController {
     @RequestMapping(value = "/getallcategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ArrayList<String> getAllCategories() {
         return productService.getAllCategories();
+    }
+
+    @RequestMapping(value = "/addproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addProduct(@RequestBody Product product, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        product.setEmail(user.getEmail());
+        System.out.println("product.getEmail()" + product.getEmail());
+        String message = productService.addProduct(product);
+        return "{\"response\":\"" + message +"\"}";
     }
 }

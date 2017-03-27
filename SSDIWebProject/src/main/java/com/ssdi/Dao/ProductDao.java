@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -80,11 +81,22 @@ public class ProductDao implements IProductDao {
     }
 
     @Override
-    public void addProduct(Product product, User user) {
-        String category = product.getCategory();
-        category = category.toLowerCase();
-        int categoryId = getCategoryIdFromName(category);
-        final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + user.getEmail() + " ', '" + categoryId + "', '" + product.getName() + "', '" + product.getDescription() + "', '" + product.getPrice() + "',1)";
+    public String addProduct(Product product) {
+        try {
+            String category = product.getCategory();
+            category = category.toLowerCase();
+            int categoryId = getCategoryIdFromName(category);
+            File f = new File("C:\\photo\\"+product.getName()+product.getDescription()+".jpg");
+            //byte[] bytes = product.getPhoto().getBytes();
+            //File photo =
+            f = product.getPhoto();
+            final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + product.getEmail() + " ', '" + categoryId + "', '" + product.getName() + "', '" + product.getDescription() + "', '" + product.getPrice() + "',1)";
+            jdbcTemplate.update(sql);
+            return "Product successfully added";
+        }
+        catch (Exception e){
+            return "Product not added";
+        }
     }
 
     public int getCategoryIdFromName(String categotyName) {
