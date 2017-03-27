@@ -35,7 +35,105 @@
                 templateUrl: 'productPage.html',
                 controller: 'productController'
             })
+            .when('/addProduct1', {
+                templateUrl: 'addProduct.html',
+                controller: 'addProductController'
+            })
+            .when('/addProduct', {
+                templateUrl: 'selectAddress.html',
+                controller: 'selectAddressController'
+            })
+            .when('/addAddress', {
+                templateUrl: 'addAddress.html',
+                controller: 'addAddressController'
+            })
+            .when('/addBankInfo', {
+                templateUrl: 'addBankDetails.html',
+                controller: 'addBankInfoController'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
+    }]);
+    app.controller('selectAddressController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+
+        $scope.buttonChoice;
+
+        $scope.newId;
+        $http.get('/users/address')
+            .then(function (response) {
+                $scope.addresses = response.data;
+            });
+
+        $scope.register = function () {
+
+            $location.path('/addBankInfo');
+
+        };
+    }]);
+
+    app.controller('addBankInfoController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+        $scope.bank={
+            bankName:'',
+            accountNumber:'',
+            accountHolderName:'',
+            routingNumber:''
+        };
+
+
+        $scope.register = function () {
+            console.log("In function")
+            console.log($scope.bank)
+            $http.post('/users/addbankinfo', $scope.address)
+                .then(function (response) {
+
+                    console.log(response);
+                    $location.path('/userHome');
+                });
+
+        };
+    }]);
+    app.controller('addAddressController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+        $scope.address={
+            streetAddress:'',
+            apartment:'',
+            city:'',
+            state:'',
+            zip:''
+        };
+        $scope.states=["NC"];
+
+        $scope.register = function () {
+            $http.post('/users/addaddress', $scope.address)
+                .then(function (response) {
+                    console.log(response);
+                    $location.path('/userHome');
+                });
+
+        };
+    }]);
+
+    app.controller('addProductController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+        $scope.product = {
+            name: '',
+            description: '',
+            price: '',
+            category: ''
+
+        };
+        $http.get('/products/getallcategories')
+            .then(function (response) {
+                $scope.categories = response.data;
+            });
+        $scope.addPhoto = function () {
+            console.log("function reached");
+            var photo = document.getElementById("photo").files[0];
+            var reader = new FileReader();
+            reader.onloadend = function (e) {
+                var data = e.target.result;
+
+                console.log(data);
+            }
+            reader.readAsArrayBuffer(photo);
+        }
     }]);
     app.controller('landingController', ['$cookies', '$location', function ($cookies, $location) {
         if ($cookies.get("loggedIn") === 'true') {
@@ -190,6 +288,47 @@
             return output;
         }
     });
+    app.directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                element.bind('change', function () {
+                    scope.$apply(function () {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                });
+            }
+        };
+    }]);
+
+    app.service('fileUpload', ['$http', function ($http) {
+        this.uploadFileToUrl = function (file) {
+            var fd = new FormData();
+            fd.append('file', file);
+
+            $http.post("/products/addImage", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function () {
+            });
+        }
+    }]);
+
+    app.controller('myCtrl', ['$scope', 'fileUpload', function ($scope, fileUpload) {
+        $scope.uploadFile = function () {
+            var file = $scope.myFile;
+
+            console.log('file is ');
+            console.dir(file);
+
+            //var uploadUrl = "/img";
+            fileUpload.uploadFileToUrl(file);
+        };
+    }]);
+
 })();
 
 // angular.module('demo', [])
@@ -199,3 +338,4 @@
 //                 $scope.students = response.data;
 //             });
 //     });
+
