@@ -127,7 +127,7 @@
             $http.post('/users/addaddress', $scope.address)
                 .then(function (response) {
                     console.log(response);
-                    $location.path('/userHome');
+                    $location.path('/selectAddress');
                 });
 
         };

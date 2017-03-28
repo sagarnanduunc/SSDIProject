@@ -103,7 +103,7 @@ public class ProductController {
             directory= "img/" +file.getOriginalFilename();
             System.out.println("Hey check");
         } catch (Exception e) {
-            
+
             System.out.println(e);
             e.printStackTrace();
         }

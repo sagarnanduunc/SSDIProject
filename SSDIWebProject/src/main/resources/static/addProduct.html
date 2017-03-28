@@ -102,7 +102,7 @@
                                 <th>
                                 <span class="btn btn-default btn-file">
                                     <!--<input type="file" id="photo" accept=".jpg,.png,.gif,.jpeg">-->
-                                <input type="file" file-model="myFile"/>
+                                <input type="file" file-model="myFile" accept=".jpg,.png,.gif,.jpeg"/>
                                 </span>
                                 </th>
                                 <th>
@@ -132,10 +132,7 @@
         </tr>
     </table>
 </header>
-<div ng-controller="myCtrl">
-    <input type="file" file-model="myFile"/>
-    <button ng-click="uploadFile()">upload me</button>
-</div>
+
 
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
