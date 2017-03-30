@@ -111,6 +111,7 @@ public class ProductControllerMocksTest extends AbstractControllerTest {
         product.setName("table");
         product.setDescription("good table");
         product.setEmail("vijay@uncc.edu");
+        product.setCategory("Game");
         product.setPrice(5);
         String inputJson = super.mapToJson(product);
 
@@ -128,32 +129,6 @@ public class ProductControllerMocksTest extends AbstractControllerTest {
                 "failure - expected HTTP response body to have a value",
                 content.trim().length() > 0);
 
-
-    }
-
-
-    @Test
-    public void testLogin() throws Exception {
-        String uri = "/users/login";
-        User user = new User();
-        user.setEmail("prayas@uncc.edu");
-        user.setPassword("abcdfg@1234");
-
-        String inputJson = super.mapToJson(user);
-
-        MvcResult result = mvc
-                .perform(MockMvcRequestBuilders.post(uri)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON).content(inputJson))
-                .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        int status = result.getResponse().getStatus();
-
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
-        Assert.assertTrue(
-                "failure - expected HTTP response body to have a value",
-                content.trim().length() > 0);
 
     }
 
