@@ -1,74 +1,67 @@
 <header class="header blockSizeLogin">
-    <table style="width:100%; height:100%" ">
-    <tr>
-        <th style="width:35%"></th>
-        <th>
-
-    <div class="text-vertical-center">
-
-    <br><br><br><br><br>
-        <form name="loginForm" id="loginForm" ng-submit="login()" novalidate>
-            <table cellpadding="5" >
-                <tr>
-                    <th colspan="3">
-                        <h1>Sign into your account</h1>
-                    </th>
-                </tr>
-                <!-- Email field -->
-                <tr>
-                    <th>
-                        <label>Email:</label>
-                    </th>
-                    <th>
-                        <input type="email" name="email" ng-model="user.email" ng-model-options="{ debounce: 500 }"
-                               required>
-                    </th>
-                    <th>
-                        <p class="centered error" ng-show="loginForm.email.$dirty">
-                            <span ng-show="loginForm.email.$error.required">Your email address is required.</span>
-                            <span ng-show="loginForm.email.$error.email">Please enter a valid email address.</span>
-                        </p>
-                    </th>
-                </tr>
-                <!-- Password field -->
-                <tr>
-                    <th>
-                        <label>Password:</label>
-                    </th>
-                    <th>
-                        <input type="password" name="password" ng-model="user.password"
-                               ng-model-options="{ debounce: 500 }"
-                               required>
-                    </th>
-                    <th>
-                        <p class="centered error" ng-show="loginForm.password.$dirty">
-                            <span ng-show="loginForm.password.$invalid">Your password is required.</span>
-                        </p>
-                    </th>
-
-                </tr>
-                <tr >
-                    <th></th>
-                    <th>
-                        <button class="btn btn-dark btn-lg" type="submit" form="loginForm" value="Submit"
-                                ng-disabled="loginForm.$invalid">
-                            Submit
-                        </button>
-                        <p class="centered error" ng-show="loginError">Your login credentials did not match.</p>
-                    </th>
-                    <th></th>
-                </tr>
-
-            </table>
-
-        </form>
-        <br>
-
-    </div>
-
-        </th>
-        <th></th>
-    </tr>
+    <table style="width:100%; height:100%">
+        <tr>
+            <th style="width:35%"></th>
+            <th>
+                <div class="text-vertical-center">
+                    <br><br><br><br><br>
+                    <form name="loginForm" id="loginForm" ng-submit="login()" novalidate>
+                        <table cellpadding="5">
+                            <tr>
+                                <th colspan="3">
+                                    <h1>Sign into your account</h1>
+                                </th>
+                            </tr>
+                            <!-- Email field -->
+                            <tr>
+                                <th>
+                                    <label>Email:</label>
+                                </th>
+                                <th>
+                                    <input type="email" name="email" ng-model="user.email"
+                                           ng-model-options="{ debounce: 500 }" required>
+                                </th>
+                                <th>
+                                    <p class="centered error" ng-show="loginForm.email.$dirty">
+                                        <span ng-show="loginForm.email.$error.required">Your email address is required.</span>
+                                        <span ng-show="loginForm.email.$error.email">Please enter a valid email address.</span>
+                                    </p>
+                                </th>
+                            </tr>
+                            <!-- Password field -->
+                            <tr>
+                                <th>
+                                    <label>Password:</label>
+                                </th>
+                                <th>
+                                    <input type="password" name="password" ng-model="user.password"
+                                           ng-model-options="{ debounce: 500 }" required>
+                                </th>
+                                <th>
+                                    <p class="centered error" ng-show="loginForm.password.$dirty">
+                                        <span ng-show="loginForm.password.$invalid">Your password is required.</span>
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    <button class="btn btn-dark btn-lg" type="submit" form="loginForm" value="Submit"
+                                            ng-disabled="loginForm.$invalid">
+                                        Submit
+                                    </button>
+                                    <p class="centered error" ng-show="loginError">Your login credentials did not
+                                        match.</p>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </form>
+                    <br>
+                </div>
+            </th>
+            <th></th>
+        </tr>
     </table>
 </header>
 

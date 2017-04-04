@@ -55,10 +55,14 @@
                 templateUrl: 'selectBank.html',
                 controller: 'selectBankController'
             })
+            .when('/myCart', {
+                templateUrl: 'cart.html',
+                controller: 'cartController'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
 
-    app.controller('selectBankController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+    app.controller('selectBankController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
 
         $scope.buttonChoice;
 
@@ -67,7 +71,7 @@
             .then(function (response) {
                 $scope.banks = response.data;
             });
-        console.log($scope.banks)
+        console.log($scope.banks);
         $scope.register = function () {
 
             console.log("Done")
@@ -75,7 +79,7 @@
         };
     }]);
 
-    app.controller('selectAddressController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
+    app.controller('selectAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
 
         $scope.buttonChoice;
 
@@ -92,12 +96,12 @@
         };
     }]);
 
-    app.controller('addBankInfoController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
-        $scope.bank={
-            bankName:'',
-            accountNumber:'',
-            accountHolderName:'',
-            routingNumber:''
+    app.controller('addBankInfoController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+        $scope.bank = {
+            bankName: '',
+            accountNumber: '',
+            accountHolderName: '',
+            routingNumber: ''
         };
 
 
@@ -113,15 +117,15 @@
 
         };
     }]);
-    app.controller('addAddressController',['$scope','$http','$location','$cookies',function($scope,$http,$location,$coockie){
-        $scope.address={
-            streetAddress:'',
-            apartment:'',
-            city:'',
-            state:'',
-            zip:''
+    app.controller('addAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+        $scope.address = {
+            streetAddress: '',
+            apartment: '',
+            city: '',
+            state: '',
+            zip: ''
         };
-        $scope.states=["NC"];
+        $scope.states = ["NC"];
 
         $scope.register = function () {
             $http.post('/users/addaddress', $scope.address)
@@ -137,7 +141,7 @@
         $scope.product = {
             name: '',
             description: '',
-            price:'',
+            price: '',
             category: ''
 
 
@@ -146,26 +150,26 @@
             .then(function (response) {
                 $scope.categories = response.data;
             });
-        $scope.addProduct = function() {
+        $scope.addProduct = function () {
 
             var file = $scope.myFile;
-            console.log('file is ' );
+            console.log('file is ');
             console.dir(file);
             var uploadUrl = "/products/addproduct";
             var fd = new FormData();
             fd.append('file', file);
-            fd.append('name',angular.toJson($scope.product.name,true));
-            fd.append('description',angular.toJson($scope.product.description,true));
-            fd.append('price',angular.toJson($scope.product.price,true));
-            fd.append('category',angular.toJson($scope.product.category,true));
+            fd.append('name', angular.toJson($scope.product.name, true));
+            fd.append('description', angular.toJson($scope.product.description, true));
+            fd.append('price', angular.toJson($scope.product.price, true));
+            fd.append('category', angular.toJson($scope.product.category, true));
             //fd.append('user',angular.toJson($scope.user,true));
             //onsole.log('Socpe of user'+$scope.user);
             $http.post(uploadUrl, fd, {
-                transformRequest : angular.identity,
-                headers : {
-                    'Content-Type' : undefined
+                transformRequest: angular.identity,
+                headers: {
+                    'Content-Type': undefined
                 }
-            }).then(function(success) {
+            }).then(function (success) {
                 console.log('success');
                 $location.path('/selectAddress');
             })
@@ -274,6 +278,9 @@
                 $cookies.put('loggedIn', 'false');
                 $location.path('/');
             });
+    }]);
+    app.controller('cartController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
+        $scope.cartItems = [];
     }]);
     app.filter('filterByCategory', function () {
         return function (input, categories) {
