@@ -23,15 +23,15 @@ public class StudentSevice {
         return studentDao.getAllStudents();
     }
 
-    public Student getStudentById(int id){
+    public Student getStudentById(int id) {
         return this.studentDao.getStudentById(id);
     }
 
-    public void removeStudentByid(int id){
+    public void removeStudentByid(int id) {
         this.studentDao.removeStudentByid(id);
     }
 
-    public void updateStudent(Student student){
+    public void updateStudent(Student student) {
         this.studentDao.updateStudent(student);
     }
 }

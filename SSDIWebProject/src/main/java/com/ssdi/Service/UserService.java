@@ -26,12 +26,11 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         return this.userDao.getUserByEmail(email);
     }
 
-    public String addUser(User user){
-
+    public String addUser(User user) {
         return this.userDao.addUser(user);
     }
 
@@ -39,9 +38,13 @@ public class UserService {
         return this.userDao.checkLogin(user);
     }
 
-    public void addAddress(Address address){ this.userDao.addAddress(address);}
+    public void addAddress(Address address) {
+        this.userDao.addAddress(address);
+    }
 
-    public void addBankInfo(Bank bank) { this.userDao.addBankInfo(bank); }
+    public void addBankInfo(Bank bank) {
+        this.userDao.addBankInfo(bank);
+    }
 
     public Collection<Address> getAllAddresses(String email) {
         return userDao.getAllAddresses(email);

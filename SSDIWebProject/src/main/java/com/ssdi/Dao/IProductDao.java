@@ -1,8 +1,10 @@
 package com.ssdi.Dao;
+
 import com.ssdi.Entity.Category;
 import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
+
 import java.util.Collection;
 import java.util.ArrayList;
 
@@ -12,11 +14,18 @@ import java.util.ArrayList;
 
 public interface IProductDao {
     Collection<Product> getAllProducts();
+
     Collection<Product> getProductByName(String name);
+
     Collection<Product> getProductsByCategory(Collection<Category> category);
+
     void updateProduct(Product product);
+
     String addProduct(Product product);
+
     Collection<Product> searchProductsByString(String searchString);
+
     Collection<Product> getProductsByPrice(PriceRange priceRange);
+
     ArrayList<String> getAllCategories();
 }

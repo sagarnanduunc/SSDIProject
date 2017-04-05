@@ -13,17 +13,18 @@ public class Address implements IAddress {
     String email;
     int addressId;
 
-    public Address(String streetAddress, String apartment, String city, String state, String zip, String email, int addressId){
+    public Address(String streetAddress, String apartment, String city, String state, String zip, String email, int addressId) {
         this.streetAddress = streetAddress;
         this.apartment = apartment;
-        this.city =city;
+        this.city = city;
         this.state = state;
         this.zip = zip;
         this.email = email;
         this.addressId = addressId;
     }
 
-    public Address(){}
+    public Address() {
+    }
 
     @Override
     public String getStreetAddress() {
@@ -51,7 +52,9 @@ public class Address implements IAddress {
     }
 
     @Override
-    public  String getEmail() { return this.email; }
+    public String getEmail() {
+        return this.email;
+    }
 
     @Override
     public void setStreetAddress(String streetAddress) {

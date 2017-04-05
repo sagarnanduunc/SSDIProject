@@ -38,7 +38,7 @@ public class UserController {
     public String addUser(@RequestBody User user) {
         System.out.println("user.getEmail()" + user.getEmail());
         String message = userService.addUser(user);
-        return "{\"response\":\"" + message +"\"}";
+        return "{\"response\":\"" + message + "\"}";
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -55,7 +55,7 @@ public class UserController {
         boolean login = userService.checkLogin(user);
         if (login) {
             System.out.println("Login Successful");
-            httpSession.setMaxInactiveInterval(20*60);
+            httpSession.setMaxInactiveInterval(20 * 60);
             httpSession.setAttribute("user", user);
         } else {
             return "{\"response\":\"Login Unsuccessful\"}";

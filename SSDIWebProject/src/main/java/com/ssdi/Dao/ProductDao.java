@@ -28,30 +28,24 @@ public class ProductDao implements IProductDao {
     public Collection<Product> getAllProducts() {
 
         final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id";
-        List<Product> products = jdbcTemplate.query(sql, new RowMapper<Product>() {
-            @Override
-            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                Product product = new Product();
-                product.setId(resultSet.getInt("product_id"));
-                product.setName(resultSet.getString("name"));
-                product.setDescription(resultSet.getString("description"));
-                product.setPrice(resultSet.getFloat("price"));
-                product.setCategory(resultSet.getString("category"));
-                return product;
-            }
+        List<Product> products = jdbcTemplate.query(sql, (resultSet, i) -> {
+            Product product = new Product();
+            product.setId(resultSet.getInt("product_id"));
+            product.setName(resultSet.getString("name"));
+            product.setDescription(resultSet.getString("description"));
+            product.setPrice(resultSet.getFloat("price"));
+            product.setCategory(resultSet.getString("category"));
+            return product;
         });
         final String sql1 = "SELECT product_id, photo_link FROM photo";
-        List<Product> a = jdbcTemplate.query(sql1, new RowMapper<Product>() {
-            @Override
-            public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                int id = resultSet.getInt("product_id");
-                for (int j = 0; j < products.size(); j++) {
-                    if (id == products.get(j).getId()) {
-                        products.get(j).setPhotoLink(resultSet.getString("photo_link"));
-                    }
+        List<Product> a = jdbcTemplate.query(sql1, (resultSet, i) -> {
+            int id = resultSet.getInt("product_id");
+            for (int j = 0; j < products.size(); j++) {
+                if (id == products.get(j).getId()) {
+                    products.get(j).setPhotoLink(resultSet.getString("photo_link"));
                 }
-                return null;
             }
+            return null;
         });
 
 
@@ -110,16 +104,15 @@ public class ProductDao implements IProductDao {
             jdbcTemplate.update(sql1);
 
             return "Product successfully added";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "Product not added";
         }
     }
 
-    public int getCategoryIdFromName(String categotyName) {
-        categotyName = categotyName.toLowerCase();
+    public int getCategoryIdFromName(String categoryName) {
+        categoryName = categoryName.toLowerCase();
         int categoryId = 0;
-        switch (categotyName) {
+        switch (categoryName) {
             case "clothing":
                 categoryId = 1;
                 break;
@@ -177,8 +170,8 @@ public class ProductDao implements IProductDao {
 
     public ArrayList<String> getAllCategories() {
 
-        ArrayList<String> categories = new ArrayList<String>();
-        final String sql = "SELECT category from categories";
+        ArrayList<String> categories = new ArrayList<>();
+        final String sql = "SELECT category FROM categories";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         for (Map<String, Object> row : list) {
             System.out.println(row.get("category"));

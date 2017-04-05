@@ -2,6 +2,7 @@ package com.ssdi.Service;
 
 import com.ssdi.Dao.ICartDao;
 import com.ssdi.Entity.Product;
+import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,11 @@ public class CartService {
     @Qualifier("cart")
     private ICartDao cartDao;
 
-    public String addProduct(Product product) {
-        return cartDao.addProduct(product);
+    public String addProduct(Product product, User user) {
+        return cartDao.addProduct(product, user);
     }
 
-    public Collection<Product> getProductsInCart() {
-        return cartDao.getProductsInCart();
+    public Collection<Product> getProductsInCart(User user) {
+        return cartDao.getProductsInCart(user);
     }
 }

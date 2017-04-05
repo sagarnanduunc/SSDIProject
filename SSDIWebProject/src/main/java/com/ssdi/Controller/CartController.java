@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 
 /**
  * Created by Jacob on 4/4/2017.
@@ -24,7 +25,12 @@ public class CartController {
     @RequestMapping(value = "/addproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String addProduct(@RequestBody Product product, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
+        return cartService.addProduct(product, user);
+    }
 
-        return cartService.addProduct(product);
+    @RequestMapping(value = "/getcart", method = RequestMethod.GET)
+    public Collection<Product> getProductsInCart(HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        return cartService.getProductsInCart(user);
     }
 }

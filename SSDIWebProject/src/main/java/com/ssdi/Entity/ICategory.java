@@ -5,7 +5,10 @@ package com.ssdi.Entity;
  */
 public interface ICategory {
     String getCategory();
+
     void setCategory(String category);
+
     int getCategoryId();
+
     void setCategoryId(int categoryId);
 }

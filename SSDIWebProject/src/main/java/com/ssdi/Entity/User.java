@@ -3,7 +3,7 @@ package com.ssdi.Entity;
 /**
  * Created by praya on 3/19/2017.
  */
-public class User implements IUser{
+public class User implements IUser {
     private String firstName;
     private String lastName;
     private String email;

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import javax.servlet.http.HttpServletRequest;
 
+import javax.servlet.http.HttpServletRequest;
 
 
 import java.io.BufferedOutputStream;
@@ -75,12 +75,11 @@ public class ProductController {
     }
 
 
-
     @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
     @ResponseBody
-    public String saveUserDataAndFile(@RequestParam(value = "description") String description,@RequestParam(value = "price") float price,@RequestParam(value = "name") String name,@RequestParam(value = "category") String category,@RequestParam(value = "file") MultipartFile file,HttpSession request) {
+    public String saveUserDataAndFile(@RequestParam(value = "description") String description, @RequestParam(value = "price") float price, @RequestParam(value = "name") String name, @RequestParam(value = "category") String category, @RequestParam(value = "file") MultipartFile file, HttpSession request) {
         User user = (User) request.getAttribute("user");
-        Product product=new Product();
+        Product product = new Product();
         System.out.println("product.getEmail()" + user.getEmail());
         product.setEmail(user.getEmail());
         System.out.println("product.getEmail()" + product.getEmail());
@@ -96,11 +95,11 @@ public class ProductController {
         System.out.println("Inside File upload");
         //String rootDirectory = request.getSession().getServletContext().getRealPath("/");
         String rootDirectory = "C:\\Users\\Admin\\Desktop\\Study\\SSDI\\ProjectWork\\SSDIProject\\SSDIWebProject\\src\\main\\resources\\static\\img\\";
-        System.out.println("Root Directory "+rootDirectory);
-        String directory="img/logan.jpg";
+        System.out.println("Root Directory " + rootDirectory);
+        String directory = "img/logan.jpg";
         try {
-            file.transferTo(new File(rootDirectory  + file.getOriginalFilename()));
-            directory= "img/" +file.getOriginalFilename();
+            file.transferTo(new File(rootDirectory + file.getOriginalFilename()));
+            directory = "img/" + file.getOriginalFilename();
             System.out.println("Hey check");
         } catch (Exception e) {
 

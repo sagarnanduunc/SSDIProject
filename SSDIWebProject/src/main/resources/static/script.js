@@ -59,13 +59,14 @@
                 templateUrl: 'cart.html',
                 controller: 'cartController'
             })
+            .when('/checkout', {
+                templateUrl: 'checkout.html'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
 
     app.controller('selectBankController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-
         $scope.buttonChoice;
-
         $scope.newId;
         $http.get('/users/bankinfo')
             .then(function (response) {
@@ -73,26 +74,19 @@
             });
         console.log($scope.banks);
         $scope.register = function () {
-
             console.log("Done")
-
         };
     }]);
 
     app.controller('selectAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-
         $scope.buttonChoice;
-
         $scope.newId;
         $http.get('/users/address')
             .then(function (response) {
                 $scope.addresses = response.data;
             });
-
         $scope.register = function () {
-
             $location.path('/selectBankInfo');
-
         };
     }]);
 
@@ -103,18 +97,14 @@
             accountHolderName: '',
             routingNumber: ''
         };
-
-
         $scope.register = function () {
             console.log("In function");
             console.log($scope.bank);
             $http.post('/users/addbankinfo', $scope.bank)
                 .then(function (response) {
-
                     console.log(response);
                     $location.path('/userHome');
                 });
-
         };
     }]);
     app.controller('addAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
@@ -126,14 +116,12 @@
             zip: ''
         };
         $scope.states = ["NC"];
-
         $scope.register = function () {
             $http.post('/users/addaddress', $scope.address)
                 .then(function (response) {
                     console.log(response);
                     $location.path('/selectAddress');
                 });
-
         };
     }]);
 
@@ -143,15 +131,12 @@
             description: '',
             price: '',
             category: ''
-
-
         };
         $http.get('/products/getallcategories')
             .then(function (response) {
                 $scope.categories = response.data;
             });
         $scope.addProduct = function () {
-
             var file = $scope.myFile;
             console.log('file is ');
             console.dir(file);
@@ -163,7 +148,7 @@
             fd.append('price', angular.toJson($scope.product.price, true));
             fd.append('category', angular.toJson($scope.product.category, true));
             //fd.append('user',angular.toJson($scope.user,true));
-            //onsole.log('Socpe of user'+$scope.user);
+            //console.log('Scope of user'+$scope.user);
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {
@@ -174,7 +159,6 @@
                 $location.path('/selectAddress');
             })
         }
-
     }]);
     app.controller('landingController', ['$cookies', '$location', function ($cookies, $location) {
         if ($cookies.get("loggedIn") === 'true') {
@@ -266,9 +250,7 @@
             $cookies.putObject("currentProduct", arg);
             //$location.path = "/productHome";
             console.log(arg);
-
-        }
-
+        };
     }]);
     app.controller('logoutController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         $http.post('/users/logout', $cookies.getObject('userInfo'))
@@ -281,6 +263,11 @@
     }]);
     app.controller('cartController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         $scope.cartItems = [];
+        $http.get('/cart/getcart')
+            .then(function (response) {
+                $scope.cartItems = response.data;
+                $cookies.putObject('userCart', $scope.cartItems);
+            });
     }]);
     app.filter('filterByCategory', function () {
         return function (input, categories) {
@@ -338,7 +325,6 @@
             link: function (scope, element, attrs) {
                 var model = $parse(attrs.fileModel);
                 var modelSetter = model.assign;
-
                 element.bind('change', function () {
                     scope.$apply(function () {
                         modelSetter(scope, element[0].files[0]);
@@ -352,15 +338,13 @@
         this.uploadFileToUrl = function (file) {
             var fd = new FormData();
             fd.append('file', file);
-
             $http.post("/products/uploadimage", fd, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             }).then(function () {
             });
-        }
+        };
     }]);
-
 
 })();
 

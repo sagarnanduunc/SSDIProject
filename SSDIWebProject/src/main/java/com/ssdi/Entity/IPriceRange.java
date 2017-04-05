@@ -5,8 +5,11 @@ package com.ssdi.Entity;
  */
 public interface IPriceRange {
     float getMinPrice();
+
     void setMinPrice(float minPrice);
+
     float getMaxPrice();
+
     void setMaxPrice(float maxPrice);
 
 }

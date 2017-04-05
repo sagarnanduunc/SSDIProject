@@ -3,17 +3,18 @@ package com.ssdi.Entity;
 /**
  * Created by prayas on 3/23/2017.
  */
-public class Category implements ICategory{
+public class Category implements ICategory {
 
     int categoryId;
     String category;
 
-    Category(String category, int categoryId){
+    Category(String category, int categoryId) {
         this.category = category;
         this.categoryId = categoryId;
     }
 
-    Category(){}
+    Category() {
+    }
 
     @Override
     public String getCategory() {

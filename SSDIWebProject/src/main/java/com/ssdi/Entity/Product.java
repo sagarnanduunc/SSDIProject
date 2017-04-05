@@ -1,20 +1,23 @@
 package com.ssdi.Entity;
+
 import java.io.File;
 import java.util.ArrayList;
+
 /**
  * Created by prayas on 3/19/2017.
  */
-public class Product implements IProduct{
+public class Product implements IProduct {
     private int id;
     private String name;
     private String description;
     private float price;
     private String category;
     private String email;
+    private String status;
     private File photo;
-    private ArrayList<String> photoLink=new ArrayList<String>();
+    private ArrayList<String> photoLink = new ArrayList<>();
 
-    public Product(String name, String description, float price, String category, ArrayList<String> photoLink, String email, File photo){
+    public Product(String name, String description, float price, String category, ArrayList<String> photoLink, String email, File photo) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -22,45 +25,58 @@ public class Product implements IProduct{
         this.email = email;
         this.photo = photo;
 
-        for(int i=0;i<photoLink.size();i++)
+        for (int i = 0; i < photoLink.size(); i++)
             this.photoLink.add(photoLink.get(i));
     }
 
-    public Product(){
+    public Product() {
 
     }
+
     public int getId() {
         return id;
     }
-    public void setId(int id){this.id=id;}
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
 
+    @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @Override
     public float getPrice() {
         return price;
     }
 
+    @Override
     public void setPrice(float price) {
         this.price = price;
     }
 
+    @Override
     public String getCategory() {
         return category;
     }
 
+    @Override
     public void setCategory(String category) {
         this.category = category;
     }
@@ -73,15 +89,27 @@ public class Product implements IProduct{
         this.photoLink.add(photoLink);
     }
 
-    public String getEmail(){
+    @Override
+    public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email){
+    @Override
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public File getPhoto(){
+    @Override
+    public String getStatus() {
+        return this.status;
+    }
+
+    @Override
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public File getPhoto() {
         return this.photo;
     }
 
