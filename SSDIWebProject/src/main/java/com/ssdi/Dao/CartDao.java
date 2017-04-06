@@ -26,7 +26,7 @@ public class CartDao implements ICartDao {
     public String addProduct(Product product, User user) {
         try {
             final String sql = "INSERT INTO Cart(email, product_id) VALUES ('" + user.getEmail() + "', " + product.getId() + ")";
-            System.out.println(sql);
+            //System.out.println(sql);
             jdbcTemplate.update(sql);
             return "Product added to cart";
         } catch (DuplicateKeyException e) {

@@ -25,7 +25,8 @@ public class CartController {
     @RequestMapping(value = "/addproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String addProduct(@RequestBody Product product, HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        return cartService.addProduct(product, user);
+        String message = cartService.addProduct(product, user);
+        return "{\"response\":\"" + message + "\"}";
     }
 
     @RequestMapping(value = "/getcart", method = RequestMethod.GET)

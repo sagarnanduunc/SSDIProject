@@ -46,11 +46,11 @@
 
         <div class="col-md-3">
             <p class="lead">Shop Name</p>
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Category 1</a>
-                <a href="#" class="list-group-item">Category 2</a>
-                <a href="#" class="list-group-item">Category 3</a>
-            </div>
+            <!--<div class="list-group">-->
+            <!--<a href="#" class="list-group-item active">Category 1</a>-->
+            <!--<a href="#" class="list-group-item">Category 2</a>-->
+            <!--<a href="#" class="list-group-item">Category 3</a>-->
+            <!--</div>-->
         </div>
 
         <div class="col-md-9">
@@ -61,7 +61,12 @@
                     <h4 class="pull-right">{{product.price}}</h4>
                     <h4><a href="#">{{product.name}}</a>
                     </h4>
-                    <p>{{product.description}}</p>>
+                    <p>{{product.description}}</p>
+                </div>
+                <div class="centered">
+                    <a href="#" class="btn btn-lg btn-dark" ng-click="addToCart()">Add to Cart</a>
+                    <span class="error" ng-show="inCart">This item is already in your cart.</span>
+                    <span class="error" ng-show="cartError">Something went wrong, please try again.</span>
                 </div>
                 <div class="ratings">
                     <p class="pull-right">3 reviews</p>
@@ -108,7 +113,7 @@
                         <span class="glyphicon glyphicon-star-empty"></span>
                         Anonymous
                         <span class="pull-right">12 days ago</span>
-                        <p>I've alredy ordered another one!</p>
+                        <p>I've already ordered another one!</p>
                     </div>
                 </div>
 

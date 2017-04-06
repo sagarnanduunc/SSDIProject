@@ -72,7 +72,7 @@
             .then(function (response) {
                 $scope.banks = response.data;
             });
-        console.log($scope.banks);
+        //console.log($scope.banks);
         $scope.register = function () {
             console.log("Done")
         };
@@ -98,11 +98,11 @@
             routingNumber: ''
         };
         $scope.register = function () {
-            console.log("In function");
-            console.log($scope.bank);
+            //console.log("In function");
+            //console.log($scope.bank);
             $http.post('/users/addbankinfo', $scope.bank)
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     $location.path('/userHome');
                 });
         };
@@ -119,7 +119,7 @@
         $scope.register = function () {
             $http.post('/users/addaddress', $scope.address)
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     $location.path('/selectAddress');
                 });
         };
@@ -166,8 +166,27 @@
         }
     }]);
 
-    app.controller('productController', ['$scope', '$cookies', function ($scope, $cookies) {
+    app.controller('productController', ['$scope', '$cookies', '$http', function ($scope, $cookies, $http) {
         $scope.product = $cookies.getObject("currentProduct");
+        if ($scope.product.photoLink.length === 0) {
+            $scope.product.photoLink = "null";
+        }
+        $scope.successfulAdd = false;
+        $scope.inCart = false;
+        $scope.cartError = false;
+        $scope.addToCart = function () {
+            $http.post('/cart/addproduct', $scope.product)
+                .then(function (response) {
+                    if (response.data.response === "Product added to cart") {
+                        $scope.successfulAdd = true;
+                    } else if (response.data.response === "Product already in cart") {
+                        $scope.inCart = true;
+                    } else {
+                        $scope.cartError = true;
+                    }
+                });
+        };
+
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
@@ -210,7 +229,7 @@
         $scope.register = function () {
             $http.post('/users/adduser', $scope.user)
                 .then(function (response) {
-                    console.log(response);
+                    //console.log(response);
                     if (response.data.response === 'User successfully added') {
                         $cookies.put('loggedIn', 'true');
                         $cookies.putObject('userInfo', $scope.user);
