@@ -27,6 +27,6 @@ public interface IProduct {
     String getStatus();
 
     void setStatus(String status);
-    public void changeProductStatus(int id);
+
 
 }
