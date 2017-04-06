@@ -1,9 +1,8 @@
 package com.ssdi.Dao;
 import java.lang.Exception;
-import com.ssdi.Entity.Address;
-import com.ssdi.Entity.Bank;
-import com.ssdi.Entity.IBank;
-import com.ssdi.Entity.User;
+
+import com.ssdi.Entity.*;
+
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,6 +129,33 @@ public class UserDao implements IUserDao {
             }
         });
         return banks;
+    }
+
+    @Override
+    public Collection<Payment> getPayment(String email){
+        final String sql = "SELECT payment_id, card_no, security_key, name, zip, expmonth, expyear FROM Payment where email='" +email+"'";
+        List<Payment> payments=jdbcTemplate.query(sql, new RowMapper<Payment>() {
+            @Override
+            public Payment mapRow(ResultSet resultSet, int i) throws SQLException {
+                Payment payment = new Payment();
+                payment.setId(resultSet.getInt("payment_id"));
+                payment.setName(resultSet.getString("name"));
+                payment.setCard_no(resultSet.getString("card_no"));
+                payment.setSecurity_code(resultSet.getString("security_key"));
+                payment.setMonth(resultSet.getInt("expmonth"));
+                payment.setYear(resultSet.getInt("expyear"));
+                payment.setZip(resultSet.getString("zip"));
+                return payment;
+            }
+        });
+
+        return payments;
+    }
+
+    @Override
+    public void addPaymentInfo(Payment payment) {
+        final String sql = "INSERT INTO payment (email,card_no,security_key,name,zip,expmonth,expyear) VALUES ('"+ payment.getEmail() + " ', '"+ payment.getCard_no()+" ', '"+payment.getSecurity_code()+"', '"+ payment.getName() + "', '" + payment.getZip() +"',"+ payment.getExpmonth()+","+payment.getExpyear()+")";
+        jdbcTemplate.update(sql);
     }
 
 }

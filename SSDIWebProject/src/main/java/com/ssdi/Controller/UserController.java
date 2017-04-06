@@ -1,9 +1,6 @@
 package com.ssdi.Controller;
 
-import com.ssdi.Entity.Address;
-import com.ssdi.Entity.Bank;
-import com.ssdi.Entity.IBank;
-import com.ssdi.Entity.User;
+import com.ssdi.Entity.*;
 import com.ssdi.Service.UserService;
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,4 +88,16 @@ public class UserController {
         return userService.getAllBankInfo(user.getEmail());
     }
 
+    @RequestMapping(value = "/paymentinfo", method = RequestMethod.GET)
+    public Collection<Payment> getPaymentInfo(HttpSession httpSession){
+        User user = (User) httpSession.getAttribute("user");
+        return userService.getPayment(user.getEmail());
+    }
+
+    @RequestMapping(value = "/addpaymentinfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addPaymentinfo(@RequestBody Payment payment, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        payment.setEmail(user.getEmail());
+        userService.addPaymentInfo(payment);
+    }
 }
