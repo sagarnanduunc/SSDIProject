@@ -48,4 +48,6 @@ public class ProductService {
         return productDao.addProduct(product);
     }
 
+    public void changeProductStatus(int id){this.productDao.changeProductStatus(id);}
+
 }

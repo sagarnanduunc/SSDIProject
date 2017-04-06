@@ -28,4 +28,6 @@ public interface IProductDao {
     Collection<Product> getProductsByPrice(PriceRange priceRange);
 
     ArrayList<String> getAllCategories();
+
+    void changeProductStatus(int id);
 }

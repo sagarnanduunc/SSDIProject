@@ -84,8 +84,8 @@
             });
         console.log($scope.payments)
         $scope.register = function () {
-
-            console.log("Done")
+            $scope.cart=$coockie.getObject('userCart');
+            console.log()
 
         };
     }]);

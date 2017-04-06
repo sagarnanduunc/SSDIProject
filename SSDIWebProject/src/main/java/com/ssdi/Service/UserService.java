@@ -8,6 +8,8 @@ import com.ssdi.Entity.IBank;
 import com.ssdi.Entity.User;
 import com.ssdi.Entity.Payment;
 import com.ssdi.Entity.IPayment;
+import com.ssdi.Entity.Transaction;
+import com.ssdi.Entity.ITransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -58,4 +60,5 @@ public class UserService {
 
     public Collection<Payment> getPayment(String email){return userDao.getPayment(email);}
     public void addPaymentInfo(Payment payment) { this.userDao.addPaymentInfo(payment); }
+    public void addTransactionInfo(Transaction transaction){this.userDao.addTransactionInfo(transaction);}
 }

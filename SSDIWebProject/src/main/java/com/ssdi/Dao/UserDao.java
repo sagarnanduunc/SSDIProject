@@ -158,4 +158,10 @@ public class UserDao implements IUserDao {
         jdbcTemplate.update(sql);
     }
 
+    public void addTransactionInfo(Transaction transaction) {
+        final String sql = "INSERT INTO transaction(email_renter,email_rentee, start_date, end_date, product_id, payment_id, address_id) values('"+transaction.getEmail_renter()+"','"+transaction.getEmail_rentee()+"','"+transaction.getStart_date()+"','"+transaction.getEnd_date()+"','"+transaction.getProduct_id()+"','"+transaction.getPayment_id()+"','"+transaction.getAddress_id()+"')";
+        jdbcTemplate.update(sql);
+    }
+
+
 }

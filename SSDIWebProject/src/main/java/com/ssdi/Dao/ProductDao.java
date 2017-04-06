@@ -179,4 +179,10 @@ public class ProductDao implements IProductDao {
         }
         return categories;
     }
+
+    public void changeProductStatus(int id)
+    {
+        final String sql = "UPDATE product SET status_id=0 WHERE product_id="+id;
+        jdbcTemplate.update(sql);
+    }
 }

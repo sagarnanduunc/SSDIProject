@@ -1,7 +1,7 @@
 package com.ssdi.Controller;
 
 import com.ssdi.Entity.*;
-import com.ssdi.Service.UserService;
+import com.ssdi.Service.*;
 import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -25,6 +25,7 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
+    private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
     public Collection<User> getAllUsers() {
@@ -99,5 +100,13 @@ public class UserController {
         User user = (User) httpSession.getAttribute("user");
         payment.setEmail(user.getEmail());
         userService.addPaymentInfo(payment);
+    }
+
+    @RequestMapping(value = "/addtransactioninfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addTransactioninfo(@RequestBody Transaction transaction, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        transaction.setEmail_renter(user.getEmail());
+        userService.addTransactionInfo(transaction);
+        productService.changeProductStatus(transaction.getProduct_id());
     }
 }
