@@ -34,4 +34,10 @@ public class CartController {
         User user = (User) httpSession.getAttribute("user");
         return cartService.getProductsInCart(user);
     }
+
+    @RequestMapping(value = "/checkoutcart", method = RequestMethod.GET)
+    public Collection<Product> checkoutCart(HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        return cartService.checkoutCart(user);
+    }
 }

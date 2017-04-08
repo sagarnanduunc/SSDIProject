@@ -26,4 +26,8 @@ public class CartService {
     public Collection<Product> getProductsInCart(User user) {
         return cartDao.getProductsInCart(user);
     }
+    public Collection<Product> checkoutCart(User user) {
+        return cartDao.checkoutCart(user);
+    }
+
 }

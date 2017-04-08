@@ -43,9 +43,17 @@
                 templateUrl: 'selectAddress.html',
                 controller: 'selectAddressController'
             })
+            .when('/selectCheckoutAddress', {
+                templateUrl: 'selectCheckoutAddress.html',
+                controller: 'selectCheckoutAddressController'
+            })
             .when('/addAddress', {
                 templateUrl: 'addAddress.html',
                 controller: 'addAddressController'
+            })
+            .when('/addCheckoutAddress', {
+                templateUrl: 'addCheckoutAddress.html',
+                controller: 'addCheckoutAddressController'
             })
             .when('/addBankInfo', {
                 templateUrl: 'addBankDetails.html',
@@ -66,6 +74,10 @@
             .when('/myCart', {
                 templateUrl: 'cart.html',
                 controller: 'cartController'
+            })
+            .when('/checkout', {
+                templateUrl: 'checkout.html',
+                controller: 'checkoutController'
             })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
@@ -90,6 +102,37 @@
                 $scope.cartItems = response.data;
                 $cookies.putObject('userCart', $scope.cartItems);
             });
+    }]);
+
+    app.controller('checkoutController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
+        $scope.checkoutItems = [];
+        $http.get('/cart/checkoutcart')
+            .then(function (response) {
+                $scope.checkoutItems = response.data;
+                $scope.totalPrice = 0;
+                for (var i=0; i < $scope.checkoutItems.length; i++){
+                    $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "yyyy-MM-dd");
+                    $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].endDate, "yyyy-MM-dd");
+                    // $scope.checkoutItems[i].startDate = '';
+                    // $scope.checkoutItems[i].endDate = '';
+                    $scope.totalPrice = $scope.totalPrice + response.data[i].price;
+                }
+            });
+        $scope.deleteItem = function (productName,productPrice) {
+            for (var i=0; i < $scope.checkoutItems.length; i++){
+                if ($scope.checkoutItems[i].name === productName){
+                    $scope.checkoutItems.splice(i,1);
+                    $scope.totalPrice = $scope.totalPrice - productPrice;
+                }
+            }
+        };
+        $scope.checkout = function () {
+            $cookies.putObject('userCheckoutItems', $scope.checkoutItems);
+            console.log($scope.checkoutItems);
+            $location.path('/selectCheckoutAddress');
+
+        };
+
     }]);
 
     app.controller('addPaymentController', ['$scope', '$http', '$location', '$cookies', '$locale', function ($scope, $http, $location, $cookies, $locale) {
@@ -142,6 +185,19 @@
             });
         $scope.register = function () {
             $location.path('/selectBankInfo');
+        };
+    }]);
+
+    app.controller('selectCheckoutAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+        $scope.buttonChoice;
+        $scope.newId;
+        $http.get('/users/address')
+            .then(function (response) {
+                $scope.addresses = response.data;
+            });
+        $scope.register = function () {
+            $cookies.putObject('userCheckoutAddress', $scope.addresses);
+            $location.path('/payment');
         };
     }]);
 

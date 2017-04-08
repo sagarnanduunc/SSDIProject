@@ -12,4 +12,6 @@ public interface ICartDao {
     String addProduct(Product product, User user);
 
     Collection<Product> getProductsInCart(User user);
+
+    Collection<Product> checkoutCart(User user);
 }
