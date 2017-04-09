@@ -110,23 +110,30 @@
             .then(function (response) {
                 $scope.checkoutItems = response.data;
                 $scope.totalPrice = 0;
-                for (var i = 0; i < $scope.checkoutItems.length; i++) {
-                    $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "yyyy-MM-dd");
-                    $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].endDate, "yyyy-MM-dd");
-                    // $scope.checkoutItems[i].startDate = '';
-                    // $scope.checkoutItems[i].endDate = '';
+                $scope.date = new Date();
+                $scope.FromDate = $scope.date.getFullYear()+ '-' + ('0' + ($scope.date.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.date.getDate()).slice(-2);
+                console.log($scope.FromDate);
+                for (var i=0; i < $scope.checkoutItems.length; i++){
+                    // $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "MM-dd-yyyy");
+                    // $scope.checkoutItems[i].endDate = $filter('date')($scope.checkoutItems[i].endDate, "MM-dd-yyyy");
+                    $scope.checkoutItems[i].startDate = new Date();
+                    $scope.checkoutItems[i].endDate = new Date();
                     $scope.totalPrice = $scope.totalPrice + response.data[i].price;
                 }
             });
-        $scope.deleteItem = function (productName, productPrice) {
-            for (var i = 0; i < $scope.checkoutItems.length; i++) {
-                if ($scope.checkoutItems[i].name === productName) {
-                    $scope.checkoutItems.splice(i, 1);
+        $scope.deleteItem = function (productName,productPrice) {
+            for (var i=0; i < $scope.checkoutItems.length; i++){
+                if ($scope.checkoutItems[i].name === productName){
+                    $scope.checkoutItems.splice(i,1);
                     $scope.totalPrice = $scope.totalPrice - productPrice;
                 }
             }
         };
         $scope.checkout = function () {
+            for (var i=0; i < $scope.checkoutItems.length; i++){
+                $scope.checkoutItems[i].startDate = $scope.checkoutItems[i].startDate.getFullYear()+ '-' + ('0' + ($scope.checkoutItems[i].startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].startDate.getDate()).slice(-2);
+                $scope.checkoutItems[i].endDate = $scope.checkoutItems[i].endDate.getFullYear()+ '-' + ('0' + ($scope.checkoutItems[i].endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].endDate.getDate()).slice(-2);
+            }
             $cookies.putObject('userCheckoutItems', $scope.checkoutItems);
             console.log($scope.checkoutItems);
             $location.path('/selectCheckoutAddress');
@@ -197,7 +204,7 @@
             });
         $scope.register = function () {
             $cookies.putObject('userCheckoutAddress', $scope.addresses);
-            $location.path('/payment');
+            $location.path('/selectPayment');
         };
     }]);
 
@@ -232,6 +239,24 @@
                 .then(function (response) {
                     console.log(response);
                     $location.path('/selectAddress');
+                });
+        };
+    }]);
+
+    app.controller('addCheckoutAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+        $scope.address = {
+            streetAddress: '',
+            apartment: '',
+            city: '',
+            state: '',
+            zip: ''
+        };
+        $scope.states = ["NC"];
+        $scope.register = function () {
+            $http.post('/users/addaddress', $scope.address)
+                .then(function (response) {
+                    console.log(response);
+                    $location.path('/selectCheckoutAddress');
                 });
         };
     }]);
