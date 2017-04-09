@@ -40,4 +40,11 @@ public class CartController {
         User user = (User) httpSession.getAttribute("user");
         return cartService.checkoutCart(user);
     }
+
+    @RequestMapping(value = "/removeproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String removeProduct(@RequestBody Product product, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        String message = cartService.removeProduct(product, user);
+        return "{\"response\":\"" + message + "\"}";
+    }
 }

@@ -97,11 +97,35 @@
 
     app.controller('cartController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
         $scope.cartItems = [];
+        $scope.deleteSuccess = false;
+        $scope.deleteFail = false;
         $http.get('/cart/getcart')
             .then(function (response) {
                 $scope.cartItems = response.data;
                 $cookies.putObject('userCart', $scope.cartItems);
             });
+        $scope.removeProduct = function (product) {
+            var p = {};
+            for (var prop in product) {
+                if (prop !== 'photoLink') {
+                    p[prop] = product[prop];
+                }
+            }
+            $http.post('/cart/removeproduct', p)
+                .then(function (response) {
+                    if (response.data.response === 'Product successfully removed') {
+                        $scope.deleteSuccess = true;
+                        $scope.deleteFail = false;
+                        var ndx = $scope.cartItems.indexOf(product);
+                        if (ndx > -1) {
+                            $scope.cartItems.splice(ndx, 1);
+                        }
+                    } else {
+                        $scope.deleteFail = true;
+                        $scope.deleteSuccess = false;
+                    }
+                });
+        };
     }]);
 
     app.controller('checkoutController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
@@ -111,9 +135,9 @@
                 $scope.checkoutItems = response.data;
                 $scope.totalPrice = 0;
                 $scope.date = new Date();
-                $scope.FromDate = $scope.date.getFullYear()+ '-' + ('0' + ($scope.date.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.date.getDate()).slice(-2);
+                $scope.FromDate = $scope.date.getFullYear() + '-' + ('0' + ($scope.date.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.date.getDate()).slice(-2);
                 console.log($scope.FromDate);
-                for (var i=0; i < $scope.checkoutItems.length; i++){
+                for (var i = 0; i < $scope.checkoutItems.length; i++) {
                     // $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "MM-dd-yyyy");
                     // $scope.checkoutItems[i].endDate = $filter('date')($scope.checkoutItems[i].endDate, "MM-dd-yyyy");
                     $scope.checkoutItems[i].startDate = new Date();
@@ -121,18 +145,18 @@
                     $scope.totalPrice = $scope.totalPrice + response.data[i].price;
                 }
             });
-        $scope.deleteItem = function (productName,productPrice) {
-            for (var i=0; i < $scope.checkoutItems.length; i++){
-                if ($scope.checkoutItems[i].name === productName){
-                    $scope.checkoutItems.splice(i,1);
+        $scope.deleteItem = function (productName, productPrice) {
+            for (var i = 0; i < $scope.checkoutItems.length; i++) {
+                if ($scope.checkoutItems[i].name === productName) {
+                    $scope.checkoutItems.splice(i, 1);
                     $scope.totalPrice = $scope.totalPrice - productPrice;
                 }
             }
         };
         $scope.checkout = function () {
-            for (var i=0; i < $scope.checkoutItems.length; i++){
-                $scope.checkoutItems[i].startDate = $scope.checkoutItems[i].startDate.getFullYear()+ '-' + ('0' + ($scope.checkoutItems[i].startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].startDate.getDate()).slice(-2);
-                $scope.checkoutItems[i].endDate = $scope.checkoutItems[i].endDate.getFullYear()+ '-' + ('0' + ($scope.checkoutItems[i].endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].endDate.getDate()).slice(-2);
+            for (var i = 0; i < $scope.checkoutItems.length; i++) {
+                $scope.checkoutItems[i].startDate = $scope.checkoutItems[i].startDate.getFullYear() + '-' + ('0' + ($scope.checkoutItems[i].startDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].startDate.getDate()).slice(-2);
+                $scope.checkoutItems[i].endDate = $scope.checkoutItems[i].endDate.getFullYear() + '-' + ('0' + ($scope.checkoutItems[i].endDate.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.checkoutItems[i].endDate.getDate()).slice(-2);
             }
             $cookies.putObject('userCheckoutItems', $scope.checkoutItems);
             console.log($scope.checkoutItems);

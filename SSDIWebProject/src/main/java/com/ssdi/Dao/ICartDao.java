@@ -14,4 +14,6 @@ public interface ICartDao {
     Collection<Product> getProductsInCart(User user);
 
     Collection<Product> checkoutCart(User user);
+
+    String removeProduct(Product product, User user);
 }

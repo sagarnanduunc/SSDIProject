@@ -3,6 +3,7 @@ package com.ssdi.Dao;
 import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -78,9 +79,17 @@ public class CartDao implements ICartDao {
             }
             return null;
         });
-
-
         return checkoutItems;
+    }
 
+    @Override
+    public String removeProduct(Product product, User user) {
+        try {
+            final String sql = "DELETE FROM Cart WHERE email = '" + user.getEmail() + "' AND product_id = " + product.getId();
+            jdbcTemplate.update(sql);
+            return "Product successfully removed";
+        } catch (DataAccessException e) {
+            return "Product could not be removed";
+        }
     }
 }

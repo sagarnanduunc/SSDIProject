@@ -26,8 +26,13 @@ public class CartService {
     public Collection<Product> getProductsInCart(User user) {
         return cartDao.getProductsInCart(user);
     }
+
     public Collection<Product> checkoutCart(User user) {
         return cartDao.checkoutCart(user);
+    }
+
+    public String removeProduct(Product product, User user) {
+        return cartDao.removeProduct(product, user);
     }
 
 }

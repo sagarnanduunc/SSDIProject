@@ -58,7 +58,16 @@
             <br>
             <div class="row">
                 <div class="centered" ng-repeat="product in cartItems">
-                    <p>{{product.name}} ({{product.category}}) - ${{product.price}}</p>
+                    <p>{{product.name}} ({{product.category}}) - ${{product.price}} <a href="#"
+                                                                                       class="btn btn-sm btn-dark"
+                                                                                       ng-click="removeProduct(product)">Remove
+                        Item</a>
+                    </p>
+                </div>
+                <div class="centered">
+                    <p ng-show="deleteSuccess">Item removed from cart.</p>
+                    <p class="error" ng-show="deleteFail">Something went wrong. The item could not be removed from your
+                        cart.</p>
                 </div>
                 <!--<div class="col-lg-4 col-md-6 mb-4"-->
                 <!--ng-repeat="product in allProducts | filter:searchTerm | filterByCategory:useCategories | filterByPrice:priceFloor:priceCeiling">-->
