@@ -65,6 +65,7 @@
                 </div>
                 <div class="centered">
                     <a href="#" class="btn btn-lg btn-dark" ng-click="addToCart()">Add to Cart</a>
+                    <span ng-show="successfulAdd">This item has been added to your cart.</span>
                     <span class="error" ng-show="inCart">This item is already in your cart.</span>
                     <span class="error" ng-show="cartError">Something went wrong, please try again.</span>
                 </div>

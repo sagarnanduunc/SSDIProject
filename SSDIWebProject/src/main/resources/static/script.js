@@ -110,7 +110,7 @@
             .then(function (response) {
                 $scope.checkoutItems = response.data;
                 $scope.totalPrice = 0;
-                for (var i=0; i < $scope.checkoutItems.length; i++){
+                for (var i = 0; i < $scope.checkoutItems.length; i++) {
                     $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "yyyy-MM-dd");
                     $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].endDate, "yyyy-MM-dd");
                     // $scope.checkoutItems[i].startDate = '';
@@ -118,10 +118,10 @@
                     $scope.totalPrice = $scope.totalPrice + response.data[i].price;
                 }
             });
-        $scope.deleteItem = function (productName,productPrice) {
-            for (var i=0; i < $scope.checkoutItems.length; i++){
-                if ($scope.checkoutItems[i].name === productName){
-                    $scope.checkoutItems.splice(i,1);
+        $scope.deleteItem = function (productName, productPrice) {
+            for (var i = 0; i < $scope.checkoutItems.length; i++) {
+                if ($scope.checkoutItems[i].name === productName) {
+                    $scope.checkoutItems.splice(i, 1);
                     $scope.totalPrice = $scope.totalPrice - productPrice;
                 }
             }
@@ -287,7 +287,14 @@
         $scope.inCart = false;
         $scope.cartError = false;
         $scope.addToCart = function () {
-            $http.post('/cart/addproduct', $scope.product)
+            var product = {};
+            for (var prop in $scope.product) {
+                if (prop !== 'photoLink') {
+                    product[prop] = $scope.product[prop];
+                }
+            }
+            console.log(product);
+            $http.post('/cart/addproduct', product)
                 .then(function (response) {
                     if (response.data.response === "Product added to cart") {
                         $scope.successfulAdd = true;
