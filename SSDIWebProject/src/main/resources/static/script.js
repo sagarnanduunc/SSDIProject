@@ -88,7 +88,7 @@
             .then(function (response) {
                 $scope.payments = response.data;
             });
-        console.log($scope.payments)
+        console.log($scope.payments);
         $scope.register = function () {
             $scope.cart = $cookies.getObject('userCart');
             //console.log();
