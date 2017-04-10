@@ -12,15 +12,15 @@ public interface ITransaction {
     public void setAddress_id(int address_id);
     public void setEmail_rentee(String email_rentee);
     public void setEmail_renter(String email_renter);
-    public void setEnd_date(Date end_date);
-    public void setStart_date(Date start_date);
+    public void setEnd_date(String end_date);
+    public void setStart_date(String start_date);
     public int getPayment_id();
     public int getAddress_id();
     public String getEmail_rentee();
     public String getEmail_renter();
     public int getProduct_id();
     public int getTransaction_id();
-    public Date getEnd_date();
-    public Date getStart_date();
+    public String getEnd_date();
+    public String getStart_date();
 
 }

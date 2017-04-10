@@ -16,7 +16,7 @@
                             <tr ng-repeat="a in addresses">
                                 <th colspan="3">
                                     <input type="radio" ng-model="$parent.buttonChoice" name="useAddress"
-                                           ng-value="a.id"/>{{a.streetAddress}} {{a.apartment}} {{a.city}} {{a.state}}
+                                           ng-value="a" required/>{{a.streetAddress}} {{a.apartment}} {{a.city}} {{a.state}}
                                     {{a.zip}}
                                 </th>
                             </tr>
@@ -30,8 +30,7 @@
                             <tr>
                                 <th></th>
                                 <th>
-                                    <button class="btn btn-dark btn-lg" type="submit" form="addressForm" value="Submit"
-                                            ng-disabled="addressForm.$invalid">
+                                    <button class="btn btn-dark btn-lg" type="submit" value="Submit" ng-disabled="addressForm.$invalid">
                                         Proceed To Payment
                                     </button>
                                 </th>

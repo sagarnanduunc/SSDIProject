@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-
+import java.text.ParseException;
 /**
  * Created by prayas on 3/20/2017.
  */
@@ -60,5 +60,5 @@ public class UserService {
 
     public Collection<Payment> getPayment(String email){return userDao.getPayment(email);}
     public void addPaymentInfo(Payment payment) { this.userDao.addPaymentInfo(payment); }
-    public void addTransactionInfo(Transaction transaction){this.userDao.addTransactionInfo(transaction);}
+    public void addTransactionInfo (Transaction transaction)throws ParseException {this.userDao.addTransactionInfo(transaction);}
 }

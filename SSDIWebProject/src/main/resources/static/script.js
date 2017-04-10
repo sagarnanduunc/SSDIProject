@@ -82,7 +82,16 @@
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
     app.controller('selectPaymentController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-        $scope.buttonChoice;
+        $scope.buttonChoice={
+            id:'',
+            card_no: '',
+            expmonth: '',
+            expyear: '',
+            name: '',
+            zip: '',
+            security_code: ''
+        };
+
         $scope.newId;
         $http.get('/users/paymentinfo')
             .then(function (response) {
@@ -90,7 +99,45 @@
             });
         console.log($scope.payments);
         $scope.register = function () {
-            $scope.cart = $cookies.getObject('userCart');
+            //console.log("In function");
+            $scope.products = $cookies.getObject('userCheckoutItems');
+            $scope.address = $cookies.getObject('userCheckoutAddress');
+            console.log($scope.address.addressId);
+            $scope.transactions=[];
+            for(var i=0;i<$scope.products.length;i++)
+            {
+                $scope.transaction={
+                    product_id:'',
+                    payment_id:'',
+                    address_id:'',
+                    email_rentee:'',
+                    start_date:'',
+                    end_date:''
+
+                };
+                $scope.transaction.product_id=$scope.products[i].id;
+                $scope.transaction.payment_id=$scope.buttonChoice.id;
+                $scope.transaction.address_id=$scope.address.addressId;
+                $scope.transaction.email_rentee=$scope.products[i].email;
+                $scope.transaction.start_date=$scope.products[i].startDate;
+                $scope.transaction.end_date=$scope.products[i].endDate;
+                //
+                // var fd = new FormData();
+                // fd.append('product_id',$scope.products[i].id);
+                // fd.append('payment_id',$scope.buttonChoice.id);
+                // fd.append('address_id',$scope.address.id);
+                // fd.append('email_rentee',$scope.products[i].email);
+                // fd.append('start_date',$scope.products[i].startDate);
+                // fd.append('end_date',$scope.products[i].endDate);
+                $scope.transactions.push($scope.transaction);
+            }
+            console.log($scope.transactions);
+            $http.post('/users/addtransactioninfo', $scope.transactions)
+                .then(function (response) {
+                    console.log(response);
+                    $location.path('/');
+                });
+
             //console.log();
         };
     }]);
@@ -220,14 +267,23 @@
     }]);
 
     app.controller('selectCheckoutAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-        $scope.buttonChoice;
+        $scope.buttonChoice={
+            addressId:'',
+            streetAddress: '',
+            apartment: '',
+            city: '',
+            state: '',
+            zip: ''
+        };
         $scope.newId;
         $http.get('/users/address')
             .then(function (response) {
                 $scope.addresses = response.data;
             });
         $scope.register = function () {
-            $cookies.putObject('userCheckoutAddress', $scope.addresses);
+            
+            $cookies.putObject('userCheckoutAddress', $scope.buttonChoice);
+            console.log($scope.buttonChoice.addressId);
             $location.path('/selectPayment');
         };
     }]);

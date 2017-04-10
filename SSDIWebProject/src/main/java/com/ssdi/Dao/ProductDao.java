@@ -27,7 +27,7 @@ public class ProductDao implements IProductDao {
     @Override
     public Collection<Product> getAllProducts() {
 
-        final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id";
+        final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id AND p.status_id=1";
         List<Product> products = jdbcTemplate.query(sql, (resultSet, i) -> {
             Product product = new Product();
             product.setId(resultSet.getInt("product_id"));
@@ -174,7 +174,7 @@ public class ProductDao implements IProductDao {
         final String sql = "SELECT category FROM categories";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
         for (Map<String, Object> row : list) {
-            System.out.println(row.get("category"));
+            //System.out.println(row.get("category"));
             categories.add((String) row.get("category"));
         }
         return categories;
@@ -182,7 +182,8 @@ public class ProductDao implements IProductDao {
 
     public void changeProductStatus(int id)
     {
-        final String sql = "UPDATE product SET status_id=0 WHERE product_id="+id;
+        //System.out.println(id);
+        final String sql = "UPDATE product SET status_id=2 WHERE product_id="+id;
         jdbcTemplate.update(sql);
     }
 }

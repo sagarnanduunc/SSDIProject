@@ -21,7 +21,7 @@
                             <tr ng-repeat="p in payments">
                                 <th colspan="3">
 
-                                    <input type="radio" ng-model="$parent.buttonChoice" name="usePayment" ng-value="p.id"/>XXXX-XXXX-XXXX-{{p.card_no.substr(-4,15)}}
+                                    <input type="radio" ng-model="$parent.buttonChoice" name="usePayment" ng-value="p"/>XXXX-XXXX-XXXX-{{p.card_no.substr(-4,15)}}
                                 </th>
                             </tr>
 

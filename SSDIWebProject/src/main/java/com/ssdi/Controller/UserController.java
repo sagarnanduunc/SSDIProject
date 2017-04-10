@@ -6,7 +6,7 @@ import com.sun.deploy.net.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
+import java.text.ParseException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
@@ -25,6 +25,7 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
     private ProductService productService;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -103,10 +104,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/addtransactioninfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addTransactioninfo(@RequestBody Transaction transaction, HttpSession httpSession) {
+    public void addTransactioninfo(@RequestBody Collection <Transaction> transaction, HttpSession httpSession) throws ParseException{
         User user = (User) httpSession.getAttribute("user");
-        transaction.setEmail_renter(user.getEmail());
-        userService.addTransactionInfo(transaction);
-        productService.changeProductStatus(transaction.getProduct_id());
+        for (Transaction t : transaction)
+        {
+            t.setEmail_renter(user.getEmail());
+            userService.addTransactionInfo(t);
+            System.out.println(t.getStart_date());
+            productService.changeProductStatus(t.getProduct_id());
+        }
+
     }
 }

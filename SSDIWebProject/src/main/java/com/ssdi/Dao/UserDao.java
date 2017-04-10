@@ -2,14 +2,15 @@ package com.ssdi.Dao;
 import java.lang.Exception;
 
 import com.ssdi.Entity.*;
-
+import java.text.ParseException;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-
+import java.util.*;
+import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -158,9 +159,25 @@ public class UserDao implements IUserDao {
         jdbcTemplate.update(sql);
     }
 
-    public void addTransactionInfo(Transaction transaction) {
-        final String sql = "INSERT INTO transaction(email_renter,email_rentee, start_date, end_date, product_id, payment_id, address_id) values('"+transaction.getEmail_renter()+"','"+transaction.getEmail_rentee()+"','"+transaction.getStart_date()+"','"+transaction.getEnd_date()+"','"+transaction.getProduct_id()+"','"+transaction.getPayment_id()+"','"+transaction.getAddress_id()+"')";
-        jdbcTemplate.update(sql);
+    public void addTransactionInfo(Transaction transaction) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            java.util.Date utilStartDate = format.parse(transaction.getStart_date());
+            java.sql.Date sqlStartDate = new java.sql.Date(utilStartDate.getTime());
+            java.util.Date utilEndDate = format.parse(transaction.getEnd_date());
+            java.sql.Date sqlEndDate = new java.sql.Date(utilStartDate.getTime());
+            System.out.println(sqlStartDate);
+            final String sql = "INSERT INTO transaction(email_renter,email_rentee, start_date, end_date, product_id, payment_id, address_id) values('"+transaction.getEmail_renter()+"','"+transaction.getEmail_rentee()+"','"+sqlStartDate+"','"+sqlEndDate+"','"+transaction.getProduct_id()+"','"+transaction.getPayment_id()+"','"+transaction.getAddress_id()+"')";
+            jdbcTemplate.update(sql);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //System.out.println(transaction.getStart_date());
+//        System.out.println(transaction.getAddress_id());
+//        System.out.println(transaction.getEmail_rentee());
+//        System.out.println(transaction.getEmail_renter());
+//        System.out.println(transaction.getProduct_id());
     }
 
 

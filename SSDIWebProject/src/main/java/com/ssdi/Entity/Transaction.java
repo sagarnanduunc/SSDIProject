@@ -10,10 +10,26 @@ public class Transaction implements ITransaction{
     private int address_id;
     private String email_renter;
     private String email_rentee;
-    private Date start_date = new Date();
-    private Date end_date = new Date();
+    private String start_date;
+    private String end_date;
 
+    public Transaction()
+    {
 
+    }
+
+    public Transaction(int transaction_id,int product_id, int payment_id, int address_id, String email_rentee, String email_renter, String start_date, String end_date)
+    {
+        this.transaction_id=transaction_id;
+        this.product_id=product_id;
+        this.payment_id=payment_id;
+        this.address_id=address_id;
+        this.email_rentee=email_rentee;
+        this.email_renter=email_renter;
+        this.start_date=start_date;
+        this.end_date=end_date;
+
+    }
 
     public void setTransaction_id(int transaction_id){this.transaction_id=transaction_id;}
     public void setProduct_id(int product_id){this.product_id=product_id;}
@@ -34,11 +50,11 @@ public class Transaction implements ITransaction{
         this.email_renter = email_renter;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(String end_date) {
         this.end_date = end_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(String start_date) {
         this.start_date = start_date;
     }
 
@@ -66,11 +82,11 @@ public class Transaction implements ITransaction{
         return transaction_id;
     }
 
-    public Date getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
 
-    public Date getStart_date() {
+    public String getStart_date() {
         return start_date;
     }
 }

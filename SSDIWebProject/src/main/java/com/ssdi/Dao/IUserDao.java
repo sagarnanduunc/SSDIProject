@@ -1,6 +1,6 @@
 package com.ssdi.Dao;
 import com.ssdi.Entity.*;
-
+import java.text.ParseException;
 import java.util.Collection;
 
 /**
@@ -20,5 +20,5 @@ public interface IUserDao {
     Collection<Bank> getAllBankInfo(String email);
     public Collection<Payment> getPayment(String email);
     public void addPaymentInfo(Payment payment);
-   public void addTransactionInfo(Transaction transaction);
+   public void addTransactionInfo (Transaction transaction) throws ParseException;
 }
