@@ -1,9 +1,6 @@
 package com.ssdi.Controller;
 
-import com.ssdi.Entity.Category;
-import com.ssdi.Entity.PriceRange;
-import com.ssdi.Entity.Product;
-import com.ssdi.Entity.User;
+import com.ssdi.Entity.*;
 import com.ssdi.Service.ProductService;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +108,15 @@ public class ProductController {
 
         String message = productService.addProduct(product);
         return "{\"response\":\"" + message + "\"}";
+    }
 
-
+    @RequestMapping(value = "/addreview", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String leaveAReview(@RequestBody Review review, HttpSession httpSession) {
+        System.out.println("review.getEmail: "+ review.getEmail());
+        System.out.println("review.getProductId: "+ review.getProductId());
+        User user = (User) httpSession.getAttribute("user");
+        review.setEmail(user.getEmail());
+        String message =  productService.addReview(review);
+        return "{\"response\":\"" + message + "\"}";
     }
 }

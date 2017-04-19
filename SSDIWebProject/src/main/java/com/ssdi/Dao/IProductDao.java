@@ -1,9 +1,6 @@
 package com.ssdi.Dao;
 
-import com.ssdi.Entity.Category;
-import com.ssdi.Entity.PriceRange;
-import com.ssdi.Entity.Product;
-import com.ssdi.Entity.User;
+import com.ssdi.Entity.*;
 
 import java.util.Collection;
 import java.util.ArrayList;
@@ -30,4 +27,6 @@ public interface IProductDao {
     ArrayList<String> getAllCategories();
 
     void changeProductStatus(int id);
+
+    String addReview(Review review);
 }

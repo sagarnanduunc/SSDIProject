@@ -1,9 +1,6 @@
 package com.ssdi.Dao;
 
-import com.ssdi.Entity.Category;
-import com.ssdi.Entity.PriceRange;
-import com.ssdi.Entity.Product;
-import com.ssdi.Entity.User;
+import com.ssdi.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -185,5 +182,19 @@ public class ProductDao implements IProductDao {
         //System.out.println(id);
         final String sql = "UPDATE product SET status_id=2 WHERE product_id="+id;
         jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public String addReview(Review review) {
+        try {
+            final String sql = "INSERT INTO review(email, review, product_id) VALUES ('" + review.getEmail() + "', '" + review.getReview() + "', '" + review.getProductId() + "')";
+            jdbcTemplate.update(sql);
+        }
+        catch (Exception e){
+            System.out.println("Error is " + e);
+            return "There is some problem while adding a review";
+        }
+
+        return "Review successfully added";
     }
 }

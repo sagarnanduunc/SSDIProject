@@ -1,8 +1,10 @@
 package com.test;
 
 import com.ssdi.Controller.UserController;
+import com.ssdi.Dao.ProductDao;
 import com.ssdi.Dao.UserDao;
 import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Product;
 import com.ssdi.Entity.User;
 import com.ssdi.Service.ProductService;
 import com.ssdi.Service.UserService;
@@ -10,15 +12,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -31,10 +39,7 @@ import static org.mockito.Mockito.when;
 public class UserDaoMocksTest extends AbstractDaoTest {
 
     @Mock
-    private UserService userService;
-
-    @Mock
-    private ProductService productService;
+    JdbcTemplate jdbcTemplate;
 
     @InjectMocks
     private UserDao userDao;
@@ -56,13 +61,18 @@ public class UserDaoMocksTest extends AbstractDaoTest {
         setUp(userDao);
     }
 
-    @Test //
-    public void testGetAllUsers() throws Exception {
-        Collection<User> users = userDao.getAllUsers();
-        System.out.println("Collection of users: "+ users);
-        Assert.assertTrue(true);
-
-    }
+//    @Test //
+//    public void testGetAllUsers() throws Exception {
+//        List<User> users;
+//        when(jdbcTemplate.query(anyString(),any(RowMapper.class), Matchers.<User> any()).thenReturn(anyList()));
+//
+//        Collection<User> retVal = UserDao.getAllUsers();
+//        assertEquals("bob", retVal);
+//        Collection<User> testUsers = userDao.getAllUsers();
+//        System.out.println("Collection of users: "+ testUsers);
+//        Assert.assertTrue(true);
+//
+//    }
 
     @Test
     public void testAddUser() throws Exception {
@@ -81,7 +91,7 @@ public class UserDaoMocksTest extends AbstractDaoTest {
         String content = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
 
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
+        assertEquals("failure - expected HTTP status 200", 200, status);
         Assert.assertTrue(
                 "failure - expected HTTP response body to have a value",
                 content.trim().length() > 0);
@@ -107,11 +117,19 @@ public class UserDaoMocksTest extends AbstractDaoTest {
         String content = result.getResponse().getContentAsString();
         int status = result.getResponse().getStatus();
 
-        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
+        assertEquals("failure - expected HTTP status 200", 200, status);
         Assert.assertTrue(
                 "failure - expected HTTP response body to have a value",
                 content.trim().length() > 0);
 
     }
+
+
+    @Test
+    public void testGetAllProducts() throws Exception {
+        ProductDao p = new ProductDao();
+        Collection<Product> a = p.getAllProducts();
+    }
+
 
 }

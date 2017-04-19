@@ -85,7 +85,10 @@
             <div class="well">
 
                 <div class="text-right">
-                    <a class="btn btn-success">Leave a Review</a>
+                    <textarea type="text" name="review" ng-model="review"
+                              ng-model-options="{ debounce: 500 }"></textarea>
+                    <a href="#" class="btn btn-success"
+                       ng-click="removeProduct(product)">Leave a Review</a>
                 </div>
 
                 <hr>

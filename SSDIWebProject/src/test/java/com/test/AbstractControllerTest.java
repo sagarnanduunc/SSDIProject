@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssdi.Controller.CartController;
 import com.ssdi.Controller.ProductController;
 import com.ssdi.Controller.UserController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,10 @@ public class AbstractControllerTest extends AbstractTest{
 
     protected void setUp(ProductController productController){
         mvc = MockMvcBuilders.standaloneSetup(productController).build();
+    }
+
+    protected void setUp(CartController cartController){
+        mvc = MockMvcBuilders.standaloneSetup(cartController).build();
     }
 
     protected String mapToJson(Object obj) throws JsonProcessingException {

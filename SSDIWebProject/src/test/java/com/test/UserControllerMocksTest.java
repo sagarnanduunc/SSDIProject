@@ -2,6 +2,7 @@ package com.test;
 
 import com.ssdi.Controller.UserController;
 import com.ssdi.Entity.Address;
+import com.ssdi.Entity.Bank;
 import com.ssdi.Entity.User;
 import com.ssdi.Service.ProductService;
 import com.ssdi.Service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,7 +35,7 @@ public class UserControllerMocksTest extends AbstractControllerTest {
     private UserService userService;
 
     @Mock
-    private ProductService productService;
+    private HttpSession httpSession;
 
     @InjectMocks
     private UserController userController;
@@ -48,6 +50,14 @@ public class UserControllerMocksTest extends AbstractControllerTest {
         User user = new User("Vijay", "Chauhan", "vijay@uncc.edu", "dinanath123");
         return user;
     }
+
+    private Collection<Bank> getBankStubData() {
+        Collection<Bank> banks = new ArrayList<Bank>();
+        Bank bank = new Bank("BofA", 123456789, "Vijay Chauhan", 22334422, "vijay@uncc.edu",2);
+        banks.add(bank);
+        return banks;
+    }
+
 
     @Before
     public void setUp() {
@@ -119,6 +129,23 @@ public class UserControllerMocksTest extends AbstractControllerTest {
                 "failure - expected HTTP response body to have a value",
                 content.trim().length() > 0);
 
+    }
+
+    @Test //
+    public void testGetAllBankInfo() throws Exception {
+        Collection<Bank> banks = getBankStubData();
+        when(userService.getAllBankInfo("vijay@uncc.edu")).thenReturn(banks);
+        when(httpSession.getAttribute("user")).thenReturn(getUserStubData());
+        String uri = "/users/bankinfo";
+        MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri)
+                .accept(MediaType.APPLICATION_JSON)).andReturn();
+        String content = result.getResponse().getContentAsString();
+        int status = result.getResponse().getStatus();
+        verify(userService, times(1)).getAllBankInfo("vijay@uncc.edu");
+        Assert.assertEquals("failure - expected HTTP status 200", 200, status);
+        Assert.assertTrue(
+                "failure - expected HTTP response body to have a value",
+                content.trim().length() > 0);
     }
 
 }

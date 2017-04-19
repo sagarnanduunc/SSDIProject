@@ -5,6 +5,7 @@ import com.ssdi.Dao.ProductDao;
 import com.ssdi.Entity.Category;
 import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
+import com.ssdi.Entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -49,5 +50,7 @@ public class ProductService {
     }
 
     public void changeProductStatus(int id){this.productDao.changeProductStatus(id);}
+
+    public String addReview( Review review) {return this.productDao.addReview(review);}
 
 }

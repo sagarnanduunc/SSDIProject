@@ -388,9 +388,13 @@
         if ($scope.product.photoLink.length === 0) {
             $scope.product.photoLink = "null";
         }
+        $scope.review = '';
         $scope.successfulAdd = false;
         $scope.inCart = false;
         $scope.cartError = false;
+        $scope.leaveAReview = function () {
+
+        }
         $scope.addToCart = function () {
             var product = {};
             for (var prop in $scope.product) {
