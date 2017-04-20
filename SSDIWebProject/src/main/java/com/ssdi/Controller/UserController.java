@@ -115,4 +115,16 @@ public class UserController {
         }
 
     }
+
+    @RequestMapping(value = "/rentedproducts", method = RequestMethod.GET)
+    public Collection<Transaction> getRentedProducts(HttpSession httpSession){
+        User user = (User) httpSession.getAttribute("user");
+        return userService.getRentedProducts(user.getEmail());
+    }
+
+    @RequestMapping(value = "/productsrentedout", method = RequestMethod.GET)
+    public Collection<Transaction> getProductsRentedOut(HttpSession httpSession){
+        User user = (User) httpSession.getAttribute("user");
+        return userService.getProductsRentedOut(user.getEmail());
+    }
 }

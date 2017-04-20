@@ -179,6 +179,48 @@ public class UserDao implements IUserDao {
 //        System.out.println(transaction.getEmail_renter());
 //        System.out.println(transaction.getProduct_id());
     }
+    public Collection<Transaction> getRentedProducts(String email)
+    {
+        final String sql = "SELECT * FROM transaction where email_renter='" +email+"'";
+        List<Transaction> transactions=jdbcTemplate.query(sql, new RowMapper<Transaction>() {
+            @Override
+            public Transaction mapRow(ResultSet resultSet, int i) throws SQLException {
+                Transaction transaction = new Transaction();
+                transaction.setAddress_id(resultSet.getInt("address_id"));
+                transaction.setEmail_renter(resultSet.getString("email_renter"));
+                transaction.setEmail_rentee(resultSet.getString("email_rentee"));
+                transaction.setEnd_date(resultSet.getString("end_date"));
+                transaction.setPayment_id(resultSet.getInt("payment_id"));
+                transaction.setProduct_id(resultSet.getInt("product_id"));
+                transaction.setStart_date(resultSet.getString("start_date"));
+                transaction.setTransaction_id(resultSet.getInt("transaction_id"));
+                return transaction;
+            }
+        });
+
+        return transactions;
+    }
+    public Collection<Transaction> getProductsRentedOut(String email)
+    {
+        final String sql = "SELECT * FROM transaction where email_rentee='" +email+"'";
+        List<Transaction> transactions=jdbcTemplate.query(sql, new RowMapper<Transaction>() {
+            @Override
+            public Transaction mapRow(ResultSet resultSet, int i) throws SQLException {
+                Transaction transaction = new Transaction();
+                transaction.setAddress_id(resultSet.getInt("address_id"));
+                transaction.setEmail_renter(resultSet.getString("email_renter"));
+                transaction.setEmail_rentee(resultSet.getString("email_rentee"));
+                transaction.setEnd_date(resultSet.getString("end_date"));
+                transaction.setPayment_id(resultSet.getInt("payment_id"));
+                transaction.setProduct_id(resultSet.getInt("product_id"));
+                transaction.setStart_date(resultSet.getString("start_date"));
+                transaction.setTransaction_id(resultSet.getInt("transaction_id"));
+                return transaction;
+            }
+        });
+
+        return transactions;
+    }
 
 
 }

@@ -35,6 +35,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @RequestMapping(value = "/getavailableproducts",method = RequestMethod.GET)
+    public Collection<Product> getAvailableProducts() {
+        return productService.getAvailableProducts();
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public Collection<Product> getAllProducts() {
         return productService.getAllProducts();
@@ -110,13 +115,13 @@ public class ProductController {
         return "{\"response\":\"" + message + "\"}";
     }
 
-    @RequestMapping(value = "/addreview", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String leaveAReview(@RequestBody Review review, HttpSession httpSession) {
-        System.out.println("review.getEmail: "+ review.getEmail());
-        System.out.println("review.getProductId: "+ review.getProductId());
-        User user = (User) httpSession.getAttribute("user");
-        review.setEmail(user.getEmail());
-        String message =  productService.addReview(review);
-        return "{\"response\":\"" + message + "\"}";
-    }
+//    @RequestMapping(value = "/addreview", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String leaveAReview(@RequestBody Review review, HttpSession httpSession) {
+//        System.out.println("review.getEmail: "+ review.getEmail());
+//        System.out.println("review.getProductId: "+ review.getProductId());
+//        User user = (User) httpSession.getAttribute("user");
+//        review.setEmail(user.getEmail());
+//        String message =  productService.addReview(review);
+//        return "{\"response\":\"" + message + "\"}";
+//    }
 }

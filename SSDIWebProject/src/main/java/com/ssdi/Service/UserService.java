@@ -61,4 +61,7 @@ public class UserService {
     public Collection<Payment> getPayment(String email){return userDao.getPayment(email);}
     public void addPaymentInfo(Payment payment) { this.userDao.addPaymentInfo(payment); }
     public void addTransactionInfo (Transaction transaction)throws ParseException {this.userDao.addTransactionInfo(transaction);}
+    public Collection<Transaction> getRentedProducts(String email){return userDao.getRentedProducts(email);}
+    public Collection<Transaction> getProductsRentedOut(String email){return userDao.getProductsRentedOut(email);}
+
 }

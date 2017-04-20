@@ -21,4 +21,6 @@ public interface IUserDao {
     public Collection<Payment> getPayment(String email);
     public void addPaymentInfo(Payment payment);
    public void addTransactionInfo (Transaction transaction) throws ParseException;
+    public Collection<Transaction> getRentedProducts(String email);
+    public Collection<Transaction> getProductsRentedOut(String email);
 }

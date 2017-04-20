@@ -27,6 +27,6 @@ public interface IProductDao {
     ArrayList<String> getAllCategories();
 
     void changeProductStatus(int id);
-
-    String addReview(Review review);
+    public Collection<Product> getAvailableProducts();
+    //String addReview(Review review);
 }

@@ -22,9 +22,36 @@ public class ProductDao implements IProductDao {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public Collection<Product> getAllProducts() {
+    public Collection<Product> getAvailableProducts() {
 
         final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id AND p.status_id=1";
+        List<Product> products = jdbcTemplate.query(sql, (resultSet, i) -> {
+            Product product = new Product();
+            product.setId(resultSet.getInt("product_id"));
+            product.setName(resultSet.getString("name"));
+            product.setDescription(resultSet.getString("description"));
+            product.setPrice(resultSet.getFloat("price"));
+            product.setCategory(resultSet.getString("category"));
+            return product;
+        });
+        final String sql1 = "SELECT product_id, photo_link FROM photo";
+        List<Product> a = jdbcTemplate.query(sql1, (resultSet, i) -> {
+            int id = resultSet.getInt("product_id");
+            for (int j = 0; j < products.size(); j++) {
+                if (id == products.get(j).getId()) {
+                    products.get(j).setPhotoLink(resultSet.getString("photo_link"));
+                }
+            }
+            return null;
+        });
+
+
+        return products;
+    }
+
+    public Collection<Product> getAllProducts() {
+
+        final String sql = "SELECT p.product_id, p.name, p.description, p.price, c.category FROM product p, categories c WHERE p.category_id = c.category_id";
         List<Product> products = jdbcTemplate.query(sql, (resultSet, i) -> {
             Product product = new Product();
             product.setId(resultSet.getInt("product_id"));
@@ -184,17 +211,17 @@ public class ProductDao implements IProductDao {
         jdbcTemplate.update(sql);
     }
 
-    @Override
-    public String addReview(Review review) {
-        try {
-            final String sql = "INSERT INTO review(email, review, product_id) VALUES ('" + review.getEmail() + "', '" + review.getReview() + "', '" + review.getProductId() + "')";
-            jdbcTemplate.update(sql);
-        }
-        catch (Exception e){
-            System.out.println("Error is " + e);
-            return "There is some problem while adding a review";
-        }
-
-        return "Review successfully added";
-    }
+//    @Override
+//    public String addReview(Review review) {
+//        try {
+//            final String sql = "INSERT INTO review(email, review, product_id) VALUES ('" + review.getEmail() + "', '" + review.getReview() + "', '" + review.getProductId() + "')";
+//            jdbcTemplate.update(sql);
+//        }
+//        catch (Exception e){
+//            System.out.println("Error is " + e);
+//            return "There is some problem while adding a review";
+//        }
+//
+//        return "Review successfully added";
+//    }
 }

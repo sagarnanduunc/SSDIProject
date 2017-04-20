@@ -79,8 +79,68 @@
                 templateUrl: 'checkout.html',
                 controller: 'checkoutController'
             })
+            .when('/history', {
+                templateUrl: 'history.html',
+                controller: 'historyController'
+            })
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
+
+    app.controller('historyController', ['$scope', '$http', '$location', '$cookies', '$locale', function ($scope, $http, $location, $cookies, $locale) {
+        $scope.rentedProductsList=[];
+        $scope.productsRentedOutList=[];
+        $http.get('/products')
+            .then(function (response) {
+                $scope.allProducts = response.data;
+                console.log($scope.allProducts);
+                $http.get('/users/rentedproducts')
+                    .then(function (response) {
+                        $scope.rentedProducts = response.data;
+                        console.log($scope.rentedProducts);
+                        for(var i=0;i<$scope.allProducts.length;i++)
+                        {
+                            for(var j=0;j<$scope.rentedProducts.length;j++)
+                            {
+                                if($scope.allProducts[i].id == $scope.rentedProducts[j].product_id)
+                                    $scope.rentedProductsList.push($scope.allProducts[i]);
+                            }
+
+                        }
+                    });
+
+                $http.get('/users/productsrentedout')
+                    .then(function (response) {
+                        $scope.productsRentedOut = response.data;
+                        console.log($scope.productsRentedOut.length)
+                        for(var i=0;i<$scope.allProducts.length;i++)
+                        {
+                            console.log("Hello");
+                            for(var j=0;j<$scope.productsRentedOut.length;j++)
+                            {
+                                console.log("Hello");
+                                if($scope.allProducts[i].id==$scope.productsRentedOut[j].product_id)
+                                    $scope.productsRentedOutList.push($scope.allProducts[i]);
+                            }
+
+                        }
+                    });
+
+
+
+            });
+
+        console.log($scope.rentedProductsList);
+
+        console.log($scope.productsRentedOutList);
+
+
+        //console.log($scope.rentedProductsList.get(0));
+
+
+        // console.log($scope.productsRentedOutList.get(0));
+
+    }]);
+
     app.controller('selectPaymentController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
         $scope.buttonChoice={
             id:'',
@@ -478,7 +538,7 @@
         $scope.useCategories = {};
         $scope.priceFloor = '';
         $scope.priceCeiling = '';
-        $http.get('/products')
+        $http.get('/products/getavailableproducts')
             .then(function (response) {
                 $scope.allProducts = response.data;
             });
