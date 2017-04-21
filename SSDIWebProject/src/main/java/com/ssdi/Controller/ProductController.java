@@ -2,29 +2,16 @@ package com.ssdi.Controller;
 
 import com.ssdi.Entity.*;
 import com.ssdi.Service.ProductService;
-import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-
-
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.json.*;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -35,7 +22,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/getavailableproducts",method = RequestMethod.GET)
+    @RequestMapping(value = "/getavailableproducts", method = RequestMethod.GET)
     public Collection<Product> getAvailableProducts() {
         return productService.getAvailableProducts();
     }
@@ -115,13 +102,13 @@ public class ProductController {
         return "{\"response\":\"" + message + "\"}";
     }
 
-//    @RequestMapping(value = "/addreview", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String leaveAReview(@RequestBody Review review, HttpSession httpSession) {
-//        System.out.println("review.getEmail: "+ review.getEmail());
-//        System.out.println("review.getProductId: "+ review.getProductId());
-//        User user = (User) httpSession.getAttribute("user");
-//        review.setEmail(user.getEmail());
-//        String message =  productService.addReview(review);
-//        return "{\"response\":\"" + message + "\"}";
-//    }
+    @RequestMapping(value = "/addreview", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String leaveAReview(@RequestBody Review review, HttpSession httpSession) {
+        System.out.println("review.getEmail: " + review.getReviewer());
+        System.out.println("review.getProductId: " + review.getProductId());
+        User user = (User) httpSession.getAttribute("user");
+        review.setReviewer(user.getEmail());
+        String message = productService.addReview(review);
+        return "{\"response\":\"" + message + "\"}";
+    }
 }

@@ -3,16 +3,11 @@
         <tr>
             <th style="width:35%"></th>
             <th>
-
-
                 <div class="text-vertical-center">
                     <div>
-
-
                     </div>
-
                     <form name="paymentForm" id="paymentForm" ng-submit="register()" novalidate>
-                        <table cellpadding="5" >
+                        <table cellpadding="5">
                             <tr>
                                 <th colspan="3">
                                     <h1>Please Enter Payment Information</h1>
@@ -20,43 +15,34 @@
                             </tr>
                             <tr ng-repeat="p in payments">
                                 <th colspan="3">
-
                                     <input type="radio" ng-model="$parent.buttonChoice" name="usePayment" ng-value="p"/>XXXX-XXXX-XXXX-{{p.card_no.substr(-4,15)}}
                                 </th>
                             </tr>
-
-                            <tr >
+                            <tr>
                                 <th></th>
                                 <th>
                                     <a href="/addPayment" class="btn btn-dark btn-sm">New Payment</a>
-
                                 </th>
                                 <th></th>
                             </tr>
-
-                            <tr >
+                            <tr>
                                 <th></th>
                                 <th>
                                     <button class="btn btn-dark btn-lg" type="submit" form="paymentForm" value="Submit"
                                             ng-disabled="paymentForm.$invalid">
                                         Submit
                                     </button>
-
                                 </th>
                                 <th></th>
                             </tr>
                         </table>
-
-
                     </form>
-
                 </div>
             </th>
             <th></th>
         </tr>
     </table>
 </header>
-
 
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
@@ -78,7 +64,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
-
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
                        aria-expanded="false">My account <span class="caret"></span></a>
@@ -89,11 +74,9 @@
                         <li><a href="/logout" class="nav-link">Log Out</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link">My cart (0) items</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">My cart</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
-
             </ul>
         </div>
     </div>

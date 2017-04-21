@@ -28,5 +28,7 @@ public interface IProduct {
 
     void setStatus(String status);
 
+    void setRating(double rating);
 
+    double getRating();
 }

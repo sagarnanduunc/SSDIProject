@@ -1,12 +1,14 @@
 package com.ssdi.Dao;
 
-import com.ssdi.Entity.*;
+import com.ssdi.Entity.Category;
+import com.ssdi.Entity.PriceRange;
+import com.ssdi.Entity.Product;
+import com.ssdi.Entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -84,7 +86,6 @@ public class ProductDao implements IProductDao {
 
     public Collection<Product> getProductsByCategory(Collection<Category> category) {
         String categoryIds = "";
-
         for (Iterator<Category> iterator = category.iterator(); iterator.hasNext(); ) {
             categoryIds = categoryIds + Integer.toString(getCategoryIdFromName(iterator.next().getCategory())) + ",";
         }
@@ -110,15 +111,11 @@ public class ProductDao implements IProductDao {
 
             final String sql2 = "SELECT product_id, name, description, price FROM product";
             System.out.println("before");
-            List<Product> products = jdbcTemplate.query(sql2, new RowMapper<Product>() {
-                @Override
-                public Product mapRow(ResultSet resultSet, int i) throws SQLException {
-                    System.out.println("during");
-                    Product product1 = new Product();
-                    product1.setId(resultSet.getInt("product_id"));
-                    return product1;
-                }
-
+            List<Product> products = jdbcTemplate.query(sql2, (resultSet, i) -> {
+                System.out.println("during");
+                Product product1 = new Product();
+                product1.setId(resultSet.getInt("product_id"));
+                return product1;
             });
             System.out.println("after");
             product.setId(products.get(products.size() - 1).getId());
@@ -134,37 +131,48 @@ public class ProductDao implements IProductDao {
     }
 
     public int getCategoryIdFromName(String categoryName) {
-        categoryName = categoryName.toLowerCase();
-        int categoryId = 0;
-        switch (categoryName) {
-            case "clothing":
-                categoryId = 1;
-                break;
-            case "books":
-                categoryId = 2;
-                break;
-            case "movies":
-                categoryId = 3;
-                break;
-            case "games":
-                categoryId = 4;
-                break;
-            case "furniture":
-                categoryId = 5;
-                break;
-            case "technology":
-                categoryId = 6;
-                break;
-            case "tools":
-                categoryId = 7;
-                break;
-            case "other":
-                categoryId = 8;
-                break;
-            default:
-                categoryId = 8;
+        try {
+            final String sql = "SELECT category_id FROM Categories WHERE category = \"" + categoryName + "\"";
+            List<Integer> categoryIds = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("category_id"));
+            if (categoryIds.size() != 1) {
+                return -1;
+            } else {
+                return categoryIds.get(0);
+            }
+        } catch (Exception e) {
+            return -2;
         }
-        return categoryId;
+//        categoryName = categoryName.toLowerCase();
+//        int categoryId = 0;
+//        switch (categoryName) {
+//            case "clothing":
+//                categoryId = 1;
+//                break;
+//            case "books":
+//                categoryId = 2;
+//                break;
+//            case "movies":
+//                categoryId = 3;
+//                break;
+//            case "games":
+//                categoryId = 4;
+//                break;
+//            case "furniture":
+//                categoryId = 5;
+//                break;
+//            case "technology":
+//                categoryId = 6;
+//                break;
+//            case "tools":
+//                categoryId = 7;
+//                break;
+//            case "other":
+//                categoryId = 8;
+//                break;
+//            default:
+//                categoryId = 8;
+//        }
+//        return categoryId;
     }
 
     public List<Product> getProductsByQuery(String query) {
@@ -183,17 +191,18 @@ public class ProductDao implements IProductDao {
 
     //Search a product with string which completely or partially matches product name or description
     public Collection<Product> searchProductsByString(String searchString) {
-        final String sql = "SELECT name, description, price FROM product where (description like '%" + searchString + "%') or (name like '%" + searchString + "%')";
+        final String sql = "SELECT name, description, price FROM product where (description like '%"
+                + searchString + "%') or (name like '%" + searchString + "%')";
         return getProductsByQuery(sql);
     }
 
     public Collection<Product> getProductsByPrice(PriceRange priceRange) {
-        final String sql = "SELECT name, description, price FROM product where price between " + Float.toString(priceRange.getMinPrice()) + "and " + Float.toString(priceRange.getMaxPrice());
+        final String sql = "SELECT name, description, price FROM product where price between "
+                + Float.toString(priceRange.getMinPrice()) + "and " + Float.toString(priceRange.getMaxPrice());
         return getProductsByQuery(sql);
     }
 
     public ArrayList<String> getAllCategories() {
-
         ArrayList<String> categories = new ArrayList<>();
         final String sql = "SELECT category FROM categories";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql);
@@ -204,24 +213,22 @@ public class ProductDao implements IProductDao {
         return categories;
     }
 
-    public void changeProductStatus(int id)
-    {
+    public void changeProductStatus(int id) {
         //System.out.println(id);
-        final String sql = "UPDATE product SET status_id=2 WHERE product_id="+id;
+        final String sql = "UPDATE product SET status_id=2 WHERE product_id=" + id;
         jdbcTemplate.update(sql);
     }
 
-//    @Override
-//    public String addReview(Review review) {
-//        try {
-//            final String sql = "INSERT INTO review(email, review, product_id) VALUES ('" + review.getEmail() + "', '" + review.getReview() + "', '" + review.getProductId() + "')";
-//            jdbcTemplate.update(sql);
-//        }
-//        catch (Exception e){
-//            System.out.println("Error is " + e);
-//            return "There is some problem while adding a review";
-//        }
-//
-//        return "Review successfully added";
-//    }
+    @Override
+    public String addReview(Review review) {
+        try {
+            final String sql = "INSERT INTO review(email, review, product_id) VALUES ('"
+                    + review.getReviewer() + "', '" + review.getDescription() + "', '" + review.getProductId() + "')";
+            jdbcTemplate.update(sql);
+        } catch (Exception e) {
+            System.out.println("Error is " + e);
+            return "There is some problem while adding a review";
+        }
+        return "Review successfully added";
+    }
 }
