@@ -117,15 +117,15 @@ public class UserDao implements IUserDao {
 
     @Override
     public Collection<Payment> getPayment(String email) {
-        final String sql = "SELECT payment_id, card_no, security_key, name, zip, month, year FROM Payment where email='" + email + "'";
+        final String sql = "SELECT payment_id, card_no, security_key, name, zip, expmonth, expyear FROM Payment where email='" + email + "'";
         List<Payment> payments = jdbcTemplate.query(sql, (resultSet, i) -> {
             Payment payment = new Payment();
             payment.setId(resultSet.getInt("payment_id"));
             payment.setName(resultSet.getString("name"));
             payment.setCard_no(resultSet.getString("card_no"));
             payment.setSecurity_code(resultSet.getString("security_key"));
-            payment.setMonth(resultSet.getInt("month"));
-            payment.setYear(resultSet.getInt("year"));
+            payment.setMonth(resultSet.getInt("expmonth"));
+            payment.setYear(resultSet.getInt("expyear"));
             payment.setZip(resultSet.getString("zip"));
             return payment;
         });
@@ -134,7 +134,7 @@ public class UserDao implements IUserDao {
 
     @Override
     public void addPaymentInfo(Payment payment) {
-        final String sql = "INSERT INTO payment (email, card_no, security_key, name, zip, month, year) VALUES ('"
+        final String sql = "INSERT INTO payment (email, card_no, security_key, name, zip, expmonth, expyear) VALUES ('"
                 + payment.getEmail() + " ', '" + payment.getCard_no() + " ', '" + payment.getSecurity_code() + "', '"
                 + payment.getName() + "', '" + payment.getZip() + "'," + payment.getExpmonth() + ","
                 + payment.getExpyear() + ")";
