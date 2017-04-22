@@ -15,17 +15,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import javax.sql.DataSource;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -38,11 +43,18 @@ import static org.mockito.Mockito.when;
 //@Transactional
 public class UserDaoMocksTest extends AbstractDaoTest {
 
-    @Mock
-    JdbcTemplate jdbcTemplate;
+    public DataSource getTestDataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost/rentaltest");
+        dataSource.setUsername("root");
+        dataSource.setPassword("Prayas123!");
 
-    @InjectMocks
-    private UserDao userDao;
+        return dataSource;
+    }
+
+//    @InjectMocks
+//    private UserDao userDao;
 
     private Collection<User> getUserStubData() {
         Collection<User> users = new ArrayList<User>();
@@ -55,11 +67,11 @@ public class UserDaoMocksTest extends AbstractDaoTest {
         return user;
     }
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        setUp(userDao);
-    }
+//    @Before
+//    public void setUp() {
+//        MockitoAnnotations.initMocks(this);
+//        setUp(userDao);
+//    }
 
 //    @Test //
 //    public void testGetAllUsers() throws Exception {
@@ -73,6 +85,15 @@ public class UserDaoMocksTest extends AbstractDaoTest {
 //        Assert.assertTrue(true);
 //
 //    }
+
+    @Test
+    public void testingDao() {
+        UserDao userDao = new UserDao(getTestDataSource());
+        Collection<User> a = userDao.getAllUsers();
+        System.out.println("Search users : "+a);
+        assertTrue(true);
+    }
+
 
     @Test
     public void testAddUser() throws Exception {
@@ -123,13 +144,5 @@ public class UserDaoMocksTest extends AbstractDaoTest {
                 content.trim().length() > 0);
 
     }
-
-
-    @Test
-    public void testGetAllProducts() throws Exception {
-        ProductDao p = new ProductDao();
-        Collection<Product> a = p.getAllProducts();
-    }
-
 
 }

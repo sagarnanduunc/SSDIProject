@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -17,9 +18,13 @@ import java.util.List;
 @Repository("user")
 public class UserDao implements IUserDao {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    DataConnection d = new DataConnection();
 
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate(d.getDataSource());
+
+    public UserDao(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
     @Override
     public Collection<User> getAllUsers() {
         final String sql = "SELECT email, firstname, lastname FROM user";
