@@ -31,4 +31,6 @@ public interface IProductDao {
     Collection<Product> getAvailableProducts();
 
     String addReview(Review review);
+
+    Collection<Review> getReviews(int id);
 }

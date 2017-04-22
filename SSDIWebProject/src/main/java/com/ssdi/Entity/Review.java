@@ -10,8 +10,8 @@ public class Review implements IReview {
     private String description;
 
     @Override
-    public void setReviewer(String email) {
-        this.reviewer = email;
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 
     @Override

@@ -5,7 +5,7 @@ package com.ssdi.Entity;
  */
 public interface IReview {
 
-    void setReviewer(String email);
+    void setReviewer(String reviewer);
 
     String getReviewer();
 

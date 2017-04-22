@@ -59,4 +59,7 @@ public class ProductService {
         return this.productDao.addReview(review);
     }
 
+    public Collection<Review> getReviews(int id) {
+        return productDao.getReviews(id);
+    }
 }

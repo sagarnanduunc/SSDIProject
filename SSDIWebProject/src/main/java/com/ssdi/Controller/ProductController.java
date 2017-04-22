@@ -111,4 +111,9 @@ public class ProductController {
         String message = productService.addReview(review);
         return "{\"response\":\"" + message + "\"}";
     }
+
+    @RequestMapping(value = "/getreviews", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<Review> getReviews(@RequestBody int id) {
+        return productService.getReviews(id);
+    }
 }

@@ -477,24 +477,31 @@
         if ($scope.product.photoLink.length === 0) {
             $scope.product.photoLink = "null";
         }
+        $scope.reviewList = [];
         $scope.review = '';
         $scope.successfulAdd = false;
         $scope.inCart = false;
         $scope.cartError = false;
         $scope.reviewError = false;
         $scope.postReview = function () {
-            var review = {
-                description: $scope.review,
-                productId: $scope.product.id
-            };
-            $http.post('/products/addreview', review)
-                .then(function (response) {
-                    if (response.data.response === 'Review successfully added') {
-
-                    } else {
-
-                    }
-                });
+            if ($scope.review !== '') {
+                var review = {
+                    description: $scope.review,
+                    productId: $scope.product.id
+                };
+                $http.post('/products/addreview', review)
+                    .then(function (response) {
+                        if (response.data.response === 'Review successfully added') {
+                            $scope.reviewError = false;
+                            $http.post('/products/getreviews', $scope.product.id)
+                                .then(function (response) {
+                                    $scope.reviewList = response.data;
+                                });
+                        } else {
+                            $scope.reviewError = true;
+                        }
+                    });
+            }
         };
         $scope.addToCart = function () {
             var product = {};
@@ -515,6 +522,11 @@
                     }
                 });
         };
+        $http.post('/products/getreviews', $scope.product.id)
+            .then(function (response) {
+                $scope.reviewList = response.data;
+                console.log($scope.reviewList[0]);
+            });
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {

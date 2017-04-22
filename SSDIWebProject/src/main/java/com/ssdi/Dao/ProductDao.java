@@ -231,4 +231,17 @@ public class ProductDao implements IProductDao {
         }
         return "Review successfully added";
     }
+
+    @Override
+    public Collection<Review> getReviews(int id) {
+        final String sql = "SELECT r.review_id, u.firstname, r.review from Review r, User u WHERE r.product_id = " + id + " AND r.email = u.email";
+        List<Review> reviews = jdbcTemplate.query(sql, (resultSet, i) -> {
+            Review review = new Review();
+            review.setReviewer(resultSet.getString("firstname"));
+            review.setDescription(resultSet.getString("review"));
+            review.setProduct(id);
+            return review;
+        });
+        return reviews;
+    }
 }
