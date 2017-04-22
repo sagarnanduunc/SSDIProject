@@ -87,63 +87,65 @@
     }]);
 
     app.controller('historyController', ['$scope', '$http', '$location', '$cookies', '$locale', function ($scope, $http, $location, $cookies, $locale) {
-        $scope.rentedProductsList=[];
-        $scope.productsRentedOutList=[];
+        $scope.rentedProductsList = [];
+        $scope.productsRentedOutList = [];
         $http.get('/products')
             .then(function (response) {
                 $scope.allProducts = response.data;
                 console.log($scope.allProducts);
                 $http.get('/users/rentedproducts')
                     .then(function (response) {
-                        $scope.rentedProducts = response.data;
-                        console.log($scope.rentedProducts);
-                        for(var i=0;i<$scope.allProducts.length;i++)
-                        {
-                            for(var j=0;j<$scope.rentedProducts.length;j++)
-                            {
-                                if($scope.allProducts[i].id == $scope.rentedProducts[j].product_id)
-                                    $scope.rentedProductsList.push($scope.allProducts[i]);
-                            }
-
-                        }
+                        var rentedProducts = response.data;
+                        $scope.allProducts.map(function (product) {
+                            rentedProducts.map(function (rentedProduct) {
+                                if (product.id === rentedProduct.product_id) {
+                                    $scope.rentedProductsList.push(product);
+                                }
+                            });
+                        });
+                        // $scope.rentedProducts = response.data;
+                        // console.log($scope.rentedProducts);
+                        // for (var i = 0; i < $scope.allProducts.length; i++) {
+                        //     for (var j = 0; j < $scope.rentedProducts.length; j++) {
+                        //         if ($scope.allProducts[i].id === $scope.rentedProducts[j].product_id) {
+                        //             $scope.rentedProductsList.push($scope.allProducts[i]);
+                        //         }
+                        //     }
+                        // }
                     });
-
                 $http.get('/users/productsrentedout')
                     .then(function (response) {
-                        $scope.productsRentedOut = response.data;
-                        console.log($scope.productsRentedOut.length)
-                        for(var i=0;i<$scope.allProducts.length;i++)
-                        {
-                            console.log("Hello");
-                            for(var j=0;j<$scope.productsRentedOut.length;j++)
-                            {
-                                console.log("Hello");
-                                if($scope.allProducts[i].id==$scope.productsRentedOut[j].product_id)
-                                    $scope.productsRentedOutList.push($scope.allProducts[i]);
-                            }
-
-                        }
+                        var productsRentedOut = response.data;
+                        $scope.allProducts.map(function (product) {
+                            productsRentedOut.map(function (rentedProduct) {
+                                if (product.id === rentedProduct.product_id) {
+                                    $scope.productsRentedOutList.push(product);
+                                }
+                            });
+                        });
+                        // $scope.productsRentedOut = response.data;
+                        // console.log($scope.productsRentedOut.length);
+                        // for (var i = 0; i < $scope.allProducts.length; i++) {
+                        //     console.log("Hello");
+                        //     for (var j = 0; j < $scope.productsRentedOut.length; j++) {
+                        //         console.log("Hello");
+                        //         if ($scope.allProducts[i].id === $scope.productsRentedOut[j].product_id) {
+                        //             $scope.productsRentedOutList.push($scope.allProducts[i]);
+                        //         }
+                        //     }
+                        // }
                     });
-
-
-
             });
 
         console.log($scope.rentedProductsList);
-
         console.log($scope.productsRentedOutList);
-
-
         //console.log($scope.rentedProductsList.get(0));
-
-
-        // console.log($scope.productsRentedOutList.get(0));
-
+        //console.log($scope.productsRentedOutList.get(0));
     }]);
 
     app.controller('selectPaymentController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-        $scope.buttonChoice={
-            id:'',
+        $scope.buttonChoice = {
+            id: '',
             card_no: '',
             expmonth: '',
             expyear: '',
@@ -151,7 +153,6 @@
             zip: '',
             security_code: ''
         };
-
         $scope.newId;
         $http.get('/users/paymentinfo')
             .then(function (response) {
@@ -162,42 +163,72 @@
             //console.log("In function");
             $scope.products = $cookies.getObject('userCheckoutItems');
             $scope.address = $cookies.getObject('userCheckoutAddress');
-            console.log($scope.address.addressId);
-            $scope.transactions=[];
-            for(var i=0;i<$scope.products.length;i++)
-            {
-                $scope.transaction={
-                    product_id:'',
-                    payment_id:'',
-                    address_id:'',
-                    email_rentee:'',
-                    start_date:'',
-                    end_date:''
-
+            //console.log($scope.address.addressId);
+            $scope.transactions = [];
+            $scope.products.map(function (product) {
+                var transaction = {
+                    product_id: '',
+                    payment_id: '',
+                    address_id: '',
+                    email_rentee: '',
+                    start_date: '',
+                    end_date: ''
                 };
-                $scope.transaction.product_id=$scope.products[i].id;
-                $scope.transaction.payment_id=$scope.buttonChoice.id;
-                $scope.transaction.address_id=$scope.address.addressId;
-                $scope.transaction.email_rentee=$scope.products[i].email;
-                $scope.transaction.start_date=$scope.products[i].startDate;
-                $scope.transaction.end_date=$scope.products[i].endDate;
-                //
-                // var fd = new FormData();
-                // fd.append('product_id',$scope.products[i].id);
-                // fd.append('payment_id',$scope.buttonChoice.id);
-                // fd.append('address_id',$scope.address.id);
-                // fd.append('email_rentee',$scope.products[i].email);
-                // fd.append('start_date',$scope.products[i].startDate);
-                // fd.append('end_date',$scope.products[i].endDate);
-                $scope.transactions.push($scope.transaction);
-            }
+                transaction.product_id = product.id;
+                transaction.payment_id = $scope.buttonChoice.id;
+                transaction.address_id = $scope.address.addressId;
+                transaction.email_rentee = product.email;
+                transaction.start_date = product.startDate;
+                transaction.end_date = product.endDate;
+                $scope.transactions.push(transaction);
+            });
+            // for (var i = 0; i < $scope.products.length; i++) {
+            //     $scope.transaction = {
+            //         product_id: '',
+            //         payment_id: '',
+            //         address_id: '',
+            //         email_rentee: '',
+            //         start_date: '',
+            //         end_date: ''
+            //     };
+            //     $scope.transaction.product_id = $scope.products[i].id;
+            //     $scope.transaction.payment_id = $scope.buttonChoice.id;
+            //     $scope.transaction.address_id = $scope.address.addressId;
+            //     $scope.transaction.email_rentee = $scope.products[i].email;
+            //     $scope.transaction.start_date = $scope.products[i].startDate;
+            //     $scope.transaction.end_date = $scope.products[i].endDate;
+            //     //
+            //     // var fd = new FormData();
+            //     // fd.append('product_id',$scope.products[i].id);
+            //     // fd.append('payment_id',$scope.buttonChoice.id);
+            //     // fd.append('address_id',$scope.address.id);
+            //     // fd.append('email_rentee',$scope.products[i].email);
+            //     // fd.append('start_date',$scope.products[i].startDate);
+            //     // fd.append('end_date',$scope.products[i].endDate);
+            //     $scope.transactions.push($scope.transaction);
+            // }
             console.log($scope.transactions);
             $http.post('/users/addtransactioninfo', $scope.transactions)
                 .then(function (response) {
                     console.log(response);
                     $location.path('/');
+                    $scope.products.map(function (product) {
+                        var p = {};
+                        for (var prop in product) {
+                            if (prop !== 'photoLink') {
+                                p[prop] = product[prop];
+                            }
+                        }
+                        $http.post('/cart/removeproduct', p)
+                            .then(function (response) {
+                            });
+                    });
+                    // for (var product in $scope.products) {
+                    //     $http.post('/cart/removeproduct', product)
+                    //         .then(function (response) {
+                    //         });
+                    // }
                 });
-
             //console.log();
         };
     }]);
@@ -268,9 +299,7 @@
             $cookies.putObject('userCheckoutItems', $scope.checkoutItems);
             console.log($scope.checkoutItems);
             $location.path('/selectCheckoutAddress');
-
         };
-
     }]);
 
     app.controller('addPaymentController', ['$scope', '$http', '$location', '$cookies', '$locale', function ($scope, $http, $location, $cookies, $locale) {
@@ -327,8 +356,8 @@
     }]);
 
     app.controller('selectCheckoutAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
-        $scope.buttonChoice={
-            addressId:'',
+        $scope.buttonChoice = {
+            addressId: '',
             streetAddress: '',
             apartment: '',
             city: '',
@@ -341,7 +370,6 @@
                 $scope.addresses = response.data;
             });
         $scope.register = function () {
-            
             $cookies.putObject('userCheckoutAddress', $scope.buttonChoice);
             console.log($scope.buttonChoice.addressId);
             $location.path('/selectPayment');
@@ -365,6 +393,7 @@
                 });
         };
     }]);
+
     app.controller('addAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
         $scope.address = {
             streetAddress: '',
@@ -435,8 +464,8 @@
                 $location.path('/selectAddress');
             });
         };
-
     }]);
+
     app.controller('landingController', ['$cookies', '$location', function ($cookies, $location) {
         if ($cookies.get("loggedIn") === 'true') {
             $location.path('/userHome');
@@ -448,13 +477,32 @@
         if ($scope.product.photoLink.length === 0) {
             $scope.product.photoLink = "null";
         }
+        $scope.reviewList = [];
         $scope.review = '';
         $scope.successfulAdd = false;
         $scope.inCart = false;
         $scope.cartError = false;
-        $scope.leaveAReview = function () {
-
-        }
+        $scope.reviewError = false;
+        $scope.postReview = function () {
+            if ($scope.review !== '') {
+                var review = {
+                    description: $scope.review,
+                    productId: $scope.product.id
+                };
+                $http.post('/products/addreview', review)
+                    .then(function (response) {
+                        if (response.data.response === 'Review successfully added') {
+                            $scope.reviewError = false;
+                            $http.post('/products/getreviews', $scope.product.id)
+                                .then(function (response) {
+                                    $scope.reviewList = response.data;
+                                });
+                        } else {
+                            $scope.reviewError = true;
+                        }
+                    });
+            }
+        };
         $scope.addToCart = function () {
             var product = {};
             for (var prop in $scope.product) {
@@ -474,6 +522,11 @@
                     }
                 });
         };
+        $http.post('/products/getreviews', $scope.product.id)
+            .then(function (response) {
+                $scope.reviewList = response.data;
+                console.log($scope.reviewList[0]);
+            });
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
@@ -645,7 +698,6 @@
             });
         }
     }]);
-
 
 })();
 

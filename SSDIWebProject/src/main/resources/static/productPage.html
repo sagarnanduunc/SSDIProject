@@ -6,11 +6,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="container">
-        <a class="navbar-brand" href="#">Rental App</a>
+        <a class="navbar-brand" href="/">Rental App</a>
         <div class="collapse navbar-collapse" id="navbarExample">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">About</a>
@@ -18,7 +18,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
-
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
                        aria-expanded="false">My account <span class="caret"></span></a>
@@ -29,11 +28,9 @@
                         <li><a href="/logout" class="nav-link">Logout</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="/myCart" class="nav-link">My cart (0) items</a></li>
+                <li class="nav-item"><a href="/myCart" class="nav-link">My cart</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
-
             </ul>
         </div>
     </div>
@@ -41,9 +38,7 @@
 
 <!-- Page Content -->
 <div class="container">
-
     <div class="row my-4">
-
         <div class="col-md-3">
             <p class="lead">Shop Name</p>
             <div class="list-group">
@@ -52,9 +47,7 @@
                 <!--<a href="#" class="list-group-item">Category 3</a>-->
             </div>
         </div>
-
         <div class="col-md-9">
-
             <div class="thumbnail">
                 <img class="img-responsive" ng-src={{product.photoLink[0]}} alt="">
                 <div class="caption-full">
@@ -70,7 +63,7 @@
                     <span class="error" ng-show="cartError">Something went wrong, please try again.</span>
                 </div>
                 <div class="ratings">
-                    <p class="pull-right">3 reviews</p>
+                    <p class="pull-right">{{reviewList.length}} {{reviewList.length === 1 ? 'review' : 'reviews'}}</p>
                     <p>
                         <span class="glyphicon glyphicon-star"></span>
                         <span class="glyphicon glyphicon-star"></span>
@@ -81,67 +74,69 @@
                     </p>
                 </div>
             </div>
-
             <div class="well">
-
                 <div class="text-right">
                     <textarea type="text" name="review" ng-model="review"
                               ng-model-options="{ debounce: 500 }"></textarea>
                     <a href="#" class="btn btn-success"
-                       ng-click="removeProduct(product)">Leave a Review</a>
+                       ng-click="postReview()">Leave a Review</a>
                 </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">10 days ago</span>
-                        <p>This product was great in terms of quality. I would definitely buy another!</p>
+                <div ng-repeat="review in reviewList">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                            <strong>{{review.reviewer}}</strong>
+                            <span class="pull-right">Some days ago</span>
+                            <p>{{review.description}}</p>
+                        </div>
                     </div>
                 </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">12 days ago</span>
-                        <p>I've already ordered another one!</p>
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        Anonymous
-                        <span class="pull-right">15 days ago</span>
-                        <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-                    </div>
-                </div>
-
+                <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star-empty"></span>-->
+                <!--Anonymous-->
+                <!--<span class="pull-right">10 days ago</span>-->
+                <!--<p>This product was great in terms of quality. I would definitely buy another!</p>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<hr>-->
+                <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star-empty"></span>-->
+                <!--Anonymous-->
+                <!--<span class="pull-right">12 days ago</span>-->
+                <!--<p>I've already ordered another one!</p>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--<hr>-->
+                <!--<div class="row">-->
+                <!--<div class="col-md-12">-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star"></span>-->
+                <!--<span class="glyphicon glyphicon-star-empty"></span>-->
+                <!--Anonymous-->
+                <!--<span class="pull-right">15 days ago</span>-->
+                <!--<p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>-->
+                <!--</div>-->
+                <!--</div>-->
             </div>
-
         </div>
-
     </div>
-
 </div>
 <!-- /.container -->
 

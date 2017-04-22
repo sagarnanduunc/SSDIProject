@@ -16,6 +16,7 @@ public class Product implements IProduct {
     private String status;
     private File photo;
     private ArrayList<String> photoLink = new ArrayList<>();
+    private double rating;
 
     public Product(String name, String description, float price, String category, ArrayList<String> photoLink, String email, File photo) {
         this.name = name;
@@ -24,13 +25,10 @@ public class Product implements IProduct {
         this.category = category;
         this.email = email;
         this.photo = photo;
-
-        for (int i = 0; i < photoLink.size(); i++)
-            this.photoLink.add(photoLink.get(i));
+        this.photoLink.addAll(photoLink);
     }
 
     public Product() {
-
     }
 
     public int getId() {
@@ -111,6 +109,16 @@ public class Product implements IProduct {
 
     public File getPhoto() {
         return this.photo;
+    }
+
+    @Override
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    @Override
+    public double getRating() {
+        return rating;
     }
 
 }

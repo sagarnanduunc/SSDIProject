@@ -1,17 +1,11 @@
 <header class="header blockSizeRegistration">
-
-
     <table style="width:100%; height:100% ">
         <tr>
             <th style="width:35%"></th>
             <th>
-
-
                 <div class="text-vertical-center">
-
                     <form name="addPaymentForm" id="addPaymentForm" ng-submit="register()" novalidate>
                         <table cellpadding="5">
-
                             <tr>
                                 <th colspan="3">
                                     <h1>New Payment Information</h1>
@@ -25,10 +19,8 @@
                                 <th>
                                     <input type="text" name="card_no" ng-model="payment.card_no"
                                            ng-model-options="{ debounce: 500 }" required>
-                                           <!--ng-pattern="regexCardNo"-->
-
+                                    <!--ng-pattern="regexCardNo"-->
                                 </th>
-
                                 <th>
                                     <p class=" error" ng-show="addPaymentForm.card_no.$dirty">
                                         <span ng-show="addPaymentForm.card_no.$invalid">This field is required.</span>
@@ -58,9 +50,7 @@
                                         <!--<span ng-show="paymentForm.cvv.$error.pattern">ecurity code must contain only numbers</span>-->
                                         <!--<span ng-show="paymentForm.cvv.$error.minlength">Security code must be 3-4 digits</span>-->
                                     </p>
-
                                 </th>
-
                             </tr>
 
                             <!-- name field -->
@@ -77,9 +67,7 @@
                                     <p class=" error" ng-show="addPaymentForm.name.$dirty">
                                         <span ng-show="addPaymentForm.name.$invalid">This field is required.</span>
                                     </p>
-
                                 </th>
-
                             </tr>
 
                             <!-- Exp Date -->
@@ -96,14 +84,12 @@
                                             {{month}}
                                         </option>
                                     </select>
-
                                     <select name="expyear" ng-model='payment.expyear'
                                             ng-model-options="{ debounce: 500 }"
                                             required>
                                         <option disabled selected value="">Year</option>
                                         <option ng-repeat="year in years">{{year}}</option>
                                     </select>
-
                                 </th>
                                 <th>
                                     <p class=" error"
@@ -112,9 +98,7 @@
                                         <span ng-show="paymentForm.expyear.$invalid">Year is required.</span>
                                     </p>
                                 </th>
-
                             </tr>
-
 
                             <!-- Zip field -->
                             <tr>
@@ -130,7 +114,6 @@
                                         <span ng-show="addPaymentForm.zip.$invalid">This field is required.</span>
                                     </p>
                                 </th>
-
                             </tr>
                             <tr>
                                 <th></th>
@@ -140,22 +123,17 @@
                                             ng-disabled="addPaymentForm.$invalid">
                                         Submit
                                     </button>
-
                                 </th>
                                 <th></th>
                             </tr>
                         </table>
-
-
                     </form>
-
                 </div>
             </th>
             <th></th>
         </tr>
     </table>
 </header>
-
 
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-toggleable-md navbar-inverse bg-inverse">
@@ -177,7 +155,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
-
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
                        aria-expanded="false">My account <span class="caret"></span></a>
@@ -188,11 +165,9 @@
                         <li><a href="/logout" class="nav-link">Log Out</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link">My cart (0) items</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">My cart</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-
-
             </ul>
         </div>
     </div>

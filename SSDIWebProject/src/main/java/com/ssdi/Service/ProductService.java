@@ -1,18 +1,16 @@
 package com.ssdi.Service;
 
 import com.ssdi.Dao.IProductDao;
-import com.ssdi.Dao.ProductDao;
 import com.ssdi.Entity.Category;
 import com.ssdi.Entity.PriceRange;
 import com.ssdi.Entity.Product;
-//import com.ssdi.Entity.Review;
+import com.ssdi.Entity.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by prayas on 3/20/2017.
@@ -28,6 +26,7 @@ public class ProductService {
     public Collection<Product> getAllProducts() {
         return productDao.getAllProducts();
     }
+
     public Collection<Product> getAvailableProducts() {
         return productDao.getAvailableProducts();
     }
@@ -52,8 +51,15 @@ public class ProductService {
         return productDao.addProduct(product);
     }
 
-    public void changeProductStatus(int id){this.productDao.changeProductStatus(id);}
+    public void changeProductStatus(int id) {
+        this.productDao.changeProductStatus(id);
+    }
 
-    //public String addReview( Review review) {return this.productDao.addReview(review);}
+    public String addReview(Review review) {
+        return this.productDao.addReview(review);
+    }
 
+    public Collection<Review> getReviews(int id) {
+        return productDao.getReviews(id);
+    }
 }
