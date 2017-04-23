@@ -483,6 +483,39 @@
         $scope.inCart = false;
         $scope.cartError = false;
         $scope.reviewError = false;
+        $scope.ratingError = false;
+        $scope.myRating = -1;
+        $scope.avgRating = -1;
+        var getReviews = function () {
+            $http.post('/products/getreviews', $scope.product.id)
+                .then(function (response) {
+                    $scope.reviewList = response.data;
+                });
+        };
+        var getMyRating = function () {
+            var product = {};
+            for (var prop in $scope.product) {
+                if (prop !== 'photoLink') {
+                    product[prop] = $scope.product[prop];
+                }
+            }
+            $http.post('/products/myrating', product)
+                .then(function (response) {
+                    $scope.myRating = response.data;
+                })
+        };
+        var getAvgRating = function () {
+            var product = {};
+            for (var prop in $scope.product) {
+                if (prop !== 'photoLink') {
+                    product[prop] = $scope.product[prop];
+                }
+            }
+            $http.post('/products/averagerating', product)
+                .then(function (response) {
+                    $scope.avgRating = response.data;
+                });
+        };
         $scope.postReview = function () {
             if ($scope.review !== '') {
                 var review = {
@@ -493,10 +526,7 @@
                     .then(function (response) {
                         if (response.data.response === 'Review successfully added') {
                             $scope.reviewError = false;
-                            $http.post('/products/getreviews', $scope.product.id)
-                                .then(function (response) {
-                                    $scope.reviewList = response.data;
-                                });
+                            getReviews();
                         } else {
                             $scope.reviewError = true;
                         }
@@ -522,11 +552,28 @@
                     }
                 });
         };
-        $http.post('/products/getreviews', $scope.product.id)
-            .then(function (response) {
-                $scope.reviewList = response.data;
-                console.log($scope.reviewList[0]);
-            });
+        $scope.addRating = function (rating) {
+            var product = {};
+            for (var prop in $scope.product) {
+                if (prop !== 'photoLink') {
+                    product[prop] = $scope.product[prop];
+                }
+            }
+            product.rating = rating;
+            $http.post('/products/addrating', product)
+                .then(function (response) {
+                    if (response.data.response === "") {
+                        $scope.ratingError = false;
+                        getMyRating();
+                        getAvgRating();
+                    } else {
+                        $scope.ratingError = true;
+                    }
+                });
+        };
+        getReviews();
+        getMyRating();
+        getAvgRating();
     }]);
     // Set up the login controller
     app.controller('loginController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {

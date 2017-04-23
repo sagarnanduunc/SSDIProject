@@ -91,8 +91,6 @@ public class ProductController {
             directory = "img/" + file.getOriginalFilename();
             System.out.println("Hey check");
         } catch (Exception e) {
-
-            System.out.println(e);
             e.printStackTrace();
         }
         product.setPhotoLink(directory);
@@ -115,5 +113,23 @@ public class ProductController {
     @RequestMapping(value = "/getreviews", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Collection<Review> getReviews(@RequestBody int id) {
         return productService.getReviews(id);
+    }
+
+    @RequestMapping(value = "/myrating", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public int getRatingByUser(@RequestBody Product product, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        return productService.getRatingByUser(product, user);
+    }
+
+    @RequestMapping(value = "/averagerating", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public double getAverageRating(@RequestBody Product product) {
+        return productService.getAverageRating(product);
+    }
+
+    @RequestMapping(value = "/addrating", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String addRating(@RequestBody Product product, HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        String message = productService.addRating(product, user, product.getRating());
+        return "{\"response\":\"" + message + "\"}";
     }
 }

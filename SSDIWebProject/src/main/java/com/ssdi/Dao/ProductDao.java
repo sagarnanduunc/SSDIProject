@@ -1,9 +1,6 @@
 package com.ssdi.Dao;
 
-import com.ssdi.Entity.Category;
-import com.ssdi.Entity.PriceRange;
-import com.ssdi.Entity.Product;
-import com.ssdi.Entity.Review;
+import com.ssdi.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -243,5 +240,42 @@ public class ProductDao implements IProductDao {
             return review;
         });
         return reviews;
+    }
+
+    @Override
+    public int getRatingByUser(Product product, User user) {
+        final String sql = "SELECT rating FROM Rating WHERE email = \"" + user.getEmail() + "\" AND product_id = "
+                + product.getId();
+        List<Integer> results = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("rating"));
+        if (results.size() == 0) {
+            return -1;
+        } else {
+            return results.get(0);
+        }
+    }
+
+    @Override
+    public double getAverageRating(Product product) {
+        String s = "SELECT ";
+        final String sql = "SELECT AVG(rating) FROM Rating WHERE product_id = " + product.getId();
+        List<Double> results = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getDouble("AVG(rating)"));
+        if (results.get(0) == null) {
+            return -1;
+        } else {
+            return results.get(0);
+        }
+    }
+
+    @Override
+    public String addRating(Product product, User user, int rating) {
+        try {
+            final String sql = "INSERT INTO Rating (email, rating, product_id) VALUES (\""
+                    + user.getEmail() + "\", " + rating + ", " + product.getId()
+                    + ") ON DUPLICATE KEY UPDATE rating=" + rating;
+            jdbcTemplate.update(sql);
+        } catch (Exception e) {
+            return "failure";
+        }
+        return "success";
     }
 }
