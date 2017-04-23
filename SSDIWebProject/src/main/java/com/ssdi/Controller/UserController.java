@@ -15,7 +15,7 @@ import java.text.ParseException;
 import java.util.Collection;
 
 /**
- * Created by praya on 3/20/2017.
+ * Created by prayas on 3/20/2017.
  */
 
 @RestController

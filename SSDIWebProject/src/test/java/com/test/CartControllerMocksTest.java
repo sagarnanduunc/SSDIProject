@@ -34,9 +34,6 @@ public class CartControllerMocksTest extends AbstractControllerTest {
     @Mock
     private CartService cartService;
 
-    @Mock
-    private ProductService productService;
-
     @InjectMocks
     private CartController cartController;
 
