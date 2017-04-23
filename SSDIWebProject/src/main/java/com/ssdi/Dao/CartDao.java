@@ -8,6 +8,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,8 +18,13 @@ import java.util.List;
 @Repository("cart")
 public class CartDao implements ICartDao {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    DataConnection d = new DataConnection();
+
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate(d.getDataSource());
+
+    public CartDao(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public String addProduct(Product product, User user) {

@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -16,9 +17,13 @@ import java.util.*;
 
 @Repository("product")
 public class ProductDao implements IProductDao {
+    DataConnection d = new DataConnection();
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate = new JdbcTemplate(d.getDataSource());
+
+    public ProductDao(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
     @Override
     public Collection<Product> getAvailableProducts() {
