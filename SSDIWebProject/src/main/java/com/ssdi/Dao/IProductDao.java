@@ -33,4 +33,10 @@ public interface IProductDao {
     String addReview(Review review);
 
     Collection<Review> getReviews(int id);
+
+    int getRatingByUser(Product product, User user);
+
+    double getAverageRating(Product product);
+
+    String addRating(Product product, User user, int rating);
 }

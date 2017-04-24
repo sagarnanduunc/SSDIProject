@@ -8,7 +8,7 @@ public class Category implements ICategory {
     int categoryId;
     String category;
 
-    Category(String category, int categoryId) {
+    public Category(String category, int categoryId) {
         this.category = category;
         this.categoryId = categoryId;
     }

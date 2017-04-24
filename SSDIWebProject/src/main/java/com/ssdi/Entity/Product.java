@@ -16,7 +16,7 @@ public class Product implements IProduct {
     private String status;
     private File photo;
     private ArrayList<String> photoLink = new ArrayList<>();
-    private double rating;
+    private int rating;
 
     public Product(String name, String description, float price, String category, ArrayList<String> photoLink, String email, File photo) {
         this.name = name;
@@ -112,12 +112,12 @@ public class Product implements IProduct {
     }
 
     @Override
-    public void setRating(double rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 
     @Override
-    public double getRating() {
+    public int getRating() {
         return rating;
     }
 

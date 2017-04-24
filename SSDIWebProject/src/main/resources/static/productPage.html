@@ -65,12 +65,23 @@
                 <div class="ratings">
                     <p class="pull-right">{{reviewList.length}} {{reviewList.length === 1 ? 'review' : 'reviews'}}</p>
                     <p>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star"></span>
-                        <span class="glyphicon glyphicon-star-empty"></span>
-                        4.0 stars
+                        <span ng-repeat="i in range">
+                            <span class="fa fa-star" ng-show="i <= avgRating"></span>
+                            <span class="fa fa-star-half-o" ng-show="i > avgRating && i < Math.ceil(avgRating)"></span>
+                            <span class="fa fa-star-o" ng-show="i > Math.ceil(avgRating)"></span>
+                        </span>
+                        <span ng-hide="avgRating === -1">{{avgRating}} stars</span>
+                        <span ng-show="avgRating === -1">No ratings yet</span>
+                    </p>
+                </div>
+                <div class="ratings">
+                    <p>
+                        <span ng-repeat="i in range">
+                            <span class="fa fa-star" ng-show="i <= myRating" ng-click="addRating(i)"></span>
+                            <span class="fa fa-star-o" ng-show="i > myRating" ng-click="addRating(i)"></span>
+                        </span>
+                        <span ng-hide="myRating === -1">Your rating: {{myRating}} stars</span>
+                        <span ng-show="myRating === -1">You haven't rated this product yet.</span>
                     </p>
                 </div>
             </div>
@@ -85,11 +96,6 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star-empty"></span>
                             <strong>{{review.reviewer}}</strong>
                             <span class="pull-right">Some days ago</span>
                             <p>{{review.description}}</p>

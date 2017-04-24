@@ -20,25 +20,25 @@ import java.io.IOException;
  * Created by prayas on 3/26/2017.
  */
 @WebAppConfiguration
-public class AbstractControllerTest extends AbstractTest{
+public class AbstractControllerTest extends AbstractTest {
     protected MockMvc mvc;
 
     @Autowired
     protected WebApplicationContext webApplicationContext;
 
-    protected void setUp(){
+    protected void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
-    protected void setUp(UserController userController){
+    protected void setUp(UserController userController) {
         mvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
-    protected void setUp(ProductController productController){
+    protected void setUp(ProductController productController) {
         mvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
-    protected void setUp(CartController cartController){
+    protected void setUp(CartController cartController) {
         mvc = MockMvcBuilders.standaloneSetup(cartController).build();
     }
 

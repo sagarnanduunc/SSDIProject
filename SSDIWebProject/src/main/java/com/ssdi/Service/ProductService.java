@@ -1,10 +1,7 @@
 package com.ssdi.Service;
 
 import com.ssdi.Dao.IProductDao;
-import com.ssdi.Entity.Category;
-import com.ssdi.Entity.PriceRange;
-import com.ssdi.Entity.Product;
-import com.ssdi.Entity.Review;
+import com.ssdi.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -61,5 +58,17 @@ public class ProductService {
 
     public Collection<Review> getReviews(int id) {
         return productDao.getReviews(id);
+    }
+
+    public int getRatingByUser(Product product, User user) {
+        return productDao.getRatingByUser(product, user);
+    }
+
+    public double getAverageRating(Product product) {
+        return productDao.getAverageRating(product);
+    }
+
+    public String addRating(Product product, User user, int rating) {
+        return productDao.addRating(product, user, rating);
     }
 }
