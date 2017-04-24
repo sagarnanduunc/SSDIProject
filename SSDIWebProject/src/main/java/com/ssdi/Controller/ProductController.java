@@ -49,7 +49,7 @@ public class ProductController {
         return productService.getProductsByPrice(priceRange);
     }
 
-    @RequestMapping(value = "/getallcategories", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getallcategories", method = RequestMethod.GET)
     public ArrayList<String> getAllCategories() {
         return productService.getAllCategories();
     }
