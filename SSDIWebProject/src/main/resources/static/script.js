@@ -486,6 +486,10 @@
         $scope.ratingError = false;
         $scope.myRating = -1;
         $scope.avgRating = -1;
+        $scope.Math = Math;
+        $scope.range = new Array(5).fill().map(function (val, ndx) {
+            return ndx + 1;
+        });
         var getReviews = function () {
             $http.post('/products/getreviews', $scope.product.id)
                 .then(function (response) {
@@ -562,7 +566,7 @@
             product.rating = rating;
             $http.post('/products/addrating', product)
                 .then(function (response) {
-                    if (response.data.response === "") {
+                    if (response.data.response === "success") {
                         $scope.ratingError = false;
                         getMyRating();
                         getAvgRating();

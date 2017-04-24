@@ -262,9 +262,10 @@ public class ProductDao implements IProductDao {
     @Override
     public double getAverageRating(Product product) {
         String s = "SELECT ";
-        final String sql = "SELECT AVG(rating) FROM Rating WHERE product_id = " + product.getId();
-        List<Double> results = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getDouble("AVG(rating)"));
-        if (results.get(0) == null) {
+        final String sql = "SELECT AVG(rating) AS rating FROM Rating WHERE product_id = " + product.getId();
+        List<Double> results = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getDouble("rating"));
+        System.out.println(results);
+        if (results.get(0) == 0) {
             return -1;
         } else {
             return results.get(0);
