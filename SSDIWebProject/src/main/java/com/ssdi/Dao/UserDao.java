@@ -4,6 +4,7 @@ import com.ssdi.Entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.text.ParseException;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 
 @Repository("user")
+@Transactional
 public class UserDao implements IUserDao {
 
     DataConnection d = new DataConnection();
@@ -35,18 +37,33 @@ public class UserDao implements IUserDao {
             user.setLastName(resultSet.getString("lastname"));
             return user;
         });
+        if(users.size()==0)
+            return null;
         return users;
     }
 
 
     @Override
     public User getUserByEmail(String email) {
-        return null;
+        final String sql = "SELECT * FROM user WHERE email='"+email+"'";
+        List<User> users = jdbcTemplate.query(sql, (resultSet, i) -> {
+            User user = new User();
+            user.setEmail(resultSet.getString("email"));
+            user.setFirstName(resultSet.getString("firstname"));
+            user.setLastName(resultSet.getString("lastname"));
+            return user;
+        });
+        if(users.size()==0)
+            return null;
+        return users.get(0);
     }
 
     @Override
-    public void removeUserByEmail(String email) {
-
+    public void removeUserByEmail(String email) throws Exception{
+        if(getUserByEmail(email)==null)
+            throw new Exception("NoSuchUser");
+        final String sql = "DELETE FROM user WHERE email='"+email+"'";
+        jdbcTemplate.update(sql);
     }
 
     @Override
@@ -79,13 +96,24 @@ public class UserDao implements IUserDao {
 
     @Override
     public void addAddress(Address address) {
-        final String sql = "INSERT INTO address (email, street_address, apartment, city, state, zip) VALUES ('" + address.getEmail() + " ', '" + address.getStreetAddress() + " ', '" + address.getApartment() + "', '" + address.getCity() + "', '" + address.getState() + "', '" + address.getZip() + "')";
+        final String sql = "INSERT INTO address (email, street_address, apartment, city, state, zip) VALUES ('" + address.getEmail() + " ', '" + address.getStreetAddress() + "', '" + address.getApartment() + "', '" + address.getCity() + "', '" + address.getState() + "', '" + address.getZip() + "')";
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
+    public void removeAddress(int id) {
+        final String sql = "DELETE FROM address WHERE address_id="+id;
         jdbcTemplate.update(sql);
     }
 
     @Override
     public void addBankInfo(Bank bank) {
-        final String sql = "INSERT INTO bank_info (email, bank_name, account_number, account_holder_name, routing_number) VALUES ('" + bank.getEmail() + " ', '" + bank.getBankName() + " ', '" + bank.getAccountNumber() + "', '" + bank.getAccountHolderName() + "', '" + bank.getRoutingNumber() + "')";
+        final String sql = "INSERT INTO bank_info (email, bank_name, account_number, account_holder_name, routing_number) VALUES ('" + bank.getEmail() + "', '" + bank.getBankName() + "', '" + bank.getAccountNumber() + "', '" + bank.getAccountHolderName() + "', '" + bank.getRoutingNumber() + "')";
+        jdbcTemplate.update(sql);
+    }
+    @Override
+    public void removeBankInfo(int id) {
+        final String sql = "DELETE FROM bank_info WHERE bank_info_id="+id;
         jdbcTemplate.update(sql);
     }
 
@@ -95,6 +123,7 @@ public class UserDao implements IUserDao {
         List<Address> addresses = jdbcTemplate.query(sql, (resultSet, i) -> {
             Address address = new Address();
             address.setAddressId(resultSet.getInt("address_id"));
+            address.setEmail(email);
             address.setStreetAddress(resultSet.getString("street_address"));
             address.setApartment(resultSet.getString("apartment"));
             address.setCity(resultSet.getString("city"));
@@ -146,6 +175,13 @@ public class UserDao implements IUserDao {
         jdbcTemplate.update(sql);
     }
 
+    @Override
+    public void removePaymentInfo(int id) {
+        final String sql = "DELETE FROM payment WHERE payment_id="+id;
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
     public void addTransactionInfo(Transaction transaction) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -170,6 +206,13 @@ public class UserDao implements IUserDao {
 //        System.out.println(transaction.getProduct_id());
     }
 
+    @Override
+    public void removeTransaction(int id) {
+        final String sql = "DELETE FROM transaction WHERE transaction_id="+id;
+        jdbcTemplate.update(sql);
+    }
+
+    @Override
     public Collection<Transaction> getRentedProducts(String email) {
         final String sql = "SELECT * FROM transaction where email_renter='" + email + "'";
         List<Transaction> transactions = jdbcTemplate.query(sql, (resultSet, i) -> {

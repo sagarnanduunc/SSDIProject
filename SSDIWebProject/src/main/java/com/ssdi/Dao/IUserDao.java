@@ -14,7 +14,7 @@ public interface IUserDao {
 
     User getUserByEmail(String email);
 
-    void removeUserByEmail(String email);
+    void removeUserByEmail(String email)throws Exception;
 
     void updateUser(User user);
 
@@ -23,9 +23,9 @@ public interface IUserDao {
     boolean checkLogin(User user);
 
     void addAddress(Address address);
-
+    void removeAddress(int id);
     void addBankInfo(Bank bank);
-
+    void removeBankInfo(int id);
     Collection<Address> getAllAddresses(String email);
 
     Collection<Bank> getAllBankInfo(String email);
@@ -33,9 +33,9 @@ public interface IUserDao {
     Collection<Payment> getPayment(String email);
 
     void addPaymentInfo(Payment payment);
-
+    void removePaymentInfo(int id);
     void addTransactionInfo(Transaction transaction) throws ParseException;
-
+    void removeTransaction(int id);
     Collection<Transaction> getRentedProducts(String email);
 
     Collection<Transaction> getProductsRentedOut(String email);
