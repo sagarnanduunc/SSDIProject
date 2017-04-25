@@ -339,7 +339,8 @@
             });
         //console.log($scope.banks)
         $scope.register = function () {
-            console.log("Done")
+            console.log("/userHome")
+            $location.path('/userHome');
         };
     }]);
 
