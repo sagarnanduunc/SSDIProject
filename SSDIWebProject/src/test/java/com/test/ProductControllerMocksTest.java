@@ -339,9 +339,12 @@ public class ProductControllerMocksTest extends AbstractControllerTest {
 
     @Test
     public void testAddRating() throws Exception {
-        String uri = "/products/addrating";
+        ArrayList<String> a = new ArrayList<>();
+        a.add("D:\\IMG_2721.JPG");
+        File f = new File("D:\\IMG_2721.JPG");
         User user = new User("Vijay", "Chauhan", "vijay@uncc.edu", "dinanath123");
-        Product product = new Product();
+        Product product = new Product("Chair","4 legs",5,"furniture",a,"vijay@uncc.edu",f);
+        String uri = "/products/addrating";
         when(productService.addRating(product,user,product.getRating())).thenReturn("Rating added.");
         String inputJson = super.mapToJson(product);
 

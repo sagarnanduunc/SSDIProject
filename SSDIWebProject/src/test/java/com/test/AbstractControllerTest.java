@@ -44,7 +44,7 @@ public class AbstractControllerTest extends AbstractTest {
 
     protected String mapToJson(Object obj) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(obj);
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }
 
     protected <T> T mapFromJson(String json, Class<T> clazz)
