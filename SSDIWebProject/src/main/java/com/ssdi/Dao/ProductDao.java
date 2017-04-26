@@ -104,13 +104,14 @@ public class ProductDao implements IProductDao {
     @Override
     public String addProduct(Product product) {
         try {
+            System.out.println(product.getPhotoLink());
             String category = product.getCategory();
             category = category.toLowerCase();
             int categoryId = getCategoryIdFromName(category);
-
-            final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + product.getEmail() + " ', '" + categoryId + "', '" + product.getName() + "', '" + product.getDescription() + "', '" + product.getPrice() + "',1)";
+            System.out.println("Hey Check");
+            final String sql = "INSERT INTO Product(email,category_id,name,description,price,status_id) values ('" + product.getEmail() + "', " + categoryId + ", '" + product.getName() + "', '" + product.getDescription() + "', " + product.getPrice() + ","+1+")";
             jdbcTemplate.update(sql);
-
+            System.out.println("Hey Check");
             final String sql2 = "SELECT product_id, name, description, price FROM product";
             System.out.println("before");
             List<Product> products = jdbcTemplate.query(sql2, (resultSet, i) -> {
@@ -128,13 +129,16 @@ public class ProductDao implements IProductDao {
 
             return "Product successfully added";
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return "Product not added";
         }
     }
 
     public int getCategoryIdFromName(String categoryName) {
+        System.out.println(categoryName);
         try {
-            final String sql = "SELECT category_id FROM Categories WHERE category = \"" + categoryName + "\"";
+            final String sql = "SELECT category_id FROM Categories WHERE category = '" + categoryName + "'";
+            System.out.println(sql);
             List<Integer> categoryIds = jdbcTemplate.query(sql, (resultSet, i) -> resultSet.getInt("category_id"));
             if (categoryIds.size() != 1) {
                 return -1;
@@ -142,6 +146,7 @@ public class ProductDao implements IProductDao {
                 return categoryIds.get(0);
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return -2;
         }
 //        categoryName = categoryName.toLowerCase();

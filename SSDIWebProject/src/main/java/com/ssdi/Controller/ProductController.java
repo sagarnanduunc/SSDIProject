@@ -7,7 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
@@ -54,14 +60,14 @@ public class ProductController {
         return productService.getAllCategories();
     }
 
-    @RequestMapping(value = "/addproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String addProduct(@RequestBody Product product, HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute("user");
-        product.setEmail(user.getEmail());
-        System.out.println("product.getEmail()" + product.getEmail());
-        String message = productService.addProduct(product);
-        return "{\"response\":\"" + message + "\"}";
-    }
+//    @RequestMapping(value = "/addproduct", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String addProduct(@RequestBody Product product, HttpSession httpSession) {
+//        User user = (User) httpSession.getAttribute("user");
+//        product.setEmail(user.getEmail());
+//        System.out.println("product.getEmail()" + product.getEmail());
+//        String message = productService.addProduct(product);
+//        return "{\"response\":\"" + message + "\"}";
+//    }
 
 
     @RequestMapping(value = "/addproduct", method = RequestMethod.POST)
@@ -69,9 +75,13 @@ public class ProductController {
     public String saveUserDataAndFile(@RequestParam(value = "description") String description, @RequestParam(value = "price") float price, @RequestParam(value = "name") String name, @RequestParam(value = "category") String category, @RequestParam(value = "file") MultipartFile file, HttpSession request) {
         User user = (User) request.getAttribute("user");
         Product product = new Product();
-        System.out.println("product.getEmail()" + user.getEmail());
+        //System.out.println("product.getEmail()" + user.getEmail());
         product.setEmail(user.getEmail());
         System.out.println("product.getEmail()" + product.getEmail());
+        //System.out.println(name);
+        name=name.replace("\"","");
+        description=description.replace("\"","");
+        category=category.replace("\"","");
         product.setName(name);
         System.out.println(product.getName());
         product.setCategory(category);
@@ -79,22 +89,23 @@ public class ProductController {
         product.setDescription(description);
         System.out.println(product.getDescription());
         product.setPrice(price);
-        System.out.println(product.getPrice());
-        System.out.println("product.getEmail()" + product.getEmail());
-        System.out.println("Inside File upload");
+        //System.out.println(product.getPrice());
+        //System.out.println("product.getEmail()" + product.getEmail());
+        //System.out.println("Inside File upload");
         //String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-        String rootDirectory = "C:\\Users\\Admin\\Desktop\\Study\\SSDI\\ProjectWork\\SSDIProject\\SSDIWebProject\\src\\main\\resources\\static\\img\\";
+        String rootDirectory = "C:\\Users\\Admin\\Desktop\\Study\\SSDI\\ProjectWork1\\SSDIProject\\SSDIWebProject\\src\\main\\resources\\static\\img\\";
         System.out.println("Root Directory " + rootDirectory);
         String directory = "img/logan.jpg";
         try {
             file.transferTo(new File(rootDirectory + file.getOriginalFilename()));
+            System.out.println(rootDirectory + file.getOriginalFilename());
             directory = "img/" + file.getOriginalFilename();
             System.out.println("Hey check");
         } catch (Exception e) {
             e.printStackTrace();
         }
         product.setPhotoLink(directory);
-        System.out.println(product.getPhotoLink());
+        //System.out.println(product.getPhotoLink());
 
         String message = productService.addProduct(product);
         return "{\"response\":\"" + message + "\"}";
