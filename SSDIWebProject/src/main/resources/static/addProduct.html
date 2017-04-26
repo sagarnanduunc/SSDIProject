@@ -55,7 +55,7 @@
                                     <label>Price:</label>
                                 </th>
                                 <th>
-                                    $<input type="number" name="price" ng-model="product.price"
+                                    $<input type="number" name="price" min="0" ng-model="product.price"
                                             ng-model-options="{ debounce: 500 }"
                                             required>
                                 </th>
