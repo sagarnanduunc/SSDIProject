@@ -107,7 +107,15 @@
                             <p class="card-text">{{product.description}}</p>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            <small class="text-muted">
+                                <span ng-repeat="i in range" ng-hide="product.rating === -1">
+                                    <span class="fa fa-star" ng-show="i <= product.rating"></span>
+                                    <span class="fa fa-star-half-o"
+                                          ng-show="i > product.rating && i < Math.ceil(product.rating)"></span>
+                                    <span class="fa fa-star-o" ng-show="i > Math.ceil(product.rating)"></span>
+                                </span>
+                                <span ng-show="product.rating === -1">No ratings yet</span>
+                            </small>
                         </div>
                     </div>
                 </div>

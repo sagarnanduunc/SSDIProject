@@ -86,7 +86,7 @@
             .otherwise({template: "<p>We're sorry, something seems to have gone wrong.</p>"});
     }]);
 
-    app.controller('historyController', ['$scope', '$http', '$location', '$cookies', '$locale', function ($scope, $http, $location, $cookies, $locale) {
+    app.controller('historyController', ['$scope', '$http', function ($scope, $http) {
         $scope.rentedProductsList = [];
         $scope.productsRentedOutList = [];
         $http.get('/products')
@@ -103,15 +103,6 @@
                                 }
                             });
                         });
-                        // $scope.rentedProducts = response.data;
-                        // console.log($scope.rentedProducts);
-                        // for (var i = 0; i < $scope.allProducts.length; i++) {
-                        //     for (var j = 0; j < $scope.rentedProducts.length; j++) {
-                        //         if ($scope.allProducts[i].id === $scope.rentedProducts[j].product_id) {
-                        //             $scope.rentedProductsList.push($scope.allProducts[i]);
-                        //         }
-                        //     }
-                        // }
                     });
                 $http.get('/users/productsrentedout')
                     .then(function (response) {
@@ -123,17 +114,6 @@
                                 }
                             });
                         });
-                        // $scope.productsRentedOut = response.data;
-                        // console.log($scope.productsRentedOut.length);
-                        // for (var i = 0; i < $scope.allProducts.length; i++) {
-                        //     console.log("Hello");
-                        //     for (var j = 0; j < $scope.productsRentedOut.length; j++) {
-                        //         console.log("Hello");
-                        //         if ($scope.allProducts[i].id === $scope.productsRentedOut[j].product_id) {
-                        //             $scope.productsRentedOutList.push($scope.allProducts[i]);
-                        //         }
-                        //     }
-                        // }
                     });
             });
 
@@ -160,10 +140,8 @@
             });
         console.log($scope.payments);
         $scope.register = function () {
-            //console.log("In function");
             $scope.products = $cookies.getObject('userCheckoutItems');
             $scope.address = $cookies.getObject('userCheckoutAddress');
-            //console.log($scope.address.addressId);
             $scope.transactions = [];
             $scope.products.map(function (product) {
                 var transaction = {
@@ -182,31 +160,7 @@
                 transaction.end_date = product.endDate;
                 $scope.transactions.push(transaction);
             });
-            // for (var i = 0; i < $scope.products.length; i++) {
-            //     $scope.transaction = {
-            //         product_id: '',
-            //         payment_id: '',
-            //         address_id: '',
-            //         email_rentee: '',
-            //         start_date: '',
-            //         end_date: ''
-            //     };
-            //     $scope.transaction.product_id = $scope.products[i].id;
-            //     $scope.transaction.payment_id = $scope.buttonChoice.id;
-            //     $scope.transaction.address_id = $scope.address.addressId;
-            //     $scope.transaction.email_rentee = $scope.products[i].email;
-            //     $scope.transaction.start_date = $scope.products[i].startDate;
-            //     $scope.transaction.end_date = $scope.products[i].endDate;
-            //     //
-            //     // var fd = new FormData();
-            //     // fd.append('product_id',$scope.products[i].id);
-            //     // fd.append('payment_id',$scope.buttonChoice.id);
-            //     // fd.append('address_id',$scope.address.id);
-            //     // fd.append('email_rentee',$scope.products[i].email);
-            //     // fd.append('start_date',$scope.products[i].startDate);
-            //     // fd.append('end_date',$scope.products[i].endDate);
-            //     $scope.transactions.push($scope.transaction);
-            // }
+
             console.log($scope.transactions);
             $http.post('/users/addtransactioninfo', $scope.transactions)
                 .then(function (response) {
@@ -215,7 +169,7 @@
                     $scope.products.map(function (product) {
                         var p = {};
                         for (var prop in product) {
-                            if (prop !== 'photoLink') {
+                            if (prop !== 'photoLink' && product.hasOwnProperty(prop)) {
                                 p[prop] = product[prop];
                             }
                         }
@@ -223,17 +177,11 @@
                             .then(function (response) {
                             });
                     });
-                    // for (var product in $scope.products) {
-                    //     $http.post('/cart/removeproduct', product)
-                    //         .then(function (response) {
-                    //         });
-                    // }
                 });
-            //console.log();
         };
     }]);
 
-    app.controller('cartController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
+    app.controller('cartController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
         $scope.cartItems = [];
         $scope.deleteSuccess = false;
         $scope.deleteFail = false;
@@ -245,7 +193,7 @@
         $scope.removeProduct = function (product) {
             var p = {};
             for (var prop in product) {
-                if (prop !== 'photoLink') {
+                if (prop !== 'photoLink' && product.hasOwnProperty(prop)) {
                     p[prop] = product[prop];
                 }
             }
@@ -276,8 +224,6 @@
                 $scope.FromDate = $scope.date.getFullYear() + '-' + ('0' + ($scope.date.getMonth() + 1)).slice(-2) + '-' + ('0' + $scope.date.getDate()).slice(-2);
                 console.log($scope.FromDate);
                 for (var i = 0; i < $scope.checkoutItems.length; i++) {
-                    // $scope.checkoutItems[i].startDate = $filter('date')($scope.checkoutItems[i].startDate, "MM-dd-yyyy");
-                    // $scope.checkoutItems[i].endDate = $filter('date')($scope.checkoutItems[i].endDate, "MM-dd-yyyy");
                     $scope.checkoutItems[i].startDate = new Date();
                     $scope.checkoutItems[i].endDate = new Date();
                     $scope.totalPrice = $scope.totalPrice + response.data[i].price;
@@ -330,7 +276,7 @@
         };
     }]);
 
-    app.controller('selectBankController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('selectBankController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.buttonChoice;
         $scope.newId;
         $http.get('/users/bankinfo')
@@ -339,12 +285,12 @@
             });
         //console.log($scope.banks)
         $scope.register = function () {
-            console.log("/userHome")
+            console.log("/userHome");
             $location.path('/userHome');
         };
     }]);
 
-    app.controller('selectAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('selectAddressController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.buttonChoice;
         $scope.newId;
         $http.get('/users/address')
@@ -377,7 +323,7 @@
         };
     }]);
 
-    app.controller('addBankInfoController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('addBankInfoController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.bank = {
             bankName: '',
             accountNumber: '',
@@ -395,7 +341,7 @@
         };
     }]);
 
-    app.controller('addAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('addAddressController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.address = {
             streetAddress: '',
             apartment: '',
@@ -413,7 +359,7 @@
         };
     }]);
 
-    app.controller('addCheckoutAddressController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('addCheckoutAddressController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.address = {
             streetAddress: '',
             apartment: '',
@@ -431,7 +377,7 @@
         };
     }]);
 
-    app.controller('addProductController', ['$scope', '$http', '$location', '$cookies', function ($scope, $http, $location, $cookies) {
+    app.controller('addProductController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
         $scope.product = {
             name: '',
             description: '',
@@ -453,8 +399,6 @@
             fd.append('description', angular.toJson($scope.product.description, true));
             fd.append('price', angular.toJson($scope.product.price, true));
             fd.append('category', angular.toJson($scope.product.category, true));
-            //fd.append('user',angular.toJson($scope.user,true));
-            //onsole.log('Socpe of user'+$scope.user);
             $http.post(uploadUrl, fd, {
                 transformRequest: angular.identity,
                 headers: {
@@ -500,7 +444,7 @@
         var getMyRating = function () {
             var product = {};
             for (var prop in $scope.product) {
-                if (prop !== 'photoLink') {
+                if (prop !== 'photoLink' && $scope.product.hasOwnProperty(prop)) {
                     product[prop] = $scope.product[prop];
                 }
             }
@@ -512,7 +456,7 @@
         var getAvgRating = function () {
             var product = {};
             for (var prop in $scope.product) {
-                if (prop !== 'photoLink') {
+                if (prop !== 'photoLink' && $scope.product.hasOwnProperty(prop)) {
                     product[prop] = $scope.product[prop];
                 }
             }
@@ -541,7 +485,7 @@
         $scope.addToCart = function () {
             var product = {};
             for (var prop in $scope.product) {
-                if (prop !== 'photoLink') {
+                if (prop !== 'photoLink' && $scope.product.hasOwnProperty(prop)) {
                     product[prop] = $scope.product[prop];
                 }
             }
@@ -560,7 +504,7 @@
         $scope.addRating = function (rating) {
             var product = {};
             for (var prop in $scope.product) {
-                if (prop !== 'photoLink') {
+                if (prop !== 'photoLink' && $scope.product.hasOwnProperty(prop)) {
                     product[prop] = $scope.product[prop];
                 }
             }
@@ -594,14 +538,12 @@
         $scope.login = function () {
             $http.post('/users/login', $scope.user)
                 .then(function (response) {
-                    //console.log(data);
                     if (response.data.response === "Login Unsuccessful") {
                         $scope.loginError = true;
                     } else {
                         $cookies.put('loggedIn', 'true');
                         $cookies.putObject('userInfo', $scope.user);
                         $location.path('/userHome');
-                        //$window.location.href = '/userHomepage.html';
                     }
                 });
         };
@@ -635,7 +577,7 @@
         };
     }]);
     // Set up the user homepage controller
-    app.controller('getProductAllController', ['$scope', '$http', '$cookies', '$location', function ($scope, $http, $cookies, $location) {
+    app.controller('getProductAllController', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
         if ($cookies.get('loggedIn') !== 'true') {
             $scope.hidePage = true;
         }
@@ -643,9 +585,25 @@
         $scope.useCategories = {};
         $scope.priceFloor = '';
         $scope.priceCeiling = '';
+        $scope.Math = Math;
+        $scope.range = new Array(5).fill().map(function (val, ndx) {
+            return ndx + 1;
+        });
         $http.get('/products/getavailableproducts')
             .then(function (response) {
                 $scope.allProducts = response.data;
+                $scope.allProducts.map(function (product) {
+                    var p = {};
+                    for (var prop in product) {
+                        if (prop !== 'photoLink' && product.hasOwnProperty(prop)) {
+                            p[prop] = product[prop];
+                        }
+                    }
+                    $http.post('/products/averagerating', p)
+                        .then(function (response) {
+                            product.rating = response.data;
+                        });
+                });
             });
         $http.get('/products/getallcategories')
             .then(function (response) {
@@ -750,13 +708,4 @@
             });
         }
     }]);
-
 })();
-
-// angular.module('demo', [])
-//     .controller('Hello', function ($scope, $http) {
-//         $http.get('http://localhost:8080/students')
-//             .then(function (response) {
-//                 $scope.students = response.data;
-//             });
-//     });
